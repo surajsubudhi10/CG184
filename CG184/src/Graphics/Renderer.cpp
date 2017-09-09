@@ -39,6 +39,9 @@ namespace CG184
 
 		glVertexAttribPointer(SHADER_COLOR_INDEX, 3, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (const GLvoid*)(3 * sizeof(float)));
 		glEnableVertexAttribArray(SHADER_COLOR_INDEX);
+
+		glVertexAttribPointer(SHADER_TEXCORD_INDEX, 2, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (const GLvoid*)(6 * sizeof(float)));
+		glEnableVertexAttribArray(SHADER_TEXCORD_INDEX);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 		m_IBO = new IndexBuffer(indicesData, indexArray.size());

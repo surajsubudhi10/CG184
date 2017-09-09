@@ -2,7 +2,7 @@
 
 namespace CG184 
 {
-	Shader::Shader(const char* vertexPath, const char* fragmentPath)
+	Shader::Shader(const char* vertexPath, const char* fragmentPath)// : textured(false)
 	{
 
 		std::string vertexCode;
@@ -63,10 +63,53 @@ namespace CG184
 	void Shader::ActivateShader()
 	{
 		glUseProgram(shaderID);
+
+		for (int i = 0; i < sizeof(m_Textures) / sizeof(m_Textures[0]); i++) 
+		{
+			glActiveTexture(GL_TEXTURE0 + i);
+			glBindTexture(GL_TEXTURE_2D, m_Textures[i].textureID);
+		}
 	}
 
 	void Shader::DeactivateShader() 
 	{
+		glUseProgram(0);
+	}
+
+	void Shader::AddTexture(const char* const texturePath, TextureType texType)
+	{
+		Texture tex;
+		tex.LoadTexture(texturePath);
+
+		glUseProgram(shaderID);
+		switch (texType)
+		{
+			case TextureType::Diffuse:
+				m_Textures[0] = tex;
+				glUniform1i(glGetUniformLocation(shaderID, "DiffuseMap"), 0);
+
+			case TextureType::Specular:
+				m_Textures[1] = tex;
+				glUniform1i(glGetUniformLocation(shaderID, "SpecularMap"), 1);
+
+			case TextureType::Normal:
+				m_Textures[2] = tex;
+				glUniform1i(glGetUniformLocation(shaderID, "NormalMap"), 2);
+
+			case TextureType::Bump:
+				m_Textures[3] = tex;
+				glUniform1i(glGetUniformLocation(shaderID, "BumpMap"), 3);
+
+			case TextureType::Reflection:
+				m_Textures[4] = tex;
+				glUniform1i(glGetUniformLocation(shaderID, "ReflectionMap"), 4);
+
+			default:
+				break;
+		}
+
+		glUniform1i(glGetUniformLocation(shaderID, "textured"), true);
+
 		glUseProgram(0);
 	}
 

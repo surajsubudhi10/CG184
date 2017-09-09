@@ -6,6 +6,10 @@
 #include <sstream>
 #include <fstream>
 
+#include <vector>
+
+#include "Texture.h"
+
 namespace CG184 
 {
 	class Shader
@@ -17,9 +21,14 @@ namespace CG184
 		void ActivateShader();
 		void DeactivateShader();
 
+		void AddTexture(const char* const texturePath, TextureType texType);
+
 		unsigned int shaderID;
 
 	private:
+
+		Texture m_Textures[5] = {}; // Hard Coded Fixed No. of Texture Support.
+		
 		void CompileShader(unsigned int shader, std::string type);
 	};
 
