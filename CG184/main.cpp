@@ -26,19 +26,22 @@ int main()
 		return 0;
 	}
 
-
-	Shader ourShader("TestShaders/testShader.vs", "TestShaders/testShader.fs");
-	
-
 	float vertices[] = {
 		// positions         // colors
 		 0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,  // bottom right
 		-0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,  // bottom left
-		 0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f   // top 
+		 0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f,   // top 
+
+		 1.0f,  0.5f, 0.0f,  1.0f, 0.0f, 1.0f,
 	};
 	std::vector<float> v(vertices, vertices + sizeof vertices / sizeof vertices[0]);
 
-	Renderer renderer(v);
+	GLuint indices[] = { 0, 1, 2, 3, 0, 2 };
+	std::vector<GLuint> ind(indices, indices + sizeof indices / sizeof indices[0]);
+
+
+	Shader ourShader("TestShaders/testShader.vs", "TestShaders/testShader.fs");
+	Renderer renderer(v, ind);
 
 
 	while (!window->IfWindowClosed())

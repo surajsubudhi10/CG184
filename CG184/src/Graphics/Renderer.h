@@ -2,6 +2,7 @@
 
 #include <GL\glew.h>
 #include <vector>
+#include "IndexBuffer.h"
 
 
 namespace CG184 
@@ -19,7 +20,7 @@ namespace CG184
 	class Renderer
 	{
 	public:
-		Renderer(std::vector<float>vertexArray);
+		Renderer(std::vector<float>vertexArray, std::vector<GLuint> indexArray);
 		~Renderer();
 
 		void Render();
@@ -27,8 +28,12 @@ namespace CG184
 
 		GLuint m_VAO;
 		GLuint m_VBO;
+		IndexBuffer* m_IBO;
 
+		int m_IndexCount;
+		
 		float* vertexData;
+		GLuint* indicesData;
 
 	};
 
