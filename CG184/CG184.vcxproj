@@ -77,7 +77,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)external-dependencies\GLFW\include;$(SolutionDir)external-dependencies\GLEW\include;D:\Code_Stuff\OpenGL\CG184\external-dependencies\Extras</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)external-dependencies\GLFW\include;$(SolutionDir)external-dependencies\GLEW\include;D:\Code_Stuff\OpenGL\CG184\external-dependencies\Extras;D:\Code_Stuff\OpenGL\CG184\external-dependencies\glm</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>GLEW_STATIC;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -125,6 +125,9 @@
     <ClCompile Include="src\Graphics\Shader.cpp" />
     <ClCompile Include="src\Graphics\Texture.cpp" />
     <ClCompile Include="src\Graphics\Window.cpp" />
+    <ClCompile Include="src\Maths\Matrix4D.cpp" />
+    <ClCompile Include="src\Maths\Vector3D.cpp" />
+    <ClCompile Include="src\Maths\Vector4D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Graphics\IndexBuffer.h" />
@@ -132,6 +135,9 @@
     <ClInclude Include="src\Graphics\Shader.h" />
     <ClInclude Include="src\Graphics\Texture.h" />
     <ClInclude Include="src\Graphics\Window.h" />
+    <ClInclude Include="src\Maths\Matrix4D.h" />
+    <ClInclude Include="src\Maths\Vector3D.h" />
+    <ClInclude Include="src\Maths\Vector4D.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

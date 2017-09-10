@@ -1,17 +1,16 @@
 #include <GL\glew.h>
-//#include <GLFW/glfw3.h>
 
-//#define STB_IMAGE_IMPLEMENTATION   
-
-//#include <stb_image.h>
-//#include <filesystem.h>
+//#include <glm.hpp>
+//#include <gtc/matrix_transform.hpp>
+//#include <gtc/type_ptr.hpp>
 
 #include <iostream>
 
 #include "src/Graphics/Window.h"
 #include "src/Graphics/Shader.h"
 #include "src/Graphics/Renderer.h"
-//#include "src/Graphics/Texture.h"
+
+#include "src/Maths/Matrix4D.h"
 
 // settings
 const unsigned int SCR_WIDTH = 800;
@@ -59,7 +58,7 @@ int main()
 	
 
 	GLuint mixLocationInShader = glGetUniformLocation(ourShader.shaderID, "mixValue");
-
+	unsigned int transformLoc = glGetUniformLocation(ourShader.shaderID, "transform");
 	
 	while (!window->IfWindowClosed())
 	{
@@ -67,6 +66,11 @@ int main()
 		window->SetBGColor(0.2f, 0.8, 0.5, 1.0f);
 		ourShader.ActivateShader();
 
+		Matrix4D trans(1.0);
+		trans = Matrix4D::Translate(trans, 0.5f, -0.5f, 0.0f);
+		trans = Matrix4D::Rotate(trans, (float)glfwGetTime() * 100, Vector3D(0.0f, 0.0f, 1.0f));
+		
+		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, trans.elements);
 		glUniform1f(mixLocationInShader, mixValue);
 
 		renderer.Render();
