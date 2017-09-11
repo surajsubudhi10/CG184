@@ -12,11 +12,11 @@ namespace CG184
 	{
 	}
 
-	Vector3D::Vector3D(double _x, double _y, double _z) : x(_x), y(_y), z(_z)
+	Vector3D::Vector3D(float _x, float _y, float _z) : x(_x), y(_y), z(_z)
 	{
 	}
 
-	Vector3D::Vector3D(double val) : x(val), y(val), z(val)
+	Vector3D::Vector3D(float val) : x(val), y(val), z(val)
 	{
 	}
 
@@ -26,27 +26,27 @@ namespace CG184
 
 	Vector3D Vector3D::add(const Vector3D& vec) const
 	{
-		double _x = x + vec.x;
-		double _y = y + vec.y;
-		double _z = z + vec.z;
+		float _x = x + vec.x;
+		float _y = y + vec.y;
+		float _z = z + vec.z;
 
 		return Vector3D(_x, _y, _z);
 	}
 
 	Vector3D Vector3D::sub(const Vector3D& vec) const
 	{
-		double _x = x - vec.x;
-		double _y = y - vec.y;
-		double _z = z - vec.z;
+		float _x = x - vec.x;
+		float _y = y - vec.y;
+		float _z = z - vec.z;
 
 		return Vector3D(_x, _y, _z);
 	}
 
 	Vector3D Vector3D::mult(const Vector3D& vec) const
 	{
-		double _x = x * vec.x;
-		double _y = y * vec.y;
-		double _z = z * vec.z;
+		float _x = x * vec.x;
+		float _y = y * vec.y;
+		float _z = z * vec.z;
 
 		return Vector3D(_x, _y, _z);
 	}
@@ -55,72 +55,72 @@ namespace CG184
 	{
 		assert((vec.x != 0.0 && vec.y != 0.0 && vec.z != 0.0) && "Dividing with Zero.");
 
-		double _x = x / vec.x;
-		double _y = y / vec.y;
-		double _z = z / vec.z;
+		float _x = x / vec.x;
+		float _y = y / vec.y;
+		float _z = z / vec.z;
 
 		return Vector3D(_x, _y, _z);
 	}
 
-	Vector3D Vector3D::mult(double multiplier) const
+	Vector3D Vector3D::mult(float multiplier) const
 	{
-		double _x = x * multiplier;
-		double _y = y * multiplier;
-		double _z = z * multiplier;
+		float _x = x * multiplier;
+		float _y = y * multiplier;
+		float _z = z * multiplier;
 
 		return Vector3D(_x, _y, _z);
 	}
 
-	Vector3D Vector3D::divide(double diveder) const
+	Vector3D Vector3D::divide(float diveder) const
 	{
 		assert(diveder != 0.0 && "Dividing with zero.");
 
-		double _x = x / diveder;
-		double _y = y / diveder;
-		double _z = z / diveder;
+		float _x = x / diveder;
+		float _y = y / diveder;
+		float _z = z / diveder;
 
 		return Vector3D(_x, _y, _z);
 	}
 
-	double Vector3D::dot(const Vector3D& vec) const 
+	float Vector3D::dot(const Vector3D& vec) const 
 	{
 		return (x * vec.x + y * vec.y + z * vec.z);
 	}
 
 	Vector3D Vector3D::cross(const Vector3D& vec) const 
 	{
-		double _x = (y * vec.z) - (z * vec.y);
-		double _y = (z * vec.x) - (x * vec.z);
-		double _z = (x * vec.y) - (y * vec.x);
+		float _x = (y * vec.z) - (z * vec.y);
+		float _y = (z * vec.x) - (x * vec.z);
+		float _z = (x * vec.y) - (y * vec.x);
 
 		return Vector3D(_x, _y, _z);
 	}
 
 	void Vector3D::normalize() 
 	{
-		double len = length();
+		float len = length();
 		assert(len != 0 && "length must be greater than zero");
 		divide(len);
 	}
 
 	Vector3D Vector3D::norm() const 
 	{
-		double len = length();
+		float len = length();
 		assert(len != 0 && "length must be greater than zero");
 
-		double _x = x / len;
-		double _y = y / len;
-		double _z = z / len;
+		float _x = x / len;
+		float _y = y / len;
+		float _z = z / len;
 
 		return Vector3D(_x, _y, _z);
 	}
 
-	double Vector3D::squaredLength() const 
+	float Vector3D::squaredLength() const 
 	{
 		return (x * x + y * y + z * z);
 	}
 
-	double Vector3D::length()const 
+	float Vector3D::length()const 
 	{
 		return sqrt(squaredLength());
 	}
@@ -130,7 +130,7 @@ namespace CG184
 		mult(-1.0f);
 	}
 
-	const double Vector3D::at(size_t i) const 
+	const float Vector3D::at(size_t i) const 
 	{
 		assert((i >= 0 && i < 3) && "i must be between 0 to 2");
 
@@ -142,7 +142,7 @@ namespace CG184
 			return z;
 	}
 
-	double Vector3D::at(size_t i)
+	float Vector3D::at(size_t i)
 	{
 		assert((i >= 0 && i < 3) && "i must be between 0 to 2");
 
@@ -167,7 +167,7 @@ namespace CG184
 	}
 
 
-	double		Vector3D::operator[](size_t i) const
+	float		Vector3D::operator[](size_t i) const
 	{
 		return at(i);
 	}
@@ -205,12 +205,12 @@ namespace CG184
 	}
 
 
-	Vector3D&   Vector3D::operator*(double val) 
+	Vector3D&   Vector3D::operator*(float val) 
 	{
 		return mult(val);
 	}
 
-	Vector3D&   Vector3D::operator/(double val) 
+	Vector3D&   Vector3D::operator/(float val) 
 	{
 		return divide(val);
 	}
@@ -238,13 +238,13 @@ namespace CG184
 		Vector3D _vec = *this / vec;
 		return _vec;
 	}
-	Vector3D&   Vector3D::operator*=(double val) 
+	Vector3D&   Vector3D::operator*=(float val) 
 	{
 		Vector3D _vec = *this * val;
 		return _vec;
 	}
 
-	Vector3D&   Vector3D::operator/=(double val) 
+	Vector3D&   Vector3D::operator/=(float val) 
 	{
 		Vector3D _vec = *this / val;
 		return _vec;

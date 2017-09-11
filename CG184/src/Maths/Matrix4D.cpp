@@ -9,10 +9,7 @@ namespace CG184
 {
 	Matrix4D::Matrix4D()
 	{
-		for (unsigned int i = 0; i < 16; i++)
-		{
-			elements[i] = 0.0f;
-		}
+		Set(1.0f);
 	}
 
 	Matrix4D::~Matrix4D()
@@ -168,38 +165,6 @@ namespace CG184
 		return result;
 	}
 
-
-	Matrix4D Matrix4D::Translate(Matrix4D& mat, float _x, float _y, float _z)
-	{
-		Matrix4D transMat(
-				1, 0, 0, _x,
-				0, 1, 0, _y,
-				0, 0, 1, _z,
-				0, 0, 0,  1
-		);
-
-		//transMat = transMat.transpose();
-		return mat.multiply(transMat);
-	}
-
-	Matrix4D Matrix4D::Rotate(Matrix4D& mat, float angleInDeg, const Vector3D& axis) 
-	{
-		float angInRad = PI * angleInDeg / 180.0f;
-
-		// Checkpoint only keeping rotation along z axis for testing.
-		float c = cos(angInRad);
-		float s = sin(angInRad);
-
-		Matrix4D rotMat(
-			 c, s, 0, 0,
-			-s, c, 0, 0,
-			 0, 0, 1, 0,
-			 0, 0, 0, 1
-		);
-
-		return mat.multiply(rotMat);
-	}
-
 	Matrix4D& Matrix4D::operator=(const Matrix4D& rhs) 
 	{
 		if (this == &rhs) {
@@ -221,6 +186,72 @@ namespace CG184
 	float Matrix4D::operator[](size_t i)
 	{
 		return at(i);
+	}
+
+	Matrix4D Matrix4D::Translate(Matrix4D& mat, float _x, float _y, float _z)
+	{
+		Matrix4D transMat(
+				1, 0, 0, _x,
+				0, 1, 0, _y,
+				0, 0, 1, _z,
+				0, 0, 0,  1
+		);
+
+		//transMat = transMat.transpose();
+		return mat.multiply(transMat);
+	}
+
+	Matrix4D Matrix4D::Rotate(Matrix4D& mat, float angleInDeg, const Vector3D& axis) 
+	{
+		float angInRad = PI * angleInDeg / 180.0f;
+
+		// Checkpoint only keeping rotation along z axis for testing.
+		float c = cos(angInRad);
+		float s = sin(angInRad);
+		float v = 1 - c;
+
+		Vector3D normAxis =  axis.norm();
+		float kx = normAxis.x;
+		float ky = normAxis.y;
+		float kz = normAxis.z;
+
+		Matrix4D rotMat(
+			 (kx * kx * v) + c       , (kx * ky * v) - (kz * s), (kx * kz * v) + (ky * s), 0,
+			 (ky * kx * v) + (kz * s), (ky * ky * v) +  c      , (ky * kz * v) - (kx * s), 0,
+			 (kz * kx * v) - (ky * s), (kz * ky * v) + (kx * s), (kz * kz * v) +  c      , 0,
+			                        0,                        0,                        0, 1
+		);
+		return mat.multiply(rotMat);
+	}
+
+	Matrix4D Matrix4D::Scale(Matrix4D& mat, float sx, float sy, float sz) 
+	{
+		Matrix4D scaleMat(
+			sx,  0,  0, 0,
+			 0, sy,  0, 0,
+			 0,  0, sz, 0,
+			 0,  0,  0, 1
+		);
+
+		return mat.multiply(scaleMat);
+	}
+
+	Matrix4D Matrix4D::prespective(float fovInDeg, float aspect_ratio, float near, float far) 
+	{
+		float fovInRad = PI * fovInDeg / 180.0f;
+		const float tanHalfFov = tan(fovInRad / 2.0f);
+
+		Matrix4D result(1.0f);
+		
+		result.elements[0] = 1 / (aspect_ratio * tanHalfFov);
+		result.elements[5] = 1 / tanHalfFov;
+		result.elements[10] = -1 * (far + near) / (far - near);
+		result.elements[15] = 0.0f;
+		result.elements[11] = -1.0f;
+		result.elements[14] = (-2 * far * near) / (far - near);
+
+		return result;
+
 	}
 
 }

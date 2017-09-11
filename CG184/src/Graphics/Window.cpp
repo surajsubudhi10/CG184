@@ -26,9 +26,9 @@ namespace CG184 {
 		// glfw: initialize and configure
 		// ------------------------------
 		glfwInit();
-		//        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-		//        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-		//        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 		window = glfwCreateWindow(m_width, m_height, m_WindowTitle, NULL, NULL);
 		if (window == NULL)
@@ -39,6 +39,7 @@ namespace CG184 {
 		}
 		glfwMakeContextCurrent(window);
 		glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+		glEnable(GL_DEPTH_TEST);
 	}
 
 	int Window::IfWindowClosed()
@@ -64,7 +65,7 @@ namespace CG184 {
 	void Window::SetBGColor(float _r, float _g, float _b, float _a)
 	{
 		glClearColor(_r, _g, _b, _a);
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
 	void Window::Close()

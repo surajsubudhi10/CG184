@@ -65,6 +65,9 @@ namespace CG184
 		// Temp Check
 		static Matrix4D Translate(Matrix4D& mat, float _x, float _y, float _z);
 		static Matrix4D Rotate(Matrix4D& mat, float angleInDeg, const Vector3D& axis);
+		static Matrix4D Scale(Matrix4D& mat, float sx, float sy, float sz);
+
+		static Matrix4D prespective(float fov, float aspect_ratio, float near, float far);
 
 
 	private:

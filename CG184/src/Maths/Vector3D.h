@@ -6,8 +6,8 @@ namespace CG184
 	{
 	public:
 		Vector3D();
-		Vector3D(double _x, double _y, double _Z);
-		Vector3D(double val);
+		Vector3D(float _x, float _y, float _Z);
+		Vector3D(float val);
 		Vector3D(const Vector3D& _vec);
 
 		Vector3D add(const Vector3D& vec) const;
@@ -15,39 +15,39 @@ namespace CG184
 		Vector3D mult(const Vector3D& vec) const;
 		Vector3D divide(const Vector3D& vec) const;
 		
-		Vector3D mult(double multiplier) const;
-		Vector3D divide(double diveder) const;
+		Vector3D mult(float multiplier) const;
+		Vector3D divide(float diveder) const;
 
-		double dot(const Vector3D& vec) const;
+		float dot(const Vector3D& vec) const;
 		Vector3D cross(const Vector3D& vec) const;
 
 		void normalize();
 		Vector3D norm() const;
-		double squaredLength() const;
-		double length()const ;
+		float squaredLength() const;
+		float length()const ;
 
 		void negate();
 
-		const double at(size_t i) const;
-		double at(size_t i);
+		const float at(size_t i) const;
+		float at(size_t i);
 
 		bool isEqual(const Vector3D& vec) const;
 
 
-		double		operator[](size_t i) const;
+		float		operator[](size_t i) const;
 		Vector3D&	operator=(const Vector3D& vec);
 		Vector3D&   operator+(const Vector3D& vec);
 		Vector3D&   operator-(const Vector3D& vec);
 		Vector3D&   operator*(const Vector3D& vec);
 		Vector3D&   operator/(const Vector3D& vec);
-		Vector3D&   operator*(double val);
-		Vector3D&   operator/(double val);
+		Vector3D&   operator*(float val);
+		Vector3D&   operator/(float val);
 		Vector3D&   operator+=(const Vector3D& vec);
 		Vector3D&   operator-=(const Vector3D& vec);
 		Vector3D&   operator*=(const Vector3D& vec);
 		Vector3D&   operator/=(const Vector3D& vec);
-		Vector3D&   operator*=(double val);
-		Vector3D&   operator/=(double val);
+		Vector3D&   operator*=(float val);
+		Vector3D&   operator/=(float val);
 		bool		operator==(const Vector3D& vec);
 		bool		operator!=(const Vector3D& vec);
 
@@ -55,7 +55,7 @@ namespace CG184
 		~Vector3D();
 
 	public:
-		double x, y, z;
+		float x, y, z;
 	};
 
 	

@@ -12,11 +12,11 @@ namespace CG184
 	{
 	}
 
-	Vector4D::Vector4D(double _x, double _y, double _z, double _w) : x(_x), y(_y), z(_z), w(_w)
+	Vector4D::Vector4D(float _x, float _y, float _z, float _w) : x(_x), y(_y), z(_z), w(_w)
 	{
 	}
 
-	Vector4D::Vector4D(double val) : x(val), y(val), z(val), w(val)
+	Vector4D::Vector4D(float val) : x(val), y(val), z(val), w(val)
 	{
 	}
 
@@ -24,36 +24,36 @@ namespace CG184
 	{
 	}
 
-	Vector4D::Vector4D(const Vector3D& _vec, double wval) : x(_vec.x), y(_vec.y), z(_vec.z), w(wval)
+	Vector4D::Vector4D(const Vector3D& _vec, float wval) : x(_vec.x), y(_vec.y), z(_vec.z), w(wval)
 	{
 	}
 
 	Vector4D Vector4D::add(const Vector4D& vec) const
 	{
-		double _x = x + vec.x;
-		double _y = y + vec.y;
-		double _z = z + vec.z;
-		double _w = w + vec.w;
+		float _x = x + vec.x;
+		float _y = y + vec.y;
+		float _z = z + vec.z;
+		float _w = w + vec.w;
 
 		return Vector4D(_x, _y, _z, _w);
 	}
 
 	Vector4D Vector4D::sub(const Vector4D& vec) const
 	{
-		double _x = x - vec.x;
-		double _y = y - vec.y;
-		double _z = z - vec.z;
-		double _w = w - vec.w;
+		float _x = x - vec.x;
+		float _y = y - vec.y;
+		float _z = z - vec.z;
+		float _w = w - vec.w;
 
 		return Vector4D(_x, _y, _z, _w);
 	}
 
 	Vector4D Vector4D::mult(const Vector4D& vec) const
 	{
-		double _x = x * vec.x;
-		double _y = y * vec.y;
-		double _z = z * vec.z;
-		double _w = w * vec.w;
+		float _x = x * vec.x;
+		float _y = y * vec.y;
+		float _z = z * vec.z;
+		float _w = w * vec.w;
 
 		return Vector4D(_x, _y, _z, _w);
 	}
@@ -62,37 +62,37 @@ namespace CG184
 	{
 		assert((vec.x != 0.0 && vec.y != 0.0 && vec.z != 0.0 && vec.w != 0.0) && "Dividing with Zero.");
 
-		double _x = x / vec.x;
-		double _y = y / vec.y;
-		double _z = z / vec.z;
-		double _w = w / vec.w;
+		float _x = x / vec.x;
+		float _y = y / vec.y;
+		float _z = z / vec.z;
+		float _w = w / vec.w;
 
 		return Vector4D(_x, _y, _z, _w);
 	}
 
-	Vector4D Vector4D::mult(double multiplier) const
+	Vector4D Vector4D::mult(float multiplier) const
 	{
-		double _x = x * multiplier;
-		double _y = y * multiplier;
-		double _z = z * multiplier;
-		double _w = w * multiplier;
+		float _x = x * multiplier;
+		float _y = y * multiplier;
+		float _z = z * multiplier;
+		float _w = w * multiplier;
 
 		return Vector4D(_x, _y, _z, _w);
 	}
 
-	Vector4D Vector4D::divide(double diveder) const
+	Vector4D Vector4D::divide(float diveder) const
 	{
 		assert(diveder != 0.0 && "Dividing with zero.");
 
-		double _x = x / diveder;
-		double _y = y / diveder;
-		double _z = z / diveder;
-		double _w = w / diveder;
+		float _x = x / diveder;
+		float _y = y / diveder;
+		float _z = z / diveder;
+		float _w = w / diveder;
 
 		return Vector4D(_x, _y, _z, _w);
 	}
 
-	const double Vector4D::at(size_t i) const
+	const float Vector4D::at(size_t i) const
 	{
 		assert((i >= 0 && i < 4) && "i must be between 0 to 3");
 
@@ -106,7 +106,7 @@ namespace CG184
 			return w;
 	}
 
-	double Vector4D::at(size_t i)
+	float Vector4D::at(size_t i)
 	{
 		assert((i >= 0 && i < 4) && "i must be between 0 to 3");
 
@@ -133,7 +133,7 @@ namespace CG184
 	}
 
 
-	double		Vector4D::operator[](size_t i) const
+	float		Vector4D::operator[](size_t i) const
 	{
 		return at(i);
 	}
@@ -172,12 +172,12 @@ namespace CG184
 	}
 
 
-	Vector4D&   Vector4D::operator*(double val)
+	Vector4D&   Vector4D::operator*(float val)
 	{
 		return mult(val);
 	}
 
-	Vector4D&   Vector4D::operator/(double val)
+	Vector4D&   Vector4D::operator/(float val)
 	{
 		return divide(val);
 	}
@@ -205,13 +205,13 @@ namespace CG184
 		Vector4D _vec = *this / vec;
 		return _vec;
 	}
-	Vector4D&   Vector4D::operator*=(double val)
+	Vector4D&   Vector4D::operator*=(float val)
 	{
 		Vector4D _vec = *this * val;
 		return _vec;
 	}
 
-	Vector4D&   Vector4D::operator/=(double val)
+	Vector4D&   Vector4D::operator/=(float val)
 	{
 		Vector4D _vec = *this / val;
 		return _vec;

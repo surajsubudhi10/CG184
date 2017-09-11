@@ -48,6 +48,14 @@ namespace CG184
 
 		glBindVertexArray(0);
 
+
+
+		delete[] vertexData;
+		vertexData = nullptr;
+
+		delete[] indicesData;
+		indicesData = nullptr;
+
 	}
 
 	
@@ -55,9 +63,6 @@ namespace CG184
 	{
 		glDeleteVertexArrays(1, &m_VAO);
 		glDeleteBuffers(1, &m_VBO);
-		
-		delete[] vertexData;
-		vertexData = nullptr;
 	}
 
 	void Renderer::Render()
