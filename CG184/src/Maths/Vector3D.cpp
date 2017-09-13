@@ -100,10 +100,10 @@ namespace CG184
 	{
 		float len = length();
 		assert(len != 0 && "length must be greater than zero");
-		divide(len);
+		*this = divide(len);
 	}
 
-	Vector3D Vector3D::norm() const 
+	Vector3D& Vector3D::norm() const 
 	{
 		float len = length();
 		assert(len != 0 && "length must be greater than zero");

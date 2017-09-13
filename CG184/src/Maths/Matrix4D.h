@@ -3,6 +3,9 @@
 
 namespace CG184 
 {
+
+# define PI           3.14159265358979323846  /* pi */
+
 	class Matrix4D
 	{
 	public:
@@ -67,7 +70,8 @@ namespace CG184
 		static Matrix4D Rotate(Matrix4D& mat, float angleInDeg, const Vector3D& axis);
 		static Matrix4D Scale(Matrix4D& mat, float sx, float sy, float sz);
 
-		static Matrix4D prespective(float fov, float aspect_ratio, float near, float far);
+		/*static Matrix4D prespective(float fov, float aspect_ratio, float near, float far);
+		static Matrix4D LookAt(Vector3D eyePos, Vector3D target, Vector3D up);*/
 
 
 	private:

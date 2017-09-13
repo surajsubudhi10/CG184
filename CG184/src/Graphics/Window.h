@@ -18,7 +18,7 @@ namespace CG184 {
 		Window();
 		Window(int width, int height, const char* name);
 
-		void ProcessInput();
+		//void ProcessInput();
 		void Update();
 		int IfWindowClosed();
 		void Close();
@@ -30,10 +30,10 @@ namespace CG184 {
 	private:
 		void init();
 
+	public:
 		int m_width;
 		int m_height;
 		const char* m_WindowTitle;
-	public:
 		GLFWwindow* window;
 	};
 }

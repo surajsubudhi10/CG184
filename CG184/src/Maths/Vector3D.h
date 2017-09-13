@@ -22,7 +22,7 @@ namespace CG184
 		Vector3D cross(const Vector3D& vec) const;
 
 		void normalize();
-		Vector3D norm() const;
+		Vector3D& norm() const;
 		float squaredLength() const;
 		float length()const ;
 

@@ -3,7 +3,7 @@
 #include <cassert>
 #include <iostream>
 
-# define PI           3.14159265358979323846  /* pi */
+
 
 namespace CG184
 {
@@ -236,7 +236,7 @@ namespace CG184
 		return mat.multiply(scaleMat);
 	}
 
-	Matrix4D Matrix4D::prespective(float fovInDeg, float aspect_ratio, float near, float far) 
+	/*Matrix4D Matrix4D::prespective(float fovInDeg, float aspect_ratio, float near, float far) 
 	{
 		float fovInRad = PI * fovInDeg / 180.0f;
 		const float tanHalfFov = tan(fovInRad / 2.0f);
@@ -252,6 +252,32 @@ namespace CG184
 
 		return result;
 
-	}
+	}*/
+
+	//Matrix4D Matrix4D::LookAt(Vector3D eyePos, Vector3D target, Vector3D up) 
+	//{
+	//	Vector3D f(target - eyePos);
+	//	f.normalize();
+
+	//	Vector3D s = (f.cross(up));
+	//	s.normalize();
+
+	//	Vector3D u = s.cross(f);
+
+	//	float ex = -s.dot(eyePos);
+	//	float ey = -u.dot(eyePos);
+	//	float ez =  f.dot(eyePos);
+
+	//	Matrix4D lookMat(
+	//		 s.x,  s.y,  s.z, ex,
+	//		 u.x,  u.y,  u.z, ey,
+	//		-f.x, -f.y, -f.z, ez,
+	//		   0,    0,    0,  1
+	//	);
+
+	//	//lookMat = lookMat.transpose();
+
+	//	return lookMat;
+	//}
 
 }
