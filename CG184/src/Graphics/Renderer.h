@@ -11,6 +11,7 @@ namespace CG184
 {
 
 #define RENDERER_MAX_SPRITES	60000
+//#define RENDERER_VERTEX_SIZE	sizeof(float) * 8
 #define RENDERER_VERTEX_SIZE	sizeof(VertexData)
 #define RENDERER_SPRITE_SIZE	RENDERER_VERTEX_SIZE * 3
 #define RENDERER_BUFFER_SIZE	RENDERER_SPRITE_SIZE * RENDERER_MAX_SPRITES
@@ -18,7 +19,8 @@ namespace CG184
 
 #define SHADER_VERTEX_INDEX  0
 #define SHADER_COLOR_INDEX	 1
-#define SHADER_TEXCORD_INDEX 2
+#define SHADER_NORMAL_INDEX	 2
+#define SHADER_TEXCORD_INDEX 3
 
 	struct VertexData 
 	{
@@ -39,14 +41,12 @@ namespace CG184
 
 		GLuint m_VAO;
 		GLuint m_VBO;
-		IndexBuffer* m_IBO;
 
 		int m_IndexCount;
 		
-		float* vertexData;
-		VertexData* m_Buffer;
 		GLuint* indicesData;
-
+		VertexData* m_Buffer;
+		IndexBuffer* m_IBO;
 	};
 
 	
