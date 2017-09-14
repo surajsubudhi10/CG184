@@ -41,7 +41,7 @@ float fov = 45.0f;
 float deltaTime = 0.0f;	// time between current frame and last frame
 float lastFrame = 0.0f;
 
-
+Vector3D lightPos(1.2f, 1.0f, 2.0f);
 
 int main()
 {
@@ -64,18 +64,18 @@ int main()
 
 	float vertices[] = {
 		// positions          // colors           // texture coords
-		 0.5f,  0.5f,  0.5f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right			//0
-		 0.5f, -0.5f,  0.5f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // bottom right		//1
-		-0.5f, -0.5f,  0.5f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // bottom left		//2
-		-0.5f,  0.5f,  0.5f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f,  // top left			//3
-
-		 0.5f,  0.5f, -0.5f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right			//4
-		 0.5f, -0.5f, -0.5f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // bottom right		//5
-		-0.5f, -0.5f, -0.5f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // bottom left		//6
-		-0.5f,  0.5f, -0.5f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // top left			//7
+		 0.5f,  0.5f,  0.5f,   1.0f, 0.5f, 0.31f,   1.0f, 1.0f, // top right			//0
+		 0.5f, -0.5f,  0.5f,   1.0f, 0.5f, 0.31f,   1.0f, 0.0f, // bottom right		//1
+		-0.5f, -0.5f,  0.5f,   1.0f, 0.5f, 0.31f,   0.0f, 0.0f, // bottom left		//2
+		-0.5f,  0.5f,  0.5f,   1.0f, 0.5f, 0.31f,   0.0f, 1.0f,  // top left			//3
+							   
+		 0.5f,  0.5f, -0.5f,   1.0f, 0.5f, 0.31f,   1.0f, 1.0f, // top right			//4
+		 0.5f, -0.5f, -0.5f,   1.0f, 0.5f, 0.31f,   1.0f, 0.0f, // bottom right		//5
+		-0.5f, -0.5f, -0.5f,   1.0f, 0.5f, 0.31f,   0.0f, 0.0f, // bottom left		//6
+		-0.5f,  0.5f, -0.5f,   1.0f, 0.5f, 0.31f,   0.0f, 1.0f  // top left			//7
 	};
 
-
+	
 	std::vector<float> v(vertices, vertices + sizeof vertices / sizeof vertices[0]);
 
 	GLuint indices[] = {
@@ -116,33 +116,41 @@ int main()
 	Camera cam;
 	cam.SetAspectRatio((float)SCR_WIDTH / (float)SCR_HEIGHT);
 
-	Shader ourShader("TestShaders/coordinate_systems.vs", "TestShaders/coordinate_systems.fs");
-	//Shader ourShader("TestShaders/testShader.vs", "TestShaders/testShader.fs");
+	Shader ourShader("TestShaders/BoxSolid.vs", "TestShaders/BoxSolid.fs");
+	Shader lightBoxShader("TestShaders/LightCube.vs", "TestShaders/LightCube.fs");
+	
 	std::vector<Renderer>renderer_list;
 	renderer_list.reserve(10);
+
 	Renderer renderer1(v, ind);
+	Renderer lightBox(v, ind);
 
 	for (int i = 0; i < 10; i++) 
 	{
 		renderer_list.push_back(renderer1);
 	}
 
-	ourShader.AddTexture("Resources/textures/container.jpg", TextureType::Diffuse);
-	ourShader.AddTexture("Resources/textures/awesomeface.png", TextureType::Specular);
+	//ourShader.AddTexture("Resources/textures/container.jpg", TextureType::Diffuse);
+	//ourShader.AddTexture("Resources/textures/awesomeface.png", TextureType::Specular);
 	
 
-	GLuint mixLocationInShader	= glGetUniformLocation(ourShader.shaderID, "mixValue");
-	GLuint transformLoc			= glGetUniformLocation(ourShader.shaderID, "transform");
 	GLuint modelLoc				= glGetUniformLocation(ourShader.shaderID, "model");
 	GLuint viewLoc				= glGetUniformLocation(ourShader.shaderID, "view");
 	GLuint projectionLoc		= glGetUniformLocation(ourShader.shaderID, "projection");
+	GLuint colorLightLoc		= glGetUniformLocation(ourShader.shaderID, "lightColor");
 
 	ourShader.ActivateShader();
 	glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, cam.GetProjectionMatrix().elements);
 	ourShader.DeactivateShader();
 	
 
-	
+	GLuint modeLightlLoc		= glGetUniformLocation(lightBoxShader.shaderID, "model");
+	GLuint viewLightLoc			= glGetUniformLocation(lightBoxShader.shaderID, "view");
+	GLuint projectionLightLoc	= glGetUniformLocation(lightBoxShader.shaderID, "projection");
+	lightBoxShader.ActivateShader();
+	glUniformMatrix4fv(projectionLightLoc, 1, GL_FALSE, cam.GetProjectionMatrix().elements);
+	lightBoxShader.DeactivateShader();
+
 
 	while (!window->IfWindowClosed())
 	{
@@ -153,28 +161,33 @@ int main()
 
 		KeyBoardEvents(window, input);
 
-		window->SetBGColor(0.2f, 0.8, 0.5, 1.0f);
-		ourShader.ActivateShader();
-
-		glUniform1f(mixLocationInShader, mixValue);
-
+		window->SetBGColor(0.0f, 0.0f, 0.0f, 1.0f);
+		
 		cam.SetFOV(fov);
 		cam.Set(cameraPos, cameraFront, cameraUp);
+		Matrix4D model(1.0);
+		//model = Matrix4D::Translate(model, cubePositions[1].x, cubePositions[1].y, cubePositions[1].z);
+		
+		ourShader.ActivateShader();
+		glUniform3f(colorLightLoc, 1.0f, 1.0f, 1.0f);
 		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, cam.GetViewMatrix().elements);
-
-
-		for (unsigned int i = 0; i < 10; i++)
-		{
-			Matrix4D model;
-			model = Matrix4D::Translate(model, cubePositions[i].x, cubePositions[i].y, cubePositions[i].z);
-			float angle = 20.0f * i;
-			model = Matrix4D::Rotate(model, angle, Vector3D(1.0f, 0.3f, 0.5f));
-			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, model.elements);
-
-			renderer_list[i].Render();
-		}
-
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, model.elements);
+		
+		renderer1.Render();
 		ourShader.DeactivateShader();
+		
+		model = Matrix4D(1.0);
+		model = Matrix4D::Translate(model, lightPos.x, lightPos.y, lightPos.z);
+		model = Matrix4D::Scale(model, 0.2f, 0.2f, 0.2f);
+		lightBoxShader.ActivateShader();
+		glUniformMatrix4fv(viewLightLoc, 1, GL_FALSE, cam.GetViewMatrix().elements);
+		glUniformMatrix4fv(modeLightlLoc, 1, GL_FALSE, model.elements);
+
+		lightBox.Render();
+		lightBoxShader.DeactivateShader();
+
+
+
 		window->Update();
 	}
 

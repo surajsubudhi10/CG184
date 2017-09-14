@@ -10,6 +10,13 @@ namespace CG184
 	{
 	public:
 
+		//! Basic Matrix Structure.
+		//! Matrix4D arr = {
+		//!     {0, 4,  8, 12},
+		//!     {1, 5,  9, 13},
+		//!     {2, 6, 10, 14},
+		//!     {3, 7, 11, 15}
+		//! };
 		float elements[4 * 4];
 		
 
@@ -23,13 +30,6 @@ namespace CG184
 			float m10, float m11, float m12,
 			float m20, float m21, float m22);
 
-		//! Basic Matrix Structure.
-		//! Matrix4D arr = {
-		//!     {0, 4,  8, 12},
-		//!     {1, 5,  9, 13},
-		//!     {2, 6, 10, 14},
-		//!     {3, 7, 11, 15}
-		//! };
 
 		Matrix4D(
 			float m00, float m01, float m02, float m03,
@@ -70,8 +70,7 @@ namespace CG184
 		static Matrix4D Rotate(Matrix4D& mat, float angleInDeg, const Vector3D& axis);
 		static Matrix4D Scale(Matrix4D& mat, float sx, float sy, float sz);
 
-		/*static Matrix4D prespective(float fov, float aspect_ratio, float near, float far);
-		static Matrix4D LookAt(Vector3D eyePos, Vector3D target, Vector3D up);*/
+		
 
 
 	private:

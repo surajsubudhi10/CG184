@@ -12,9 +12,11 @@ namespace CG184
 		
 		// Vertex Data Setup
 		vertexData = new float[numOfFloat];
+		m_Buffer = new VertexData[numOfFloat];
 		for (int i = 0; i < numOfFloat; i++)
 		{
 			vertexData[i] = vertexArray[i];
+			//m_Buffer->position = Vector3D(vertexArray[i], )
 		}
 
 

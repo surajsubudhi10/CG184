@@ -128,6 +128,7 @@
     <ClCompile Include="src\Graphics\Texture.cpp" />
     <ClCompile Include="src\Graphics\Window.cpp" />
     <ClCompile Include="src\Maths\Matrix4D.cpp" />
+    <ClCompile Include="src\Maths\Vector2D.cpp" />
     <ClCompile Include="src\Maths\Vector3D.cpp" />
     <ClCompile Include="src\Maths\Vector4D.cpp" />
   </ItemGroup>
@@ -139,7 +140,9 @@
     <ClInclude Include="src\Graphics\Shader.h" />
     <ClInclude Include="src\Graphics\Texture.h" />
     <ClInclude Include="src\Graphics\Window.h" />
+    <ClInclude Include="src\Maths\Maths.h" />
     <ClInclude Include="src\Maths\Matrix4D.h" />
+    <ClInclude Include="src\Maths\Vector2D.h" />
     <ClInclude Include="src\Maths\Vector3D.h" />
     <ClInclude Include="src\Maths\Vector4D.h" />
   </ItemGroup>
