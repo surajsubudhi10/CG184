@@ -7,14 +7,16 @@ namespace CG184
 	{
 		
 		// Vertex Data Setup
-		int numOfVert = vertexArray.size() / 8;
+		int numOfVert = vertexArray.size() / 6;
 		m_Buffer = new VertexData[numOfVert];
 		for (int i = 0; i < numOfVert; i += 1)
 		{
-			m_Buffer->position	= Vector3D(vertexArray[8 * i + 0], vertexArray[8 * i + 1], vertexArray[8 * i + 2]);
-			m_Buffer->color		= Vector3D(vertexArray[8 * i + 3], vertexArray[8 * i + 4], vertexArray[8 * i + 5]);
-			m_Buffer->normal	= Vector3D(0.0);
-			m_Buffer->texCoord	= Vector2D(vertexArray[8 * i + 6], vertexArray[8 * i + 7]);
+			m_Buffer->position	= Vector3D(vertexArray[6 * i + 0], vertexArray[6 * i + 1], vertexArray[6 * i + 2]);
+			m_Buffer->color		= Vector3D(1.0f, 0.5f, 0.31f);
+			//m_Buffer->color		= Vector3D(vertexArray[8 * i + 3], vertexArray[8 * i + 4], vertexArray[8 * i + 5]);
+			m_Buffer->normal	= Vector3D(vertexArray[6 * i + 3], vertexArray[6 * i + 4], vertexArray[6 * i + 5]);
+			//m_Buffer->texCoord = Vector2D(vertexArray[8 * i + 6], vertexArray[8 * i + 7]);
+			m_Buffer->texCoord	= Vector2D(0,0);
 			m_Buffer++;
 		}
 		m_Buffer -= numOfVert;

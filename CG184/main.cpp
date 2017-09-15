@@ -62,40 +62,105 @@ int main()
 		return 0;
 	}
 
-	float vertices[] = {
-		// positions          // colors           // texture coords
-		 0.5f,  0.5f,  0.5f,   1.0f, 0.5f, 0.31f,   1.0f, 1.0f, // top right			//0
-		 0.5f, -0.5f,  0.5f,   1.0f, 0.5f, 0.31f,   1.0f, 0.0f, // bottom right		//1
-		-0.5f, -0.5f,  0.5f,   1.0f, 0.5f, 0.31f,   0.0f, 0.0f, // bottom left		//2
-		-0.5f,  0.5f,  0.5f,   1.0f, 0.5f, 0.31f,   0.0f, 1.0f,  // top left			//3
-							   
-		 0.5f,  0.5f, -0.5f,   1.0f, 0.5f, 0.31f,   1.0f, 1.0f, // top right			//4
-		 0.5f, -0.5f, -0.5f,   1.0f, 0.5f, 0.31f,   1.0f, 0.0f, // bottom right		//5
-		-0.5f, -0.5f, -0.5f,   1.0f, 0.5f, 0.31f,   0.0f, 0.0f, // bottom left		//6
-		-0.5f,  0.5f, -0.5f,   1.0f, 0.5f, 0.31f,   0.0f, 1.0f  // top left			//7
-	};
+	//float vertices[] = {
+	//	// positions          // colors           // texture coords
+	//	 0.5f,  0.5f,  0.5f,   1.0f, 0.5f, 0.31f,   1.0f, 1.0f, // top right			//0
+	//	 0.5f, -0.5f,  0.5f,   1.0f, 0.5f, 0.31f,   1.0f, 0.0f, // bottom right		//1
+	//	-0.5f, -0.5f,  0.5f,   1.0f, 0.5f, 0.31f,   0.0f, 0.0f, // bottom left		//2
+	//	-0.5f,  0.5f,  0.5f,   1.0f, 0.5f, 0.31f,   0.0f, 1.0f,  // top left			//3
+	//						   
+	//	 0.5f,  0.5f, -0.5f,   1.0f, 0.5f, 0.31f,   1.0f, 1.0f, // top right			//4
+	//	 0.5f, -0.5f, -0.5f,   1.0f, 0.5f, 0.31f,   1.0f, 0.0f, // bottom right		//5
+	//	-0.5f, -0.5f, -0.5f,   1.0f, 0.5f, 0.31f,   0.0f, 0.0f, // bottom left		//6
+	//	-0.5f,  0.5f, -0.5f,   1.0f, 0.5f, 0.31f,   0.0f, 1.0f  // top left			//7
+	//};
 
 	
+	float vertices[] = {
+		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+		 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+		 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+		 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+
+		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+		 0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+		 0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+		 0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+
+		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+		-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+		-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+
+		 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+		 0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+		 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+		 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+		 0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+		 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+
+		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+		 0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+		 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+		 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+
+		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+		 0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+		 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+		 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
+	};
+
+
 	std::vector<float> v(vertices, vertices + sizeof vertices / sizeof vertices[0]);
 
+	//GLuint indices[] = {
+	//	2, 1, 0, // first triangle
+	//	0, 3, 2, // second triangle
+
+	//	4, 0, 1,
+	//	1, 5, 4,
+
+	//	6, 7, 4,
+	//	4, 5, 6,
+
+	//	3, 7, 6,
+	//	6, 2, 3,
+
+	//	0, 4, 7,
+	//	7, 3, 0,
+
+	//	1, 5, 6,
+	//	6, 2, 1
+	//};
+
 	GLuint indices[] = {
-		2, 1, 0, // first triangle
-		0, 3, 2, // second triangle
+		0, 1, 2, // first triangle
+		3, 4, 5, // second triangle
 
-		4, 0, 1,
-		1, 5, 4,
+		6, 7, 8,
+		9, 10, 11,
 
-		6, 7, 4,
-		4, 5, 6,
+		12, 13, 14,
+		15, 16, 17,
 
-		3, 7, 6,
-		6, 2, 3,
+		18, 19, 20,
+		21, 22, 23,
 
-		0, 4, 7,
-		7, 3, 0,
+		24, 25, 26,
+		27, 28, 29,
 
-		1, 5, 6,
-		6, 2, 1
+		30, 31, 32,
+		33, 34, 35
 	};
 	std::vector<GLuint> ind(indices, indices + sizeof indices / sizeof indices[0]);
 
@@ -137,7 +202,10 @@ int main()
 	GLuint modelLoc				= glGetUniformLocation(ourShader.shaderID, "model");
 	GLuint viewLoc				= glGetUniformLocation(ourShader.shaderID, "view");
 	GLuint projectionLoc		= glGetUniformLocation(ourShader.shaderID, "projection");
+	GLuint posLightLoc			= glGetUniformLocation(ourShader.shaderID, "lightPos");
 	GLuint colorLightLoc		= glGetUniformLocation(ourShader.shaderID, "lightColor");
+	GLuint viewerPosLoc			= glGetUniformLocation(ourShader.shaderID, "viewPos");
+
 
 	ourShader.ActivateShader();
 	glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, cam.GetProjectionMatrix().elements);
@@ -170,6 +238,9 @@ int main()
 		
 		ourShader.ActivateShader();
 		glUniform3f(colorLightLoc, 1.0f, 1.0f, 1.0f);
+		glUniform3f(viewerPosLoc, cam.GetCamPos().x, cam.GetCamPos().y, cam.GetCamPos().z);
+		glUniform3f(posLightLoc, lightPos.x, lightPos.y, lightPos.z);
+
 		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, cam.GetViewMatrix().elements);
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, model.elements);
 		

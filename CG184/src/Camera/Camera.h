@@ -28,6 +28,8 @@ namespace CG184
 		inline Matrix4D& GetViewMatrix()		{ return viewMatrix; }
 		inline Matrix4D& GetProjectionMatrix()	{ return projectionMatrix; }
 
+		inline Vector3D& GetCamPos()			{ return position; }
+
 	private:
 		Matrix4D prespective(float fov, float aspect_ratio, float near, float far);
 		Matrix4D LookAt(Vector3D eyePos, Vector3D target, Vector3D up);
