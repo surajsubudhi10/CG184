@@ -103,7 +103,7 @@ namespace CG184
 		*this = divide(len);
 	}
 
-	Vector3D& Vector3D::norm() const 
+	Vector3D Vector3D::norm() const
 	{
 		float len = length();
 		assert(len != 0 && "length must be greater than zero");
@@ -130,7 +130,7 @@ namespace CG184
 		mult(-1.0f);
 	}
 
-	const float Vector3D::at(size_t i) const 
+	const float Vector3D::at(int i) const
 	{
 		assert((i >= 0 && i < 3) && "i must be between 0 to 2");
 
@@ -142,7 +142,7 @@ namespace CG184
 			return z;
 	}
 
-	float Vector3D::at(size_t i)
+	float Vector3D::at(int i)
 	{
 		assert((i >= 0 && i < 3) && "i must be between 0 to 2");
 
@@ -167,7 +167,7 @@ namespace CG184
 	}
 
 
-	float		Vector3D::operator[](size_t i) const
+	float		Vector3D::operator[](int i) const
 	{
 		return at(i);
 	}
@@ -184,33 +184,33 @@ namespace CG184
 		return *this;
 	}
 
-	Vector3D&   Vector3D::operator+(const Vector3D& vec) 
+	Vector3D   Vector3D::operator+(const Vector3D& vec)
 	{
 		return add(vec);
 	}
 
-	Vector3D&   Vector3D::operator-(const Vector3D& vec) 
+	Vector3D   Vector3D::operator-(const Vector3D& vec)
 	{
 		return sub(vec);
 	}
 
-	Vector3D&   Vector3D::operator*(const Vector3D& vec) 
+	Vector3D   Vector3D::operator*(const Vector3D& vec)
 	{
 		return mult(vec);
 	}
 
-	Vector3D&   Vector3D::operator/(const Vector3D& vec) 
+	Vector3D   Vector3D::operator/(const Vector3D& vec)
 	{
 		return divide(vec);
 	}
 
 
-	Vector3D&   Vector3D::operator*(float val) 
+	Vector3D   Vector3D::operator*(float val)
 	{
 		return mult(val);
 	}
 
-	Vector3D&   Vector3D::operator/(float val) 
+	Vector3D   Vector3D::operator/(float val)
 	{
 		return divide(val);
 	}

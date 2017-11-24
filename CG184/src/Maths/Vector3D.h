@@ -22,26 +22,26 @@ namespace CG184
 		Vector3D cross(const Vector3D& vec) const;
 
 		void normalize();
-		Vector3D& norm() const;
+		Vector3D norm() const;
 		float squaredLength() const;
 		float length()const ;
 
 		void negate();
 
-		const float at(size_t i) const;
-		float at(size_t i);
+		const float at(int i) const;
+		float at(int i);
 
 		bool isEqual(const Vector3D& vec) const;
 
 
-		float		operator[](size_t i) const;
+		float		operator[](int i) const;
 		Vector3D&	operator=(const Vector3D& vec);
-		Vector3D&   operator+(const Vector3D& vec);
-		Vector3D&   operator-(const Vector3D& vec);
-		Vector3D&   operator*(const Vector3D& vec);
-		Vector3D&   operator/(const Vector3D& vec);
-		Vector3D&   operator*(float val);
-		Vector3D&   operator/(float val);
+		Vector3D   operator+(const Vector3D& vec);
+		Vector3D   operator-(const Vector3D& vec);
+		Vector3D   operator*(const Vector3D& vec);
+		Vector3D   operator/(const Vector3D& vec);
+		Vector3D   operator*(float val);
+		Vector3D   operator/(float val);
 		Vector3D&   operator+=(const Vector3D& vec);
 		Vector3D&   operator-=(const Vector3D& vec);
 		Vector3D&   operator*=(const Vector3D& vec);

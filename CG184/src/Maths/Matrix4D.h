@@ -40,8 +40,8 @@ namespace CG184
 		Vector4D getColumn(int index);
 		
 
-		void SetRow(size_t i, const Vector4D& vec);
-		void SetColumn(size_t i, const Vector4D& vec);
+		void SetRow(int i, const Vector4D& vec);
+		void SetColumn(int i, const Vector4D& vec);
 
 		Matrix4D multiply(float scalar);
 		Matrix4D divide(float scalar);
@@ -54,11 +54,13 @@ namespace CG184
 		void Set(Vector4D col1, Vector4D col2, Vector4D col3, Vector4D col4);
 
 		Matrix4D& operator=(const Matrix4D& rhs);
+
+        // TODO Implement the inverse and matrix multiplication
 		friend Matrix4D operator*(Matrix4D left, const Matrix4D& right);
 		Matrix4D& operator*=(const Matrix4D& other);
 
-		float at(size_t i);
-		float operator[](size_t i);
+		float at(int i);
+		float operator[](int i);
 
 		Matrix4D transpose() const;
 		void inverse();

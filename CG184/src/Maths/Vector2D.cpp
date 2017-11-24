@@ -93,7 +93,7 @@ namespace CG184
 		*this = divide(len);
 	}
 
-	Vector2D& Vector2D::norm() const
+	Vector2D Vector2D::norm() const
 	{
 		float len = length();
 		assert(len != 0 && "length must be greater than zero");
@@ -119,7 +119,7 @@ namespace CG184
 		mult(-1.0f);
 	}
 
-	const float Vector2D::at(size_t i) const
+	const float Vector2D::at(int i) const
 	{
 		assert((i >= 0 && i < 2) && "i must be between 0 to 1");
 
@@ -129,7 +129,7 @@ namespace CG184
 			return y;
 	}
 
-	float Vector2D::at(size_t i)
+	float Vector2D::at(int i)
 	{
 		assert((i >= 0 && i < 2) && "i must be between 0 to 1");
 
@@ -152,7 +152,7 @@ namespace CG184
 	}
 
 
-	float Vector2D::operator[](size_t i) const
+	float Vector2D::operator[](int i) const
 	{
 		return at(i);
 	}
@@ -168,33 +168,33 @@ namespace CG184
 		return *this;
 	}
 
-	Vector2D&   Vector2D::operator+(const Vector2D& vec)
+	Vector2D   Vector2D::operator+(const Vector2D& vec)
 	{
 		return add(vec);
 	}
 
-	Vector2D&   Vector2D::operator-(const Vector2D& vec)
+	Vector2D   Vector2D::operator-(const Vector2D& vec)
 	{
 		return sub(vec);
 	}
 
-	Vector2D&   Vector2D::operator*(const Vector2D& vec)
+	Vector2D   Vector2D::operator*(const Vector2D& vec)
 	{
 		return mult(vec);
 	}
 
-	Vector2D&   Vector2D::operator/(const Vector2D& vec)
+	Vector2D   Vector2D::operator/(const Vector2D& vec)
 	{
 		return divide(vec);
 	}
 
 
-	Vector2D&   Vector2D::operator*(float val)
+	Vector2D   Vector2D::operator*(float val)
 	{
 		return mult(val);
 	}
 
-	Vector2D&   Vector2D::operator/(float val)
+	Vector2D   Vector2D::operator/(float val)
 	{
 		return divide(val);
 	}

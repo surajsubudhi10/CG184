@@ -22,26 +22,26 @@ namespace CG184
 		float cross(const Vector2D& vec) const;
 
 		void normalize();
-		Vector2D& norm() const;
+		Vector2D norm() const;
 		float squaredLength() const;
 		float length()const;
 
 		void negate();
 
-		const float at(size_t i) const;
-		float at(size_t i);
+		const float at(int i) const;
+		float at(int i);
 
 		bool isEqual(const Vector2D& vec) const;
 
 
-		float		operator[](size_t i) const;
+		float		operator[](int i) const;
 		Vector2D&	operator=(const Vector2D& vec);
-		Vector2D&   operator+(const Vector2D& vec);
-		Vector2D&   operator-(const Vector2D& vec);
-		Vector2D&   operator*(const Vector2D& vec);
-		Vector2D&   operator/(const Vector2D& vec);
-		Vector2D&   operator*(float val);
-		Vector2D&   operator/(float val);
+		Vector2D   operator+(const Vector2D& vec);
+		Vector2D   operator-(const Vector2D& vec);
+		Vector2D   operator*(const Vector2D& vec);
+		Vector2D   operator/(const Vector2D& vec);
+		Vector2D   operator*(float val);
+		Vector2D   operator/(float val);
 		Vector2D&   operator+=(const Vector2D& vec);
 		Vector2D&   operator-=(const Vector2D& vec);
 		Vector2D&   operator*=(const Vector2D& vec);

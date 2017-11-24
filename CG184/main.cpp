@@ -1,8 +1,8 @@
-#include <GL\glew.h>
+#include <GL/glew.h>
 
-#include <glm.hpp>
-#include <gtc/matrix_transform.hpp>
-#include <gtc/type_ptr.hpp>
+//#include <glm.hpp>
+//#include <gtc/matrix_transform.hpp>
+//#include <gtc/type_ptr.hpp>
 
 #include <iostream>
 
@@ -10,7 +10,6 @@
 #include "src/Graphics/Shader.h"
 #include "src/Graphics/Renderer.h"
 
-#include "src/Maths/Matrix4D.h"
 #include "src/EventSystem/Input.h"
 #include "src/Camera/Camera.h"
 
@@ -20,8 +19,8 @@ const unsigned int SCR_HEIGHT = 600;
 using namespace CG184;
 
 void KeyBoardEvents(Window* window, eventsystem::Input input);
-void mouse_callback(GLFWwindow* window, double xpos, double ypos);
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
+//void mouse_callback(GLFWwindow* window, float xpos, float ypos);
+//void scroll_callback(GLFWwindow* window, float xoffset, float yoffset);
 // stores how much we're seeing of either texture
 float mixValue = 0.2f;
 
@@ -39,21 +38,21 @@ float fov = 45.0f;
 
 // timing
 float deltaTime = 0.0f;	// time between current frame and last frame
-float lastFrame = 0.0f;
+//float lastFrame = 0.0f;
 
 Vector3D lightPos(1.2f, 1.0f, 2.0f);
 
 int main()
 {
 
-	Window *window = new Window(SCR_WIDTH, SCR_HEIGHT, "Basic Window");
+	auto *window = new Window(SCR_WIDTH, SCR_HEIGHT, "Basic Window");
 	eventsystem::Input input(window);
 	
 
-	glfwSetCursorPosCallback(window->window, mouse_callback);
-	glfwSetScrollCallback(window->window, scroll_callback);
+//	glfwSetCursorPosCallback(window->window, mouse_callback);
+//	glfwSetScrollCallback(window->window, scroll_callback);
 	// tell GLFW to capture our mouse
-	glfwSetInputMode(window->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+//	glfwSetInputMode(window->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	GLenum err = glewInit();
 	if (GLEW_OK != err)
@@ -195,16 +194,16 @@ int main()
 		renderer_list.push_back(renderer1);
 	}
 
-	//ourShader.AddTexture("Resources/textures/container.jpg", TextureType::Diffuse);
+	ourShader.AddTexture("Resources/textures/container.jpg", TextureType::Diffuse);
 	//ourShader.AddTexture("Resources/textures/awesomeface.png", TextureType::Specular);
 	
 
-	GLuint modelLoc				= glGetUniformLocation(ourShader.shaderID, "model");
-	GLuint viewLoc				= glGetUniformLocation(ourShader.shaderID, "view");
-	GLuint projectionLoc		= glGetUniformLocation(ourShader.shaderID, "projection");
-	GLuint posLightLoc			= glGetUniformLocation(ourShader.shaderID, "lightPos");
-	GLuint colorLightLoc		= glGetUniformLocation(ourShader.shaderID, "lightColor");
-	GLuint viewerPosLoc			= glGetUniformLocation(ourShader.shaderID, "viewPos");
+	GLint modelLoc				= glGetUniformLocation(ourShader.shaderID, "model");
+	GLint viewLoc				= glGetUniformLocation(ourShader.shaderID, "view");
+	GLint projectionLoc		= glGetUniformLocation(ourShader.shaderID, "projection");
+	GLint posLightLoc			= glGetUniformLocation(ourShader.shaderID, "lightPos");
+	GLint colorLightLoc		= glGetUniformLocation(ourShader.shaderID, "lightColor");
+	GLint viewerPosLoc			= glGetUniformLocation(ourShader.shaderID, "viewPos");
 
 
 	ourShader.ActivateShader();
@@ -212,9 +211,9 @@ int main()
 	ourShader.DeactivateShader();
 	
 
-	GLuint modeLightlLoc		= glGetUniformLocation(lightBoxShader.shaderID, "model");
-	GLuint viewLightLoc			= glGetUniformLocation(lightBoxShader.shaderID, "view");
-	GLuint projectionLightLoc	= glGetUniformLocation(lightBoxShader.shaderID, "projection");
+	GLint modeLightlLoc		= glGetUniformLocation(lightBoxShader.shaderID, "model");
+	GLint viewLightLoc			= glGetUniformLocation(lightBoxShader.shaderID, "view");
+	GLint projectionLightLoc	= glGetUniformLocation(lightBoxShader.shaderID, "projection");
 	lightBoxShader.ActivateShader();
 	glUniformMatrix4fv(projectionLightLoc, 1, GL_FALSE, cam.GetProjectionMatrix().elements);
 	lightBoxShader.DeactivateShader();
@@ -222,10 +221,6 @@ int main()
 
 	while (!window->IfWindowClosed())
 	{
-		// time handle
-		float currentFrame = glfwGetTime();
-		deltaTime = currentFrame - lastFrame;
-		lastFrame = currentFrame;
 
 		KeyBoardEvents(window, input);
 
@@ -273,7 +268,7 @@ void KeyBoardEvents(Window* window, eventsystem::Input input)
 	if (input.KeyPressed(GLFW_KEY_ESCAPE))
 		window->Close();
 
-	float cameraSpeed = 2.5 * deltaTime;
+	float cameraSpeed = (float)(2.5 * deltaTime);
 	if (input.KeyPressed(GLFW_KEY_W)) {
 		Vector3D tempVec = (cameraFront * cameraSpeed);
 		cameraPos = cameraPos + tempVec;
@@ -300,7 +295,7 @@ void KeyBoardEvents(Window* window, eventsystem::Input input)
 }
 
 
-void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+void mouse_callback(GLFWwindow* window, float xpos, float ypos)
 {
 	if (firstMouse)
 	{
@@ -329,9 +324,9 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 
 	//glm::vec3 front;
 	Vector3D front(1.0);
-	front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-	front.y = sin(glm::radians(pitch));
-	front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+//	front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+//	front.y = sin(glm::radians(pitch));
+//	front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
 	cameraFront = front.norm();
 	//cameraFront = glm::normalize(front);
 }

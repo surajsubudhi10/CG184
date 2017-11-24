@@ -9,6 +9,7 @@ namespace CG184
 		// Vertex Data Setup
 		int numOfVert = vertexArray.size() / 6;
 		m_Buffer = new VertexData[numOfVert];
+        // TODO Remove the magic numbers
 		for (int i = 0; i < numOfVert; i += 1)
 		{
 			m_Buffer->position	= Vector3D(vertexArray[6 * i + 0], vertexArray[6 * i + 1], vertexArray[6 * i + 2]);

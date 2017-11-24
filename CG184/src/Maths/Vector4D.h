@@ -20,19 +20,19 @@ namespace CG184
 		Vector4D mult(float multiplier) const;
 		Vector4D divide(float diveder)const ;
 
-		const float at(size_t i) const;
-		float at(size_t i);
+		const float at(int i) const;
+		float at(int i);
 
 		bool isEqual(const Vector4D& vec) const;
 
-		float		operator[](size_t i) const;
+		float		operator[](int i) const;
 		Vector4D&	operator=(const Vector4D& vec);
-		Vector4D&   operator+(const Vector4D& vec);
-		Vector4D&   operator-(const Vector4D& vec);
-		Vector4D&   operator*(const Vector4D& vec);
-		Vector4D&   operator/(const Vector4D& vec);
-		Vector4D&   operator*(float val);
-		Vector4D&   operator/(float val);
+		Vector4D   operator+(const Vector4D& vec);
+		Vector4D   operator-(const Vector4D& vec);
+		Vector4D   operator*(const Vector4D& vec);
+		Vector4D   operator/(const Vector4D& vec);
+		Vector4D   operator*(float val);
+		Vector4D   operator/(float val);
 		Vector4D&   operator+=(const Vector4D& vec);
 		Vector4D&   operator-=(const Vector4D& vec);
 		Vector4D&   operator*=(const Vector4D& vec);

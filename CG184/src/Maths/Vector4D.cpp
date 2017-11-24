@@ -92,7 +92,7 @@ namespace CG184
 		return Vector4D(_x, _y, _z, _w);
 	}
 
-	const float Vector4D::at(size_t i) const
+	const float Vector4D::at(int i) const
 	{
 		assert((i >= 0 && i < 4) && "i must be between 0 to 3");
 
@@ -106,7 +106,7 @@ namespace CG184
 			return w;
 	}
 
-	float Vector4D::at(size_t i)
+	float Vector4D::at(int i)
 	{
 		assert((i >= 0 && i < 4) && "i must be between 0 to 3");
 
@@ -133,7 +133,7 @@ namespace CG184
 	}
 
 
-	float		Vector4D::operator[](size_t i) const
+	float		Vector4D::operator[](int i) const
 	{
 		return at(i);
 	}
@@ -151,33 +151,33 @@ namespace CG184
 		return *this;
 	}
 
-	Vector4D&   Vector4D::operator+(const Vector4D& vec)
+	Vector4D   Vector4D::operator+(const Vector4D& vec)
 	{
 		return add(vec);
 	}
 
-	Vector4D&   Vector4D::operator-(const Vector4D& vec)
+	Vector4D   Vector4D::operator-(const Vector4D& vec)
 	{
 		return sub(vec);
 	}
 
-	Vector4D&   Vector4D::operator*(const Vector4D& vec)
+	Vector4D   Vector4D::operator*(const Vector4D& vec)
 	{
 		return mult(vec);
 	}
 
-	Vector4D&   Vector4D::operator/(const Vector4D& vec)
+	Vector4D   Vector4D::operator/(const Vector4D& vec)
 	{
 		return divide(vec);
 	}
 
 
-	Vector4D&   Vector4D::operator*(float val)
+	Vector4D   Vector4D::operator*(float val)
 	{
 		return mult(val);
 	}
 
-	Vector4D&   Vector4D::operator/(float val)
+	Vector4D   Vector4D::operator/(float val)
 	{
 		return divide(val);
 	}

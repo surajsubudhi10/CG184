@@ -2,7 +2,8 @@
 
 #include <cassert>
 #include <iostream>
-
+#include <cstring>
+#include <cmath>
 
 
 namespace CG184
@@ -58,7 +59,7 @@ namespace CG184
 	}
 
 
-	void Matrix4D::SetRow(size_t i, const Vector4D& vec)
+	void Matrix4D::SetRow(int i, const Vector4D& vec)
 	{
 		elements[0 * 4 + i] = vec.x;
 		elements[1 * 4 + i] = vec.y;
@@ -66,7 +67,7 @@ namespace CG184
 		elements[3 * 4 + i] = vec.w;
 	}
 
-	void Matrix4D::SetColumn(size_t i, const Vector4D& vec)
+	void Matrix4D::SetColumn(int i, const Vector4D& vec)
 	{
 		elements[0 + i * 4] = vec.x;
 		elements[1 + i * 4] = vec.y;
@@ -178,12 +179,12 @@ namespace CG184
 		return *this;
 	}
 
-	float Matrix4D::at(size_t i) 
+	float Matrix4D::at(int i)
 	{
 		return elements[i];
 	}
 
-	float Matrix4D::operator[](size_t i)
+	float Matrix4D::operator[](int i)
 	{
 		return at(i);
 	}

@@ -1,1 +1,2 @@
-const char * logl_root = "D:/Code_Stuff/OpenGL/LearnOpenGL-master/LearnOpenGL-master";
+//const char * logl_root = "../../CG184";
+const char * logl_root = "~/Documents/CodeStuff/GameEngine/CG184/CG184/";
