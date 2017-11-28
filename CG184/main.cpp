@@ -1,8 +1,9 @@
 #include <GL/glew.h>
 
-//#include <glm.hpp>
-//#include <gtc/matrix_transform.hpp>
-//#include <gtc/type_ptr.hpp>
+
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #include <iostream>
 
@@ -19,8 +20,8 @@ const unsigned int SCR_HEIGHT = 600;
 using namespace CG184;
 
 void KeyBoardEvents(Window* window, eventsystem::Input input);
-//void mouse_callback(GLFWwindow* window, float xpos, float ypos);
-//void scroll_callback(GLFWwindow* window, float xoffset, float yoffset);
+void mouse_callback(GLFWwindow* window, double xpos, double ypos);
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 // stores how much we're seeing of either texture
 float mixValue = 0.2f;
 
@@ -38,7 +39,7 @@ float fov = 45.0f;
 
 // timing
 float deltaTime = 0.0f;	// time between current frame and last frame
-//float lastFrame = 0.0f;
+float lastFrame = 0.0f;
 
 Vector3D lightPos(1.2f, 1.0f, 2.0f);
 
@@ -49,17 +50,12 @@ int main()
 	eventsystem::Input input(window);
 	
 
-//	glfwSetCursorPosCallback(window->window, mouse_callback);
-//	glfwSetScrollCallback(window->window, scroll_callback);
+	glfwSetCursorPosCallback(window->window, mouse_callback);
+	glfwSetScrollCallback(window->window, scroll_callback);
 	// tell GLFW to capture our mouse
-//	glfwSetInputMode(window->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	glfwSetInputMode(window->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-	GLenum err = glewInit();
-	if (GLEW_OK != err)
-	{
-		std::cout << "Error : " << glewGetErrorString(err) << std::endl;
-		return 0;
-	}
+
 
 	//float vertices[] = {
 	//	// positions          // colors           // texture coords
@@ -71,52 +67,52 @@ int main()
 	//	 0.5f,  0.5f, -0.5f,   1.0f, 0.5f, 0.31f,   1.0f, 1.0f, // top right			//4
 	//	 0.5f, -0.5f, -0.5f,   1.0f, 0.5f, 0.31f,   1.0f, 0.0f, // bottom right		//5
 	//	-0.5f, -0.5f, -0.5f,   1.0f, 0.5f, 0.31f,   0.0f, 0.0f, // bottom left		//6
-	//	-0.5f,  0.5f, -0.5f,   1.0f, 0.5f, 0.31f,   0.0f, 1.0f  // top left			//7
+	//	-0.5f,  0.5f, -0.5f,   1.0f, 0.5f, 0.31f,   0.0f, 1.0f,  // top left			//7
 	//};
 
 	
 	float vertices[] = {
-		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-		 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-		 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-		 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+		-0.5f, -0.5f, -0.5f,   1.0f, 0.0f,  0.0f,    0.0f,  0.0f, -1.0f,    1.0f, 1.0f,
+		 0.5f, -0.5f, -0.5f,   0.0f, 0.5f, 0.31f,    0.0f,  0.0f, -1.0f,    1.0f, 0.0f,
+		 0.5f,  0.5f, -0.5f,   1.0f, 0.5f, 0.31f,    0.0f,  0.0f, -1.0f,    0.0f, 0.0f,
+		 0.5f,  0.5f, -0.5f,   1.0f, 0.5f, 0.31f,    0.0f,  0.0f, -1.0f,    0.0f, 0.0f,
+		-0.5f,  0.5f, -0.5f,   1.0f, 1.0f, 0.31f,    0.0f,  0.0f, -1.0f,    1.0f, 0.0f,
+		-0.5f, -0.5f, -0.5f,   1.0f, 0.5f, 0.31f,    0.0f,  0.0f, -1.0f,    1.0f, 1.0f,
 
-		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-		 0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-		 0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-		 0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+		-0.5f, -0.5f,  0.5f,   1.0f, 0.5f, 0.31f,    0.0f,  0.0f,  1.0f,    1.0f, 1.0f,
+		 0.5f, -0.5f,  0.5f,   1.0f, 0.5f, 0.31f,    0.0f,  0.0f,  1.0f,    1.0f, 0.0f,
+		 0.5f,  0.5f,  0.5f,   1.0f, 0.5f, 1.0f,    0.0f,  0.0f,  1.0f,    0.0f, 0.0f,
+		 0.5f,  0.5f,  0.5f,   1.0f, 0.5f, 0.31f,    0.0f,  0.0f,  1.0f,    0.0f, 0.0f,
+		-0.5f,  0.5f,  0.5f,   1.0f, 1.0f, 0.31f,    0.0f,  0.0f,  1.0f,    1.0f, 0.0f,
+		-0.5f, -0.5f,  0.5f,   1.0f, 0.5f, 0.31f,    0.0f,  0.0f,  1.0f,    1.0f, 1.0f,
 
-		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-		-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-		-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+		-0.5f,  0.5f,  0.5f,   1.0f, 0.5f, 0.31f,   -1.0f,  0.0f,  0.0f,    1.0f, 1.0f,
+		-0.5f,  0.5f, -0.5f,   1.0f, 0.5f, 0.31f,   -1.0f,  0.0f,  0.0f,    1.0f, 0.0f,
+		-0.5f, -0.5f, -0.5f,   0.0f, 1.0f, 0.31f,   -1.0f,  0.0f,  0.0f,    0.0f, 0.0f,
+		-0.5f, -0.5f, -0.5f,   1.0f, 0.5f, 0.31f,   -1.0f,  0.0f,  0.0f,    0.0f, 0.0f,
+		-0.5f, -0.5f,  0.5f,   1.0f, 0.5f, 0.31f,   -1.0f,  0.0f,  0.0f,    1.0f, 0.0f,
+		-0.5f,  0.5f,  0.5f,   1.0f, 0.5f, 0.31f,   -1.0f,  0.0f,  0.0f,    1.0f, 1.0f,
 
-		 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-		 0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-		 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-		 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-		 0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-		 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+		 0.5f,  0.5f,  0.5f,   1.0f, 0.5f, 0.31f,    1.0f,  0.0f,  0.0f,    1.0f, 1.0f,
+		 0.5f,  0.5f, -0.5f,   1.0f, 0.5f, 0.31f,    1.0f,  0.0f,  0.0f,    1.0f, 0.0f,
+		 0.5f, -0.5f, -0.5f,   1.0f, 0.5f, 0.31f,    1.0f,  0.0f,  0.0f,    0.0f, 0.0f,
+		 0.5f, -0.5f, -0.5f,   1.0f, 0.5f, 0.31f,    1.0f,  0.0f,  0.0f,    0.0f, 0.0f,
+		 0.5f, -0.5f,  0.5f,   1.0f, 0.5f, 0.31f,    1.0f,  0.0f,  0.0f,    1.0f, 0.0f,
+		 0.5f,  0.5f,  0.5f,   1.0f, 0.5f, 0.31f,    1.0f,  0.0f,  0.0f,    1.0f, 1.0f,
 
-		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-		 0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-		 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-		 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+		-0.5f, -0.5f, -0.5f,   1.0f, 0.5f, 0.31f,    0.0f, -1.0f,  0.0f,    1.0f, 1.0f,
+		 0.5f, -0.5f, -0.5f,   1.0f, 0.5f, 0.31f,    0.0f, -1.0f,  0.0f,    1.0f, 0.0f,
+		 0.5f, -0.5f,  0.5f,   1.0f, 0.5f, 0.31f,    0.0f, -1.0f,  0.0f,    0.0f, 0.0f,
+		 0.5f, -0.5f,  0.5f,   1.0f, 0.5f, 0.31f,    0.0f, -1.0f,  0.0f,    0.0f, 0.0f,
+		-0.5f, -0.5f,  0.5f,   1.0f, 0.5f, 0.31f,    0.0f, -1.0f,  0.0f,    1.0f, 0.0f,
+		-0.5f, -0.5f, -0.5f,   1.0f, 0.5f, 0.31f,    0.0f, -1.0f,  0.0f,    1.0f, 1.0f,
 
-		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-		 0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-		 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-		 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
+		-0.5f,  0.5f, -0.5f,   1.0f, 0.5f, 0.31f,    0.0f,  1.0f,  0.0f,    1.0f, 1.0f,
+		 0.5f,  0.5f, -0.5f,   1.0f, 0.5f, 0.31f,    0.0f,  1.0f,  0.0f,    1.0f, 0.0f,
+		 0.5f,  0.5f,  0.5f,   1.0f, 0.5f, 0.31f,    0.0f,  1.0f,  0.0f,    0.0f, 0.0f,
+		 0.5f,  0.5f,  0.5f,   1.0f, 0.5f, 0.31f,    0.0f,  1.0f,  0.0f,    0.0f, 0.0f,
+		-0.5f,  0.5f,  0.5f,   1.0f, 0.5f, 0.31f,    0.0f,  1.0f,  0.0f,    1.0f, 0.0f,
+		-0.5f,  0.5f, -0.5f,   1.0f, 0.5f, 0.31f,    0.0f,  1.0f,  0.0f,    1.0f, 1.0f
 	};
 
 
@@ -196,13 +192,13 @@ int main()
 
 	ourShader.AddTexture("Resources/textures/container.jpg", TextureType::Diffuse);
 	//ourShader.AddTexture("Resources/textures/awesomeface.png", TextureType::Specular);
-	
+
 
 	GLint modelLoc				= glGetUniformLocation(ourShader.shaderID, "model");
 	GLint viewLoc				= glGetUniformLocation(ourShader.shaderID, "view");
-	GLint projectionLoc		= glGetUniformLocation(ourShader.shaderID, "projection");
+	GLint projectionLoc		    = glGetUniformLocation(ourShader.shaderID, "projection");
 	GLint posLightLoc			= glGetUniformLocation(ourShader.shaderID, "lightPos");
-	GLint colorLightLoc		= glGetUniformLocation(ourShader.shaderID, "lightColor");
+	GLint colorLightLoc		    = glGetUniformLocation(ourShader.shaderID, "lightColor");
 	GLint viewerPosLoc			= glGetUniformLocation(ourShader.shaderID, "viewPos");
 
 
@@ -211,7 +207,7 @@ int main()
 	ourShader.DeactivateShader();
 	
 
-	GLint modeLightlLoc		= glGetUniformLocation(lightBoxShader.shaderID, "model");
+	GLint modeLightlLoc		    = glGetUniformLocation(lightBoxShader.shaderID, "model");
 	GLint viewLightLoc			= glGetUniformLocation(lightBoxShader.shaderID, "view");
 	GLint projectionLightLoc	= glGetUniformLocation(lightBoxShader.shaderID, "projection");
 	lightBoxShader.ActivateShader();
@@ -221,6 +217,10 @@ int main()
 
 	while (!window->IfWindowClosed())
 	{
+        // time handle
+        auto currentFrame = (float)glfwGetTime();
+        deltaTime = currentFrame - lastFrame;
+        lastFrame = currentFrame;
 
 		KeyBoardEvents(window, input);
 
@@ -249,9 +249,8 @@ int main()
 		glUniformMatrix4fv(viewLightLoc, 1, GL_FALSE, cam.GetViewMatrix().elements);
 		glUniformMatrix4fv(modeLightlLoc, 1, GL_FALSE, model.elements);
 
-		lightBox.Render();
-		lightBoxShader.DeactivateShader();
-
+        lightBox.Render();
+        lightBoxShader.DeactivateShader();
 
 
 		window->Update();
@@ -268,7 +267,7 @@ void KeyBoardEvents(Window* window, eventsystem::Input input)
 	if (input.KeyPressed(GLFW_KEY_ESCAPE))
 		window->Close();
 
-	float cameraSpeed = (float)(2.5 * deltaTime);
+	auto cameraSpeed = (float)(2.5 * deltaTime);
 	if (input.KeyPressed(GLFW_KEY_W)) {
 		Vector3D tempVec = (cameraFront * cameraSpeed);
 		cameraPos = cameraPos + tempVec;
@@ -295,19 +294,19 @@ void KeyBoardEvents(Window* window, eventsystem::Input input)
 }
 
 
-void mouse_callback(GLFWwindow* window, float xpos, float ypos)
+void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
 	if (firstMouse)
 	{
-		lastX = xpos;
-		lastY = ypos;
+		lastX = (float)xpos;
+		lastY = (float)ypos;
 		firstMouse = false;
 	}
 
-	float xoffset = xpos - lastX;
-	float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
-	lastX = xpos;
-	lastY = ypos;
+	auto xoffset = (float)(xpos - lastX);
+	auto yoffset = (float)(lastY - ypos); // reversed since y-coordinates go from bottom to top
+	lastX = (float)(xpos);
+	lastY = (float)(ypos);
 
 	float sensitivity = 0.1f; // change this value to your liking
 	xoffset *= sensitivity;
@@ -324,9 +323,9 @@ void mouse_callback(GLFWwindow* window, float xpos, float ypos)
 
 	//glm::vec3 front;
 	Vector3D front(1.0);
-//	front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-//	front.y = sin(glm::radians(pitch));
-//	front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+	front.x = (float)(cos(glm::radians(yaw)) * cos(glm::radians(pitch)));
+	front.y = (float)(sin(glm::radians(pitch)));
+	front.z = (float)(sin(glm::radians(yaw)) * cos(glm::radians(pitch)));
 	cameraFront = front.norm();
 	//cameraFront = glm::normalize(front);
 }

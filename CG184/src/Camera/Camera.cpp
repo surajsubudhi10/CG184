@@ -68,7 +68,7 @@ namespace CG184
 
 	Matrix4D Camera::prespective(float fovInDeg, float aspect_ratio, float near, float far)
 	{
-		float fovInRad = PI * fovInDeg / 180.0f;
+		auto fovInRad = (float)(PI * fovInDeg / 180.0f);
 		const float tanHalfFov = tan(fovInRad / 2.0f);
 
 		Matrix4D result(1.0f);

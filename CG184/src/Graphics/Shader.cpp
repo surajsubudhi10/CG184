@@ -36,16 +36,16 @@ namespace CG184
 		const char * fShaderCode = fragmentCode.c_str();
 		// 2. compile shaders
 		unsigned int vertex, fragment;
-		int success;
-		char infoLog[512];
+		//int success;
+		//char infoLog[512];
 		// vertex shader
 		vertex = glCreateShader(GL_VERTEX_SHADER);
-		glShaderSource(vertex, 1, &vShaderCode, NULL);
+		glShaderSource(vertex, 1, &vShaderCode, nullptr);
 		glCompileShader(vertex);
 		CompileShader(vertex, "VERTEX");
 		// fragment Shader
 		fragment = glCreateShader(GL_FRAGMENT_SHADER);
-		glShaderSource(fragment, 1, &fShaderCode, NULL);
+		glShaderSource(fragment, 1, &fShaderCode, nullptr);
 		glCompileShader(fragment);
 		CompileShader(fragment, "FRAGMENT");
 		// shader Program
@@ -64,7 +64,7 @@ namespace CG184
 	{
 		glUseProgram(shaderID);
 
-		for (int i = 0; i < sizeof(m_Textures) / sizeof(m_Textures[0]); i++) 
+		for (int i = 0; i < sizeof(m_Textures) / sizeof(m_Textures[0]); i++)
 		{
 			glActiveTexture(GL_TEXTURE0 + i);
 			glBindTexture(GL_TEXTURE_2D, m_Textures[i].textureID);
@@ -123,7 +123,7 @@ namespace CG184
 			glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
 			if (!success)
 			{
-				glGetShaderInfoLog(shader, 1024, NULL, infoLog);
+				glGetShaderInfoLog(shader, 1024, nullptr, infoLog);
 				std::cout << "ERROR::SHADER_COMPILATION_ERROR of type: " << type << "\n" << infoLog << "\n -- --------------------------------------------------- -- " << std::endl;
 			}
 		}
@@ -132,7 +132,7 @@ namespace CG184
 			glGetProgramiv(shader, GL_LINK_STATUS, &success);
 			if (!success)
 			{
-				glGetProgramInfoLog(shader, 1024, NULL, infoLog);
+				glGetProgramInfoLog(shader, 1024, nullptr, infoLog);
 				std::cout << "ERROR::PROGRAM_LINKING_ERROR of type: " << type << "\n" << infoLog << "\n -- --------------------------------------------------- -- " << std::endl;
 			}
 		}

@@ -2,6 +2,7 @@
 // Created by Suraj Subudhi on 08-Sep-17.
 //
 
+#include <GL/glew.h>
 #include "Window.h"
 
 namespace CG184 {
@@ -30,8 +31,8 @@ namespace CG184 {
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-		window = glfwCreateWindow(m_width, m_height, m_WindowTitle, NULL, NULL);
-		if (window == NULL)
+		window = glfwCreateWindow(m_width, m_height, m_WindowTitle, nullptr, nullptr);
+		if (window == nullptr)
 		{
 			std::cout << "Failed to create GLFW window" << std::endl;
 			glfwTerminate();
@@ -39,7 +40,16 @@ namespace CG184 {
 		}
 		glfwMakeContextCurrent(window);
 		glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-		glEnable(GL_DEPTH_TEST);
+
+        // Initializing OpenGL
+        glewExperimental = GL_TRUE;
+        GLenum err = glewInit();
+        if (GLEW_OK != err)
+        {
+            std::cout << "Error : " << glewGetErrorString(err) << std::endl;
+            return;
+        }
+        glEnable(GL_DEPTH_TEST);
 	}
 
 	int Window::IfWindowClosed()

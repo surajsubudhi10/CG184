@@ -26,7 +26,7 @@ namespace CG184
 		Texture();
 		~Texture();
 
-		void LoadTexture(const char* const texturePath);
+		void LoadTexture(const char* texturePath);
 
 		// TODO make it private
 	public:

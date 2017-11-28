@@ -21,7 +21,7 @@ namespace CG184
 		void ActivateShader();
 		void DeactivateShader();
 
-		void AddTexture(const char* const texturePath, TextureType texType);
+		void AddTexture(const char* texturePath, TextureType texType);
 
 		unsigned int shaderID;
 

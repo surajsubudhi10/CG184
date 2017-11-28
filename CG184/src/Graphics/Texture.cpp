@@ -4,7 +4,7 @@
 #define STB_IMAGE_IMPLEMENTATION   
 
 #include <stb_image.h>
-#include <filesystem.h>
+//#include <filesystem.h>
 
 namespace CG184 
 {
@@ -38,7 +38,8 @@ namespace CG184
 		int width, height, nrChannels;
 		stbi_set_flip_vertically_on_load(true); // tell stb_image.h to flip loaded texture's on the y-axis.
 												// The FileSystem::getPath(...) is part of the GitHub repository so we can find files on any IDE/platform; replace it with your own image path.
-		unsigned char *data = stbi_load(FileSystem::getPath(texturePath).c_str(), &width, &height, &nrChannels, 0);
+//		unsigned char *data = stbi_load(FileSystem::getPath(texturePath).c_str(), &width, &height, &nrChannels, 0);
+		unsigned char *data = stbi_load(texturePath, &width, &height, &nrChannels, 0);
 		if (data)
 		{
 			if(nrChannels == 3)
