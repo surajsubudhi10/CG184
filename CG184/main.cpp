@@ -53,7 +53,7 @@ int main()
 	glfwSetCursorPosCallback(window->window, mouse_callback);
 	glfwSetScrollCallback(window->window, scroll_callback);
 	// tell GLFW to capture our mouse
-	glfwSetInputMode(window->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	//glfwSetInputMode(window->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 
 
@@ -193,26 +193,9 @@ int main()
 	ourShader.AddTexture("Resources/textures/container.jpg", TextureType::Diffuse);
 	//ourShader.AddTexture("Resources/textures/awesomeface.png", TextureType::Specular);
 
+    ourShader.SetUniformMat4f("projection", cam.GetProjectionMatrix().elements);
+    lightBoxShader.SetUniformMat4f("projection", cam.GetProjectionMatrix().elements);
 
-	GLint modelLoc				= glGetUniformLocation(ourShader.shaderID, "model");
-	GLint viewLoc				= glGetUniformLocation(ourShader.shaderID, "view");
-	GLint projectionLoc		    = glGetUniformLocation(ourShader.shaderID, "projection");
-	GLint posLightLoc			= glGetUniformLocation(ourShader.shaderID, "lightPos");
-	GLint colorLightLoc		    = glGetUniformLocation(ourShader.shaderID, "lightColor");
-	GLint viewerPosLoc			= glGetUniformLocation(ourShader.shaderID, "viewPos");
-
-
-	ourShader.ActivateShader();
-	glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, cam.GetProjectionMatrix().elements);
-	ourShader.DeactivateShader();
-	
-
-	GLint modeLightlLoc		    = glGetUniformLocation(lightBoxShader.shaderID, "model");
-	GLint viewLightLoc			= glGetUniformLocation(lightBoxShader.shaderID, "view");
-	GLint projectionLightLoc	= glGetUniformLocation(lightBoxShader.shaderID, "projection");
-	lightBoxShader.ActivateShader();
-	glUniformMatrix4fv(projectionLightLoc, 1, GL_FALSE, cam.GetProjectionMatrix().elements);
-	lightBoxShader.DeactivateShader();
 
 
 	while (!window->IfWindowClosed())
@@ -230,25 +213,24 @@ int main()
 		cam.Set(cameraPos, cameraFront, cameraUp);
 		Matrix4D model(1.0);
 		//model = Matrix4D::Translate(model, cubePositions[1].x, cubePositions[1].y, cubePositions[1].z);
-		
-		ourShader.ActivateShader();
-		glUniform3f(colorLightLoc, 1.0f, 1.0f, 1.0f);
-		glUniform3f(viewerPosLoc, cam.GetCamPos().x, cam.GetCamPos().y, cam.GetCamPos().z);
-		glUniform3f(posLightLoc, lightPos.x, lightPos.y, lightPos.z);
 
-		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, cam.GetViewMatrix().elements);
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, model.elements);
-		
-		renderer1.Render();
+		ourShader.SetUniform3f("lightColor", 1.0f, 1.0f, 1.0f);
+        ourShader.SetUniform3f("viewPos", cam.GetCamPos().x, cam.GetCamPos().y, cam.GetCamPos().z);
+        ourShader.SetUniform3f("lightPos", lightPos.x, lightPos.y, lightPos.z);
+        ourShader.SetUniformMat4f("view", cam.GetViewMatrix().elements);
+        ourShader.SetUniformMat4f("model", model.elements);
+
+        ourShader.ActivateShader();
+        renderer1.Render();
 		ourShader.DeactivateShader();
 		
 		model = Matrix4D(1.0);
 		model = Matrix4D::Translate(model, lightPos.x, lightPos.y, lightPos.z);
 		model = Matrix4D::Scale(model, 0.2f, 0.2f, 0.2f);
-		lightBoxShader.ActivateShader();
-		glUniformMatrix4fv(viewLightLoc, 1, GL_FALSE, cam.GetViewMatrix().elements);
-		glUniformMatrix4fv(modeLightlLoc, 1, GL_FALSE, model.elements);
+        lightBoxShader.SetUniformMat4f("view", cam.GetViewMatrix().elements);
+        lightBoxShader.SetUniformMat4f("model", model.elements);
 
+        lightBoxShader.ActivateShader();
         lightBox.Render();
         lightBoxShader.DeactivateShader();
 

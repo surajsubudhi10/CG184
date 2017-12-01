@@ -77,10 +77,9 @@ namespace CG184
 
 	void Renderer::Render()
 	{
-
-		glBindVertexArray(m_VAO); 
+		glBindVertexArray(m_VAO);
 		m_IBO->Bind();
-		
+
 		//glDrawArrays(GL_TRIANGLES, 0, numOfVert);
 		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		glDrawElements(GL_TRIANGLES, m_IndexCount, GL_UNSIGNED_INT, nullptr);

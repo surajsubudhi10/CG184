@@ -12,6 +12,25 @@
 
 namespace CG184 
 {
+    using namespace std;
+	class Uniform
+	{
+    public:
+		//SHADER_TYPE Type;
+		std::string Name;
+		int Size;
+		unsigned int Location;
+	};
+
+    class VertexAttribute
+	{
+    public:
+		//SHADER_TYPE Type;
+		std::string Name;
+		int Size;
+		unsigned int Location;
+	};
+
 	class Shader
 	{
 	public:
@@ -23,7 +42,20 @@ namespace CG184
 
 		void AddTexture(const char* texturePath, TextureType texType);
 
+        void SetUniform1f(string name, float _v1);
+        void SetUniform2f(string name, float _v1, float _v2);
+        void SetUniform3f(string name, float _v1, float _v2, float _v3);
+        void SetUniform4f(string name, float _v1, float _v2, float _v3, float _v4);
+
+        void SetUniformMat2f(string name, float* val);
+        void SetUniformMat3f(string name, float* val);
+        void SetUniformMat4f(string name, float* val);
+
+
+
 		unsigned int shaderID;
+		std::vector<Uniform> m_Uniforms;
+		std::vector<VertexAttribute> m_Attributes;
 
 	private:
 

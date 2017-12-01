@@ -1,7 +1,12 @@
+#include <cassert>
 #include "Shader.h"
 
 namespace CG184 
 {
+    // Helper Function
+    // TODO move it to some other place
+    int GetUniformLocation(string name, vector<Uniform> uniformList);
+
 	Shader::Shader(const char* vertexPath, const char* fragmentPath)// : textured(false)
 	{
 
@@ -57,6 +62,38 @@ namespace CG184
 		// delete the shaders as they're linked into our program now and no longer necessary
 		glDeleteShader(vertex);
 		glDeleteShader(fragment);
+
+
+        int nAttributes, nUniforms;
+        glGetProgramiv(shaderID, GL_ACTIVE_ATTRIBUTES, &nAttributes);
+        glGetProgramiv(shaderID, GL_ACTIVE_UNIFORMS, &nUniforms);
+        m_Attributes.resize(nAttributes);
+        m_Uniforms.resize(nUniforms);
+
+        // NOTE(Joey): iterate over all active attributes
+        char buffer[128];
+        for (unsigned int i = 0; i < nAttributes; ++i)
+        {
+            GLenum glType;
+            glGetActiveAttrib(shaderID, i, sizeof(buffer), 0, &m_Attributes[i].Size, &glType, buffer);
+            m_Attributes[i].Name = std::string(buffer);
+            // TODO(Joey): think of clean way to manage type conversions of OpenGL and custom type
+            //m_Attributes[i].Type = SHADER_TYPE_BOOL;
+
+            m_Attributes[i].Location = glGetAttribLocation(shaderID, buffer);
+        }
+
+        // NOTE(Joey): iterate over all active uniforms
+        for (unsigned int i = 0; i < nUniforms; ++i)
+        {
+            GLenum glType;
+            glGetActiveUniform(shaderID, i, sizeof(buffer), 0, &m_Uniforms[i].Size, &glType, buffer);
+            m_Uniforms[i].Name = std::string(buffer);
+            // TODO(Joey): think of clean way to manage type conversions of OpenGL and custom type
+            //m_Uniforms[i].Type = SHADER_TYPE_BOOL;
+
+            m_Uniforms[i].Location = glGetUniformLocation(shaderID, buffer);
+        }
 
 	}
 
@@ -142,4 +179,83 @@ namespace CG184
 	Shader::~Shader()
 	{
 	}
+
+    void Shader::SetUniform1f(string name, float _v1)
+    {
+        glUseProgram(shaderID);
+        // TODO Null Check
+        auto location = GetUniformLocation(name, m_Uniforms);
+        assert(location != -1);
+        glUniform1f(location, _v1);
+        glUseProgram(0);
+    }
+
+    void Shader::SetUniform2f(string name, float _v1, float _v2)
+    {
+        glUseProgram(shaderID);
+        // TODO Null Check
+        auto location = GetUniformLocation(name, m_Uniforms);
+        assert(location != -1);
+        glUniform2f(location, _v1, _v2);
+        glUseProgram(0);
+    }
+
+    void Shader::SetUniform3f(string name, float _v1, float _v2, float _v3)
+    {
+        glUseProgram(shaderID);
+        // TODO Null Check
+        auto location = GetUniformLocation(name, m_Uniforms);
+        assert(location != -1);
+        glUniform3f(location, _v1, _v2, _v3);
+        glUseProgram(0);
+    }
+
+    void Shader::SetUniform4f(string name, float _v1, float _v2, float _v3, float _v4)
+    {
+        glUseProgram(shaderID);
+        // TODO Null Check
+        auto location = GetUniformLocation(name, m_Uniforms);
+        assert(location != -1);
+        glUniform4f(location, _v1, _v2, _v3, _v4);
+        glUseProgram(0);
+    }
+
+    void Shader::SetUniformMat3f(string name, float *val)
+    {
+        glUseProgram(shaderID);
+        auto location = GetUniformLocation(name, m_Uniforms);
+        assert(location != -1);
+        glUniformMatrix3fv(location, 1, GL_FALSE, val);
+        glUseProgram(0);
+    }
+
+    void Shader::SetUniformMat2f(string name, float *val)
+    {
+        glUseProgram(shaderID);
+        auto location = GetUniformLocation(name, m_Uniforms);
+        assert(location != -1);
+        glUniformMatrix2fv(location, 1, GL_FALSE, val);
+        glUseProgram(0);
+    }
+
+    void Shader::SetUniformMat4f(string name, float *val)
+    {
+        glUseProgram(shaderID);
+        auto location = GetUniformLocation(name, m_Uniforms);
+        assert(location != -1);
+        glUniformMatrix4fv(location, 1, GL_FALSE, val);
+        glUseProgram(0);
+    }
+
+
+    int GetUniformLocation(string name, vector<Uniform> uniformList)
+    {
+        for(int i = 0; i < uniformList.size(); i++)
+        {
+            if(name.compare(uniformList[i].Name) == 0)
+                return uniformList[i].Location;
+        }
+
+        return -1;
+    }
 }
