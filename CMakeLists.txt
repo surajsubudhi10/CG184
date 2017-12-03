@@ -16,6 +16,8 @@ file(GLOB_RECURSE INPUT         CG184/src/EventSystem/*.cpp     CG184/src/EventS
 file(GLOB_RECURSE GRAPHICS      CG184/src/Graphics/*.cpp        CG184/src/Graphics/*.h)
 file(GLOB_RECURSE MATHS         CG184/src/Maths/*.cpp           CG184/src/Maths/*.h)
 file(GLOB_RECURSE GEOMETRYS     CG184/src/Geometry/*.cpp        CG184/src/Geometry/*.h)
+file(GLOB_RECURSE SCENE     CG184/src/Scene/*.cpp        CG184/src/Scene/*.h)
+
 
 
 include_directories(${PROJECT_SOURCE_DIR}/external-dependencies/Extras)
@@ -64,15 +66,15 @@ message(STATUS ${PROJECT_SOURCE_DIR})
 #message(STATUS ${CMAKE_SYSTEM_NAME} )
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-    set(SOURCE_FILES CG184/main.cpp ${GRAPHICS} ${MATHS} ${INPUT} ${CAMERA} ${RESOURCES} ${GEOMETRYS})
+    set(SOURCE_FILES CG184/main.cpp ${GRAPHICS} ${MATHS} ${INPUT} ${CAMERA} ${RESOURCES} ${GEOMETRYS} ${SCENE})
 elseif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-    set(SOURCE_FILES CG184/main.cpp ${GRAPHICS} ${MATHS} ${INPUT} ${CAMERA} ${RESOURCES} ${GEOMETRYS})
+    set(SOURCE_FILES CG184/main.cpp ${GRAPHICS} ${MATHS} ${INPUT} ${CAMERA} ${RESOURCES} ${GEOMETRYS} ${SCENE})
 endif()
 
 add_executable(CGEngine ${SOURCE_FILES})
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-    target_link_libraries(CGEngine glfw3 glew32 ${OPENGL_LIBRARY} )
+    target_link_libraries(CGEngine glfw3 glew32 ${OPENGL_LIBRARY} assimp)
 elseif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-    target_link_libraries(CGEngine ${OPENGL_LIBRARY} ${GLEW_LIBRARY}  glfw)
+    target_link_libraries(CGEngine ${OPENGL_LIBRARY} ${GLEW_LIBRARY} glfw assimp)
 endif()

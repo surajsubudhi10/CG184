@@ -10,9 +10,11 @@
 #include "src/Graphics/Window.h"
 #include "src/Graphics/Shader.h"
 #include "src/Graphics/Renderer.h"
+#include "src/Graphics/Material.h"
 
 #include "src/EventSystem/Input.h"
 #include "src/Camera/Camera.h"
+#include "src/Geometry/Mesh.h"
 
 // settings
 const unsigned int SCR_WIDTH = 800;
@@ -57,88 +59,7 @@ int main()
 
 
 
-	//float vertices[] = {
-	//	// positions          // colors           // texture coords
-	//	 0.5f,  0.5f,  0.5f,   1.0f, 0.5f, 0.31f,   1.0f, 1.0f, // top right			//0
-	//	 0.5f, -0.5f,  0.5f,   1.0f, 0.5f, 0.31f,   1.0f, 0.0f, // bottom right		//1
-	//	-0.5f, -0.5f,  0.5f,   1.0f, 0.5f, 0.31f,   0.0f, 0.0f, // bottom left		//2
-	//	-0.5f,  0.5f,  0.5f,   1.0f, 0.5f, 0.31f,   0.0f, 1.0f,  // top left			//3
-	//						   
-	//	 0.5f,  0.5f, -0.5f,   1.0f, 0.5f, 0.31f,   1.0f, 1.0f, // top right			//4
-	//	 0.5f, -0.5f, -0.5f,   1.0f, 0.5f, 0.31f,   1.0f, 0.0f, // bottom right		//5
-	//	-0.5f, -0.5f, -0.5f,   1.0f, 0.5f, 0.31f,   0.0f, 0.0f, // bottom left		//6
-	//	-0.5f,  0.5f, -0.5f,   1.0f, 0.5f, 0.31f,   0.0f, 1.0f,  // top left			//7
-	//};
-
-	
-	float vertices[] = {
-		-0.5f, -0.5f, -0.5f,   1.0f, 0.0f,  0.0f,    0.0f,  0.0f, -1.0f,    1.0f, 1.0f,
-		 0.5f, -0.5f, -0.5f,   0.0f, 0.5f, 0.31f,    0.0f,  0.0f, -1.0f,    1.0f, 0.0f,
-		 0.5f,  0.5f, -0.5f,   1.0f, 0.5f, 0.31f,    0.0f,  0.0f, -1.0f,    0.0f, 0.0f,
-		 0.5f,  0.5f, -0.5f,   1.0f, 0.5f, 0.31f,    0.0f,  0.0f, -1.0f,    0.0f, 0.0f,
-		-0.5f,  0.5f, -0.5f,   1.0f, 1.0f, 0.31f,    0.0f,  0.0f, -1.0f,    1.0f, 0.0f,
-		-0.5f, -0.5f, -0.5f,   1.0f, 0.5f, 0.31f,    0.0f,  0.0f, -1.0f,    1.0f, 1.0f,
-
-		-0.5f, -0.5f,  0.5f,   1.0f, 0.5f, 0.31f,    0.0f,  0.0f,  1.0f,    1.0f, 1.0f,
-		 0.5f, -0.5f,  0.5f,   1.0f, 0.5f, 0.31f,    0.0f,  0.0f,  1.0f,    1.0f, 0.0f,
-		 0.5f,  0.5f,  0.5f,   1.0f, 0.5f, 1.0f,    0.0f,  0.0f,  1.0f,    0.0f, 0.0f,
-		 0.5f,  0.5f,  0.5f,   1.0f, 0.5f, 0.31f,    0.0f,  0.0f,  1.0f,    0.0f, 0.0f,
-		-0.5f,  0.5f,  0.5f,   1.0f, 1.0f, 0.31f,    0.0f,  0.0f,  1.0f,    1.0f, 0.0f,
-		-0.5f, -0.5f,  0.5f,   1.0f, 0.5f, 0.31f,    0.0f,  0.0f,  1.0f,    1.0f, 1.0f,
-
-		-0.5f,  0.5f,  0.5f,   1.0f, 0.5f, 0.31f,   -1.0f,  0.0f,  0.0f,    1.0f, 1.0f,
-		-0.5f,  0.5f, -0.5f,   1.0f, 0.5f, 0.31f,   -1.0f,  0.0f,  0.0f,    1.0f, 0.0f,
-		-0.5f, -0.5f, -0.5f,   0.0f, 1.0f, 0.31f,   -1.0f,  0.0f,  0.0f,    0.0f, 0.0f,
-		-0.5f, -0.5f, -0.5f,   1.0f, 0.5f, 0.31f,   -1.0f,  0.0f,  0.0f,    0.0f, 0.0f,
-		-0.5f, -0.5f,  0.5f,   1.0f, 0.5f, 0.31f,   -1.0f,  0.0f,  0.0f,    1.0f, 0.0f,
-		-0.5f,  0.5f,  0.5f,   1.0f, 0.5f, 0.31f,   -1.0f,  0.0f,  0.0f,    1.0f, 1.0f,
-
-		 0.5f,  0.5f,  0.5f,   1.0f, 0.5f, 0.31f,    1.0f,  0.0f,  0.0f,    1.0f, 1.0f,
-		 0.5f,  0.5f, -0.5f,   1.0f, 0.5f, 0.31f,    1.0f,  0.0f,  0.0f,    1.0f, 0.0f,
-		 0.5f, -0.5f, -0.5f,   1.0f, 0.5f, 0.31f,    1.0f,  0.0f,  0.0f,    0.0f, 0.0f,
-		 0.5f, -0.5f, -0.5f,   1.0f, 0.5f, 0.31f,    1.0f,  0.0f,  0.0f,    0.0f, 0.0f,
-		 0.5f, -0.5f,  0.5f,   1.0f, 0.5f, 0.31f,    1.0f,  0.0f,  0.0f,    1.0f, 0.0f,
-		 0.5f,  0.5f,  0.5f,   1.0f, 0.5f, 0.31f,    1.0f,  0.0f,  0.0f,    1.0f, 1.0f,
-
-		-0.5f, -0.5f, -0.5f,   1.0f, 0.5f, 0.31f,    0.0f, -1.0f,  0.0f,    1.0f, 1.0f,
-		 0.5f, -0.5f, -0.5f,   1.0f, 0.5f, 0.31f,    0.0f, -1.0f,  0.0f,    1.0f, 0.0f,
-		 0.5f, -0.5f,  0.5f,   1.0f, 0.5f, 0.31f,    0.0f, -1.0f,  0.0f,    0.0f, 0.0f,
-		 0.5f, -0.5f,  0.5f,   1.0f, 0.5f, 0.31f,    0.0f, -1.0f,  0.0f,    0.0f, 0.0f,
-		-0.5f, -0.5f,  0.5f,   1.0f, 0.5f, 0.31f,    0.0f, -1.0f,  0.0f,    1.0f, 0.0f,
-		-0.5f, -0.5f, -0.5f,   1.0f, 0.5f, 0.31f,    0.0f, -1.0f,  0.0f,    1.0f, 1.0f,
-
-		-0.5f,  0.5f, -0.5f,   1.0f, 0.5f, 0.31f,    0.0f,  1.0f,  0.0f,    1.0f, 1.0f,
-		 0.5f,  0.5f, -0.5f,   1.0f, 0.5f, 0.31f,    0.0f,  1.0f,  0.0f,    1.0f, 0.0f,
-		 0.5f,  0.5f,  0.5f,   1.0f, 0.5f, 0.31f,    0.0f,  1.0f,  0.0f,    0.0f, 0.0f,
-		 0.5f,  0.5f,  0.5f,   1.0f, 0.5f, 0.31f,    0.0f,  1.0f,  0.0f,    0.0f, 0.0f,
-		-0.5f,  0.5f,  0.5f,   1.0f, 0.5f, 0.31f,    0.0f,  1.0f,  0.0f,    1.0f, 0.0f,
-		-0.5f,  0.5f, -0.5f,   1.0f, 0.5f, 0.31f,    0.0f,  1.0f,  0.0f,    1.0f, 1.0f
-	};
-
-
-	std::vector<float> v(vertices, vertices + sizeof vertices / sizeof vertices[0]);
-
-	//GLuint indices[] = {
-	//	2, 1, 0, // first triangle
-	//	0, 3, 2, // second triangle
-
-	//	4, 0, 1,
-	//	1, 5, 4,
-
-	//	6, 7, 4,
-	//	4, 5, 6,
-
-	//	3, 7, 6,
-	//	6, 2, 3,
-
-	//	0, 4, 7,
-	//	7, 3, 0,
-
-	//	1, 5, 6,
-	//	6, 2, 1
-	//};
-
-	GLuint indices[] = {
+	std::vector<GLuint> ind {
 		0, 1, 2, // first triangle
 		3, 4, 5, // second triangle
 
@@ -157,46 +78,115 @@ int main()
 		30, 31, 32,
 		33, 34, 35
 	};
-	std::vector<GLuint> ind(indices, indices + sizeof indices / sizeof indices[0]);
 
-	Vector3D cubePositions[] = {
-		Vector3D(0.0f,  0.0f,  0.0f),
-		Vector3D(2.0f,  5.0f, -15.0f),
-		Vector3D(-1.5f, -2.2f, -2.5f),
-		Vector3D(-3.8f, -2.0f, -12.3f),
-		Vector3D(2.4f, -0.4f, -3.5f),
-		Vector3D(-1.7f,  3.0f, -7.5f),
-		Vector3D(1.3f, -2.0f, -2.5f),
-		Vector3D(1.5f,  2.0f, -2.5f),
-		Vector3D(1.5f,  0.2f, -1.5f),
-		Vector3D(-1.3f,  1.0f, -1.5f)
+    std::vector<Vector3D> vertPos {
+		Vector3D(-0.5f, -0.5f, -0.5f),
+		Vector3D( 0.5f, -0.5f, -0.5f),
+		Vector3D( 0.5f,  0.5f, -0.5f),
+		Vector3D( 0.5f,  0.5f, -0.5f),
+		Vector3D(-0.5f,  0.5f, -0.5f),
+		Vector3D(-0.5f, -0.5f, -0.5f),
+
+		Vector3D(-0.5f, -0.5f,  0.5f),
+		Vector3D( 0.5f, -0.5f,  0.5f),
+		Vector3D( 0.5f,  0.5f,  0.5f),
+		Vector3D( 0.5f,  0.5f,  0.5f),
+        Vector3D(-0.5f,  0.5f,  0.5f),
+        Vector3D(-0.5f, -0.5f,  0.5f),
+
+        Vector3D(-0.5f,  0.5f,  0.5f),
+        Vector3D(-0.5f,  0.5f, -0.5f),
+        Vector3D(-0.5f, -0.5f, -0.5f),
+        Vector3D(-0.5f, -0.5f, -0.5f),
+        Vector3D(-0.5f, -0.5f,  0.5f),
+        Vector3D(-0.5f,  0.5f,  0.5f),
+
+        Vector3D(0.5f,  0.5f,  0.5f),
+        Vector3D(0.5f,  0.5f, -0.5f),
+        Vector3D(0.5f, -0.5f, -0.5f),
+        Vector3D(0.5f, -0.5f, -0.5f),
+        Vector3D(0.5f, -0.5f,  0.5f),
+        Vector3D(0.5f,  0.5f,  0.5f),
+
+        Vector3D(-0.5f, -0.5f, -0.5f),
+        Vector3D( 0.5f, -0.5f, -0.5f),
+        Vector3D( 0.5f, -0.5f,  0.5f),
+        Vector3D( 0.5f, -0.5f,  0.5f),
+        Vector3D(-0.5f, -0.5f,  0.5f),
+        Vector3D(-0.5f, -0.5f, -0.5f),
+
+        Vector3D(-0.5f,  0.5f, -0.5f),
+        Vector3D( 0.5f,  0.5f, -0.5f),
+        Vector3D( 0.5f,  0.5f,  0.5f),
+        Vector3D( 0.5f,  0.5f,  0.5f),
+        Vector3D(-0.5f,  0.5f,  0.5f),
+        Vector3D(-0.5f,  0.5f, -0.5f),
 	};
 
-	
-	Camera cam;
-	cam.SetAspectRatio((float)SCR_WIDTH / (float)SCR_HEIGHT);
+    std::vector<Vector3D> vertNorm {
+            Vector3D(0.0f,  0.0f, -1.0f),
+           Vector3D(  0.0f,  0.0f, -1.0f),
+           Vector3D(  0.0f,  0.0f, -1.0f),
+           Vector3D(  0.0f,  0.0f, -1.0f),
+           Vector3D(  0.0f,  0.0f, -1.0f),
+           Vector3D(  0.0f,  0.0f, -1.0f),
+           Vector3D(  0.0f,  0.0f,  1.0f),
+           Vector3D(  0.0f,  0.0f,  1.0f),
+           Vector3D(  0.0f,  0.0f,  1.0f),
+           Vector3D(  0.0f,  0.0f,  1.0f),
+           Vector3D(  0.0f,  0.0f,  1.0f),
+           Vector3D(  0.0f,  0.0f,  1.0f),
+           Vector3D( -1.0f,  0.0f,  0.0f),
+           Vector3D( -1.0f,  0.0f,  0.0f),
+           Vector3D( -1.0f,  0.0f,  0.0f),
+           Vector3D( -1.0f,  0.0f,  0.0f),
+           Vector3D( -1.0f,  0.0f,  0.0f),
+           Vector3D( -1.0f,  0.0f,  0.0f),
+           Vector3D(  1.0f,  0.0f,  0.0f),
+           Vector3D(  1.0f,  0.0f,  0.0f),
+           Vector3D(  1.0f,  0.0f,  0.0f),
+           Vector3D(  1.0f,  0.0f,  0.0f),
+           Vector3D(  1.0f,  0.0f,  0.0f),
+           Vector3D(  1.0f,  0.0f,  0.0f),
+           Vector3D(  0.0f, -1.0f,  0.0f),
+           Vector3D(  0.0f, -1.0f,  0.0f),
+           Vector3D(  0.0f, -1.0f,  0.0f),
+           Vector3D(  0.0f, -1.0f,  0.0f),
+           Vector3D(  0.0f, -1.0f,  0.0f),
+           Vector3D(  0.0f, -1.0f,  0.0f),
+           Vector3D(  0.0f,  1.0f,  0.0f),
+           Vector3D(  0.0f,  1.0f,  0.0f),
+           Vector3D(  0.0f,  1.0f,  0.0f),
+           Vector3D(  0.0f,  1.0f,  0.0f),
+           Vector3D(  0.0f,  1.0f,  0.0f),
+           Vector3D(  0.0f,  1.0f,  0.0f)
+    };
 
-	Shader ourShader("TestShaders/BoxSolid.vs", "TestShaders/BoxSolid.fs");
-	Shader lightBoxShader("TestShaders/LightCube.vs", "TestShaders/LightCube.fs");
-	
-	std::vector<Renderer>renderer_list;
-	renderer_list.reserve(10);
+    Mesh cubeMesh(vertPos, ind);
+    cubeMesh.SetColor(Vector3D(1.0f, 0.5f, 0.31f));
+    cubeMesh.SetNormals(vertNorm);
+    Material defaultMat;
 
-	Renderer renderer1(v, ind);
-	Renderer lightBox(v, ind);
+    Mesh lightMesh(vertPos, ind);
+    Shader lightShaderTemp("TestShaders/LightCube.vs", "TestShaders/LightCube.fs");
+    Material lightMat(lightShaderTemp);
 
-	for (int i = 0; i < 10; i++) 
-	{
-		renderer_list.push_back(renderer1);
-	}
+    Renderer renderer1(cubeMesh, defaultMat);
+    Renderer lightBox(lightMesh, lightMat);
 
-	ourShader.AddTexture("Resources/textures/container.jpg", TextureType::Diffuse);
+
+    Camera cam;
+    cam.SetAspectRatio((float)SCR_WIDTH / (float)SCR_HEIGHT);
+
+
+	//ourShader.AddTexture("Resources/textures/container.jpg", TextureType::Diffuse);
 	//ourShader.AddTexture("Resources/textures/awesomeface.png", TextureType::Specular);
 
-    ourShader.SetUniformMat4f("projection", cam.GetProjectionMatrix().elements);
-    lightBoxShader.SetUniformMat4f("projection", cam.GetProjectionMatrix().elements);
+    defaultMat.GetShader()->SetUniformMat4f("projection", cam.GetProjectionMatrix().elements);
+    lightMat.GetShader()->SetUniformMat4f("projection", cam.GetProjectionMatrix().elements);
 
-
+    Shader* ourShader = defaultMat.GetShader();
+    Shader* lightShader = lightMat.GetShader();
 
 	while (!window->IfWindowClosed())
 	{
@@ -214,25 +204,22 @@ int main()
 		Matrix4D model(1.0);
 		//model = Matrix4D::Translate(model, cubePositions[1].x, cubePositions[1].y, cubePositions[1].z);
 
-		ourShader.SetUniform3f("lightColor", 1.0f, 1.0f, 1.0f);
-        ourShader.SetUniform3f("viewPos", cam.GetCamPos().x, cam.GetCamPos().y, cam.GetCamPos().z);
-        ourShader.SetUniform3f("lightPos", lightPos.x, lightPos.y, lightPos.z);
-        ourShader.SetUniformMat4f("view", cam.GetViewMatrix().elements);
-        ourShader.SetUniformMat4f("model", model.elements);
+        // TODO keeping the model view and projection data in render only.
+        (*ourShader).SetUniform3f("lightColor", 1.0f, 1.0f, 1.0f);
+        (*ourShader).SetUniform3f("viewPos", cam.GetCamPos().x, cam.GetCamPos().y, cam.GetCamPos().z);
+        (*ourShader).SetUniform3f("lightPos", lightPos.x, lightPos.y, lightPos.z);
+        (*ourShader).SetUniformMat4f("view", cam.GetViewMatrix().elements);
+        (*ourShader).SetUniformMat4f("model", model.elements);
 
-        ourShader.ActivateShader();
         renderer1.Render();
-		ourShader.DeactivateShader();
-		
+
 		model = Matrix4D(1.0);
 		model = Matrix4D::Translate(model, lightPos.x, lightPos.y, lightPos.z);
 		model = Matrix4D::Scale(model, 0.2f, 0.2f, 0.2f);
-        lightBoxShader.SetUniformMat4f("view", cam.GetViewMatrix().elements);
-        lightBoxShader.SetUniformMat4f("model", model.elements);
+        (*lightShader).SetUniformMat4f("view", cam.GetViewMatrix().elements);
+        (*lightShader).SetUniformMat4f("model", model.elements);
 
-        lightBoxShader.ActivateShader();
         lightBox.Render();
-        lightBoxShader.DeactivateShader();
 
 
 		window->Update();

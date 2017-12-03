@@ -5,7 +5,7 @@ namespace CG184
 {
     // Helper Function
     // TODO move it to some other place
-    int GetUniformLocation(string name, vector<Uniform> uniformList);
+    int GetUniformLocation(const string &name, vector<Uniform> uniformList);
 
 	Shader::Shader(const char* vertexPath, const char* fragmentPath)// : textured(false)
 	{
@@ -41,24 +41,26 @@ namespace CG184
 		const char * fShaderCode = fragmentCode.c_str();
 		// 2. compile shaders
 		unsigned int vertex, fragment;
-		//int success;
-		//char infoLog[512];
+
 		// vertex shader
 		vertex = glCreateShader(GL_VERTEX_SHADER);
 		glShaderSource(vertex, 1, &vShaderCode, nullptr);
 		glCompileShader(vertex);
 		CompileShader(vertex, "VERTEX");
+
 		// fragment Shader
 		fragment = glCreateShader(GL_FRAGMENT_SHADER);
 		glShaderSource(fragment, 1, &fShaderCode, nullptr);
 		glCompileShader(fragment);
 		CompileShader(fragment, "FRAGMENT");
+
 		// shader Program
 		shaderID = glCreateProgram();
 		glAttachShader(shaderID, vertex);
 		glAttachShader(shaderID, fragment);
 		glLinkProgram(shaderID);
 		CompileShader(shaderID, "PROGRAM");
+
 		// delete the shaders as they're linked into our program now and no longer necessary
 		glDeleteShader(vertex);
 		glDeleteShader(fragment);
@@ -70,30 +72,41 @@ namespace CG184
         m_Attributes.resize(nAttributes);
         m_Uniforms.resize(nUniforms);
 
-        // NOTE(Joey): iterate over all active attributes
         char buffer[128];
         for (unsigned int i = 0; i < nAttributes; ++i)
         {
             GLenum glType;
             glGetActiveAttrib(shaderID, i, sizeof(buffer), 0, &m_Attributes[i].Size, &glType, buffer);
             m_Attributes[i].Name = std::string(buffer);
-            // TODO(Joey): think of clean way to manage type conversions of OpenGL and custom type
+            // TODO think of clean way to manage type conversions of OpenGL and custom type
             //m_Attributes[i].Type = SHADER_TYPE_BOOL;
 
             m_Attributes[i].Location = glGetAttribLocation(shaderID, buffer);
         }
 
-        // NOTE(Joey): iterate over all active uniforms
         for (unsigned int i = 0; i < nUniforms; ++i)
         {
             GLenum glType;
             glGetActiveUniform(shaderID, i, sizeof(buffer), 0, &m_Uniforms[i].Size, &glType, buffer);
             m_Uniforms[i].Name = std::string(buffer);
-            // TODO(Joey): think of clean way to manage type conversions of OpenGL and custom type
+            // TODO think of clean way to manage type conversions of OpenGL and custom type
             //m_Uniforms[i].Type = SHADER_TYPE_BOOL;
 
             m_Uniforms[i].Location = glGetUniformLocation(shaderID, buffer);
         }
+
+	}
+
+
+	Shader::Shader(const Shader &a_Shader)
+	{
+		shaderID = a_Shader.shaderID;
+		m_Uniforms = a_Shader.m_Uniforms;
+		m_Attributes = a_Shader.m_Attributes;
+
+		for(auto i = 0; i < 5; i++) {
+			m_Textures[i] = a_Shader.m_Textures[i];
+		}
 
 	}
 
@@ -177,10 +190,9 @@ namespace CG184
 
 
 	Shader::~Shader()
-	{
-	}
+	= default;
 
-    void Shader::SetUniform1f(string name, float _v1)
+	void Shader::SetUniform1f(string name, float _v1)
     {
         glUseProgram(shaderID);
         // TODO Null Check
@@ -248,12 +260,11 @@ namespace CG184
     }
 
 
-    int GetUniformLocation(string name, vector<Uniform> uniformList)
+    int GetUniformLocation(const string &name, vector<Uniform> uniformList)
     {
-        for(int i = 0; i < uniformList.size(); i++)
-        {
-            if(name.compare(uniformList[i].Name) == 0)
-                return uniformList[i].Location;
+        for (auto &uniform : uniformList) {
+            if(name == uniform.Name)
+                return uniform.Location;
         }
 
         return -1;

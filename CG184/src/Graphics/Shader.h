@@ -35,6 +35,7 @@ namespace CG184
 	{
 	public:
 		Shader(const char* vertexPath, const char* fragmentPath);
+		Shader(const Shader& a_Shader);
 		~Shader();
 
 		void ActivateShader();
@@ -42,6 +43,7 @@ namespace CG184
 
 		void AddTexture(const char* texturePath, TextureType texType);
 
+		// TODO add More Uniform Setter functions
         void SetUniform1f(string name, float _v1);
         void SetUniform2f(string name, float _v1, float _v2);
         void SetUniform3f(string name, float _v1, float _v2, float _v3);
@@ -59,7 +61,7 @@ namespace CG184
 
 	private:
 
-		Texture m_Textures[5] = {}; // Hard Coded Fixed No. of Texture Support.
+		Texture m_Textures[5] = {}; // TODO Fix -> Hard Coded Fixed No. of Texture Support.
 		
 		void CompileShader(unsigned int shader, std::string type);
 	};
