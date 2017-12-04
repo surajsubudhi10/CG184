@@ -6,6 +6,7 @@
 
 #include "../Maths/Maths.h"
 #include "Material.h"
+#include "../Scene/Componet.h"
 
 
 namespace CG184 
@@ -21,15 +22,21 @@ namespace CG184
 	class Mesh;
 	class VertexData;
 
-	class Renderer
+	class Renderer : public Component
 	{
 	public:
 
 		Renderer(Mesh& a_Mesh, Material& a_Material);
-
 		~Renderer();
 
 		void Render();
+
+        void SendProjectionMatrixData(Matrix4D& projMat);
+        void SendViewMatrixData(Matrix4D & viewMat);
+
+    private:
+        Matrix4D GetModelMatrix();
+
 	public:
 
 		GLuint m_VAO;

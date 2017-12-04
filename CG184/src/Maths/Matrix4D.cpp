@@ -189,52 +189,26 @@ namespace CG184
 		return at(i);
 	}
 
-	Matrix4D Matrix4D::Translate(Matrix4D& mat, float _x, float _y, float _z)
-	{
-		Matrix4D transMat(
-				1, 0, 0, _x,
-				0, 1, 0, _y,
-				0, 0, 1, _z,
-				0, 0, 0,  1
-		);
+	Matrix4D operator*(Matrix4D left, const Matrix4D &right) {
 
-		//transMat = transMat.transpose();
-		return mat.multiply(transMat);
+		Matrix4D result;
+		float data[16];
+		for (int y = 0; y < 4; y++)
+		{
+			for (int x = 0; x < 4; x++)
+			{
+				float sum = 0.0f;
+				for (int e = 0; e < 4; e++)
+				{
+					sum += left.elements[x + e * 4] * right.elements[e + y * 4];
+				}
+				data[x + y * 4] = sum;
+			}
+		}
+		std::memcpy(result.elements, data, 4 * 4 * sizeof(float));
+		return result;
+
 	}
 
-	Matrix4D Matrix4D::Rotate(Matrix4D& mat, float angleInDeg, const Vector3D& axis) 
-	{
-		float angInRad = PI * angleInDeg / 180.0f;
-
-		// Checkpoint only keeping rotation along z axis for testing.
-		float c = cos(angInRad);
-		float s = sin(angInRad);
-		float v = 1 - c;
-
-		Vector3D normAxis =  axis.norm();
-		float kx = normAxis.x;
-		float ky = normAxis.y;
-		float kz = normAxis.z;
-
-		Matrix4D rotMat(
-			 (kx * kx * v) + c       , (kx * ky * v) - (kz * s), (kx * kz * v) + (ky * s), 0,
-			 (ky * kx * v) + (kz * s), (ky * ky * v) +  c      , (ky * kz * v) - (kx * s), 0,
-			 (kz * kx * v) - (ky * s), (kz * ky * v) + (kx * s), (kz * kz * v) +  c      , 0,
-			                        0,                        0,                        0, 1
-		);
-		return mat.multiply(rotMat);
-	}
-
-	Matrix4D Matrix4D::Scale(Matrix4D& mat, float sx, float sy, float sz) 
-	{
-		Matrix4D scaleMat(
-			sx,  0,  0, 0,
-			 0, sy,  0, 0,
-			 0,  0, sz, 0,
-			 0,  0,  0, 1
-		);
-
-		return mat.multiply(scaleMat);
-	}
 
 }

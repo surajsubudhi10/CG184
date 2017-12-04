@@ -9,12 +9,15 @@
 
 #include "src/Graphics/Window.h"
 #include "src/Graphics/Shader.h"
-#include "src/Graphics/Renderer.h"
-#include "src/Graphics/Material.h"
+//#include "src/Graphics/Renderer.h"
+//#include "src/Graphics/Material.h"
 
 #include "src/EventSystem/Input.h"
 #include "src/Camera/Camera.h"
 #include "src/Geometry/Mesh.h"
+#include "src/Scene/Transform.h"
+#include "src/Scene/Node.h"
+#include "src/Scene/Scene.h"
 
 // settings
 const unsigned int SCR_WIDTH = 800;
@@ -58,7 +61,7 @@ int main()
 	//glfwSetInputMode(window->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 
-
+	// Indices
 	std::vector<GLuint> ind {
 		0, 1, 2, // first triangle
 		3, 4, 5, // second triangle
@@ -79,6 +82,7 @@ int main()
 		33, 34, 35
 	};
 
+	// Vertex Data
     std::vector<Vector3D> vertPos {
 		Vector3D(-0.5f, -0.5f, -0.5f),
 		Vector3D( 0.5f, -0.5f, -0.5f),
@@ -123,6 +127,7 @@ int main()
         Vector3D(-0.5f,  0.5f, -0.5f),
 	};
 
+	// Normal Data
     std::vector<Vector3D> vertNorm {
             Vector3D(0.0f,  0.0f, -1.0f),
            Vector3D(  0.0f,  0.0f, -1.0f),
@@ -166,62 +171,59 @@ int main()
     cubeMesh.SetColor(Vector3D(1.0f, 0.5f, 0.31f));
     cubeMesh.SetNormals(vertNorm);
     Material defaultMat;
+    Renderer renderer1(cubeMesh, defaultMat);
+
 
     Mesh lightMesh(vertPos, ind);
     Shader lightShaderTemp("TestShaders/LightCube.vs", "TestShaders/LightCube.fs");
     Material lightMat(lightShaderTemp);
-
-    Renderer renderer1(cubeMesh, defaultMat);
     Renderer lightBox(lightMesh, lightMat);
 
+    Node cube;
+    cube.AttachComponent(renderer1);
+
+    Node light;
+    light.AttachComponent(lightBox);
+    light.SetPosition(lightPos.x, lightPos.y, lightPos.z);
+    light.SetLocalScale(0.2f, 0.2f, 0.2f);
 
     Camera cam;
     cam.SetAspectRatio((float)SCR_WIDTH / (float)SCR_HEIGHT);
 
+    Scene rootScene(cam);
+	rootScene.AddToScene(cube);
+    rootScene.AddToScene(light);
 
-	//ourShader.AddTexture("Resources/textures/container.jpg", TextureType::Diffuse);
-	//ourShader.AddTexture("Resources/textures/awesomeface.png", TextureType::Specular);
+    //ourShader.AddTexture("Resources/textures/container.jpg", TextureType::Diffuse);
+    //ourShader.AddTexture("Resources/textures/awesomeface.png", TextureType::Specular);
 
-    defaultMat.GetShader()->SetUniformMat4f("projection", cam.GetProjectionMatrix().elements);
-    lightMat.GetShader()->SetUniformMat4f("projection", cam.GetProjectionMatrix().elements);
 
     Shader* ourShader = defaultMat.GetShader();
     Shader* lightShader = lightMat.GetShader();
 
-	while (!window->IfWindowClosed())
+    while (!window->IfWindowClosed())
 	{
         // time handle
         auto currentFrame = (float)glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
-		KeyBoardEvents(window, input);
+        KeyBoardEvents(window, input);
+        window->SetBGColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-		window->SetBGColor(0.0f, 0.0f, 0.0f, 1.0f);
-		
-		cam.SetFOV(fov);
-		cam.Set(cameraPos, cameraFront, cameraUp);
-		Matrix4D model(1.0);
-		//model = Matrix4D::Translate(model, cubePositions[1].x, cubePositions[1].y, cubePositions[1].z);
+        cam.SetFOV(fov);
+        cam.Set(cameraPos, cameraFront, cameraUp);
+        Matrix4D model(1.0);
+        //model = Matrix4D::Translate(model, cubePositions[1].x, cubePositions[1].y, cubePositions[1].z);
 
-        // TODO keeping the model view and projection data in render only.
         (*ourShader).SetUniform3f("lightColor", 1.0f, 1.0f, 1.0f);
         (*ourShader).SetUniform3f("viewPos", cam.GetCamPos().x, cam.GetCamPos().y, cam.GetCamPos().z);
         (*ourShader).SetUniform3f("lightPos", lightPos.x, lightPos.y, lightPos.z);
-        (*ourShader).SetUniformMat4f("view", cam.GetViewMatrix().elements);
-        (*ourShader).SetUniformMat4f("model", model.elements);
 
-        renderer1.Render();
+        // TODO we need to create setter function for position scale and rotations as we should not mess with worldModelMatrix
+//        light.worldModelMatrix = Transform::Scale(model, 0.2f, 0.2f, 0.2f);
 
-		model = Matrix4D(1.0);
-		model = Matrix4D::Translate(model, lightPos.x, lightPos.y, lightPos.z);
-		model = Matrix4D::Scale(model, 0.2f, 0.2f, 0.2f);
-        (*lightShader).SetUniformMat4f("view", cam.GetViewMatrix().elements);
-        (*lightShader).SetUniformMat4f("model", model.elements);
-
-        lightBox.Render();
-
-
+		rootScene.Render();
 		window->Update();
 	}
 

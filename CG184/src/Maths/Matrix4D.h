@@ -67,10 +67,6 @@ namespace CG184
 
 		~Matrix4D();
 
-		// Temp Check
-		static Matrix4D Translate(Matrix4D& mat, float _x, float _y, float _z);
-		static Matrix4D Rotate(Matrix4D& mat, float angleInDeg, const Vector3D& axis);
-		static Matrix4D Scale(Matrix4D& mat, float sx, float sy, float sz);
 
 		
 

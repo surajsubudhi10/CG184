@@ -10,12 +10,11 @@
 #include <GL/glew.h>
 #include "../Maths/Vector3D.h"
 #include "../Maths/Vector2D.h"
-//#include "SubMesh.h"
-//#include "../Graphics/Renderer.h"
+#include "../Scene/Componet.h"
+
 
 namespace CG184 {
 
-//    class SubMesh;
 
     class VertexData
     {
@@ -37,7 +36,7 @@ namespace CG184 {
     };
 
 
-    class Mesh //: public SubMesh
+    class Mesh //: public Component
     {
 
     public:
@@ -63,16 +62,6 @@ namespace CG184 {
         ~Mesh();
 
 
-    public:
-
-//        GLuint m_VAO;
-//        GLuint m_VBO;
-//
-//        int m_IndexCount;
-//
-//        GLuint* indicesData;
-//        VertexData* m_Buffer;
-//        IndexBuffer* m_IBO;
 
     };
 }

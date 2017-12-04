@@ -1,12 +1,15 @@
 #include <algorithm>
 #include "Renderer.h"
 #include "../Geometry/Mesh.h"
+#include "../Scene/Node.h"
 
 namespace CG184 
 {
 
-    Renderer::Renderer(Mesh &a_Mesh, Material &a_Material)
+    Renderer::Renderer(Mesh &a_Mesh, Material &a_Material) : Component()
     {
+        type = ComponentType ::RendererType;
+
         m_Buffer = a_Mesh.vertices;
         m_IndexCount = (unsigned int)a_Mesh.m_Indices.size();
         indicesData = new GLuint[m_IndexCount];
@@ -61,6 +64,9 @@ namespace CG184
 
 	void Renderer::Render()
 	{
+        Matrix4D debugMat = GetModelMatrix();
+        m_Material->GetShader()->SetUniformMat4f("model", debugMat.elements);
+
         m_Material->GetShader()->ActivateShader();
 		glBindVertexArray(m_VAO);
 		m_IBO->Bind();
@@ -73,5 +79,17 @@ namespace CG184
 		glBindVertexArray(0);
         m_Material->GetShader()->DeactivateShader();
 	}
+
+    Matrix4D Renderer::GetModelMatrix() {
+        return attachedNode->worldModelMatrix;
+    }
+
+    void Renderer::SendViewMatrixData(Matrix4D &viewMat) {
+        m_Material->GetShader()->SetUniformMat4f("view", viewMat.elements);
+    }
+
+    void Renderer::SendProjectionMatrixData(Matrix4D &projMat) {
+        m_Material->GetShader()->SetUniformMat4f("projection", projMat.elements);
+    }
 
 }
