@@ -167,6 +167,21 @@ int main()
            Vector3D(  0.0f,  1.0f,  0.0f)
     };
 
+    // Light Data
+    float LightPosition[] = {
+             0.7f,  0.2f,  2.0f,
+             2.3f, -3.3f, -4.0f,
+            -4.0f,  2.0f, -12.0f
+    };
+
+    float LightColor[] = {
+            1.0f,   0.0f,   0.0f,
+            0.3f,   1.0f,   0.0f,
+            0.0f,   0.0f,   1.0f
+    };
+
+
+
     Mesh cubeMesh(vertPos, ind);
     cubeMesh.SetColor(Vector3D(1.0f, 0.5f, 0.31f));
     cubeMesh.SetNormals(vertNorm);
@@ -219,6 +234,9 @@ int main()
         (*ourShader).SetUniform3f("lightColor", 1.0f, 1.0f, 1.0f);
         (*ourShader).SetUniform3f("viewPos", cam.GetCamPos().x, cam.GetCamPos().y, cam.GetCamPos().z);
         (*ourShader).SetUniform3f("lightPos", lightPos.x, lightPos.y, lightPos.z);
+//        (*ourShader).SetUniform4fArray("lightposnarray[0]", 3, LightPosition);
+//        (*ourShader).SetUniform4fArray("lightcolorarray[0]", 3, LightColor);
+
 
         // TODO we need to create setter function for position scale and rotations as we should not mess with worldModelMatrix
 //        light.worldModelMatrix = Transform::Scale(model, 0.2f, 0.2f, 0.2f);

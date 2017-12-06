@@ -90,6 +90,7 @@ namespace CG184
             glGetActiveUniform(shaderID, i, sizeof(buffer), 0, &m_Uniforms[i].Size, &glType, buffer);
             m_Uniforms[i].Name = std::string(buffer);
             // TODO think of clean way to manage type conversions of OpenGL and custom type
+            // TODO This method will not get the name for uniform location if its a struct or array.
             //m_Uniforms[i].Type = SHADER_TYPE_BOOL;
 
             m_Uniforms[i].Location = glGetUniformLocation(shaderID, buffer);
@@ -256,6 +257,15 @@ namespace CG184
         auto location = GetUniformLocation(name, m_Uniforms);
         assert(location != -1);
         glUniformMatrix4fv(location, 1, GL_FALSE, val);
+        glUseProgram(0);
+    }
+
+    void Shader::SetUniform4fArray(string name, unsigned int numOfElement, float *arrayList) {
+        glUseProgram(shaderID);
+        auto location = GetUniformLocation(name, m_Uniforms);
+//        auto location = glGetUniformLocation(shaderID, name.c_str());
+        assert(location != -1);
+        glUniform4fv(location, numOfElement, arrayList);
         glUseProgram(0);
     }
 

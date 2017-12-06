@@ -53,6 +53,8 @@ namespace CG184
         void SetUniformMat3f(string name, float* val);
         void SetUniformMat4f(string name, float* val);
 
+		void SetUniform4fArray(string name, unsigned int numOfElement, float* arrayList);
+
 
 
 		unsigned int shaderID;

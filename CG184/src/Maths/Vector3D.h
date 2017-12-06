@@ -7,7 +7,8 @@ namespace CG184
 	public:
 		Vector3D();
 		Vector3D(float _x, float _y, float _Z);
-		Vector3D(float val);
+
+        explicit Vector3D(float val);
 		Vector3D(const Vector3D& _vec);
 
 		Vector3D add(const Vector3D& vec) const;
@@ -58,5 +59,6 @@ namespace CG184
 		float x, y, z;
 	};
 
-	
+
+
 }
