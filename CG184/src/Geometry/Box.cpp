@@ -8,20 +8,20 @@ namespace CG184 {
 
     Box::Box() : Mesh(), m_Width(1.0f), m_Height(1.0f), m_Depth(1.0f)
     {
-        InitBox();
+        InitMesh();
     }
 
     Box::Box(Box &a_Box): Mesh(), m_Width(a_Box.m_Width), m_Height(a_Box.m_Height), m_Depth(a_Box.m_Depth)
     {
-        InitBox();
+        InitMesh();
     }
 
     Box::Box(float width, float height, float depth) : Mesh(), m_Width(width), m_Height(height), m_Depth(depth)
     {
-        InitBox();
+        InitMesh();
     }
 
-    void Box::InitBox()
+    void Box::InitMesh()
     {
 
         float X = m_Width  / 2.0f;

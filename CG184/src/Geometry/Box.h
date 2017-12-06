@@ -23,7 +23,7 @@ namespace CG184{
         float m_Height;
         float m_Depth;
 
-        void InitBox();
+        void InitMesh() override;
     };
 }
 

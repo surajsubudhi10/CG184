@@ -1,4 +1,5 @@
 #include "Camera.h"
+#include "../Maths/Maths.h"
 #include <math.h>
 
 namespace CG184 

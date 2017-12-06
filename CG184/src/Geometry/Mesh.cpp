@@ -110,5 +110,9 @@ namespace CG184
         m_Indices = std::move(a_Ind);
     }
 
+    void Mesh::InitMesh()
+    {
+    }
+
 
 }
