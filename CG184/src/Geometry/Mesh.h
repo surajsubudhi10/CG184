@@ -54,12 +54,16 @@ namespace CG184 {
         Mesh(std::vector<VertexData> a_Vertices, std::vector<unsigned int>a_Ind);
 
         void SetPositions(std::vector<Vector3D> a_Positions);
+
         void SetColors(std::vector<Vector3D> a_Colors);
         void SetColor(Vector3D a_Color);
         void SetNormals(std::vector<Vector3D> a_Normals);
         void SetUVs(std::vector<Vector2D> a_UV);
-
         ~Mesh();
+
+    protected:
+        Mesh();
+        void SetIndicies(std::vector<unsigned int>a_Ind);
 
 
 

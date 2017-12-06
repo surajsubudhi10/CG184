@@ -18,6 +18,7 @@
 #include "src/Scene/Transform.h"
 #include "src/Scene/Node.h"
 #include "src/Scene/Scene.h"
+#include "src/Geometry/Box.h"
 
 // settings
 const unsigned int SCR_WIDTH = 800;
@@ -182,11 +183,10 @@ int main()
 
 
 
-    Mesh cubeMesh(vertPos, ind);
-    cubeMesh.SetColor(Vector3D(1.0f, 0.5f, 0.31f));
-    cubeMesh.SetNormals(vertNorm);
+    Box box(1.0f, 1.0f, 1.0f);
+    box.SetColor(Vector3D(0.0f, 1.0f, 0.0f));
     Material defaultMat;
-    Renderer renderer1(cubeMesh, defaultMat);
+    Renderer renderer1(box, defaultMat);
 
 
     Mesh lightMesh(vertPos, ind);

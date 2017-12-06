@@ -26,9 +26,9 @@ namespace CG184
 
     Mesh::Mesh(std::vector<VertexData> a_Vertices, std::vector<unsigned int> a_Ind)
     {
-        m_NumOfVert = (unsigned int)a_Vertices.size();
         m_Indices = std::move(a_Ind);
 
+        m_NumOfVert = (unsigned int)a_Vertices.size();
         vertices = new VertexData[m_NumOfVert];
 
         for(auto i = 0; i < m_NumOfVert; i++){
@@ -43,9 +43,14 @@ namespace CG184
 
     void Mesh::SetPositions(std::vector<Vector3D> a_Positions)
     {
-        assert(a_Positions.size() == m_NumOfVert);
+        m_NumOfVert = (unsigned int)a_Positions.size();
+        vertices = new VertexData[m_NumOfVert];
+
         for(auto i = 0; i < m_NumOfVert; i++){
-            vertices->position = a_Positions[i];
+            vertices->position      = a_Positions[i];
+            vertices->color         = Vector3D(0.5, 0.5, 0.5);
+            vertices->normal        = Vector3D(0, 0, 0);
+            vertices->texCoord      = Vector2D();
             vertices++;
         }
         vertices -= m_NumOfVert;
@@ -96,6 +101,14 @@ namespace CG184
         vertices = nullptr;
     }
 
+    Mesh::Mesh()
+    {
+
+    }
+
+    void Mesh::SetIndicies(std::vector<unsigned int> a_Ind) {
+        m_Indices = std::move(a_Ind);
+    }
 
 
 }
