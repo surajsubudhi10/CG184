@@ -20,6 +20,7 @@
 #include "src/Scene/Scene.h"
 #include "src/Geometry/Box.h"
 #include "src/Geometry/Sphere.h"
+#include "src/Geometry/Circle.h"
 
 // settings
 const unsigned int SCR_WIDTH = 800;
@@ -185,10 +186,11 @@ int main()
 
 
 //    Box box(1.0f, 1.0f, 1.0f);
-    Sphere box(1.0f, 20, 20);
-    box.SetColor(Vector3D(0.0f, 1.0f, 0.0f));
+//    Sphere box(1.0f, 20, 20);
+    Circle obj(2, 30);
+    obj.SetColor(Vector3D(0.0f, 1.0f, 0.0f));
     Material defaultMat;
-    Renderer renderer1(box, defaultMat);
+    Renderer renderer1(obj, defaultMat);
 
 
     Mesh lightMesh(vertPos, ind);

@@ -72,7 +72,7 @@ namespace CG184
 		m_IBO->Bind();
 
 		//glDrawArrays(GL_TRIANGLES, 0, numOfVert);
-		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		glDrawElements(GL_TRIANGLES, m_IndexCount, GL_UNSIGNED_INT, nullptr);
 
 		m_IBO->Unbind();

@@ -2,6 +2,7 @@
 
 namespace CG184
 {
+    // TODO Create Template classes for Vector2D
 	class Vector2D
 	{
 	public:

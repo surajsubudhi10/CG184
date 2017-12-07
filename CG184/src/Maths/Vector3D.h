@@ -2,6 +2,7 @@
 
 namespace CG184 
 {
+    // TODO Create Template classes for Vector3D
 	class Vector3D
 	{
 	public:

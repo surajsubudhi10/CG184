@@ -3,6 +3,8 @@
 
 namespace CG184
 {
+
+    // TODO Create Template classes for Vector4D
 	class Vector4D
 	{
 	public:
