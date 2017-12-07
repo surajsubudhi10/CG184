@@ -21,6 +21,8 @@
 #include "src/Geometry/Box.h"
 #include "src/Geometry/Sphere.h"
 #include "src/Geometry/Circle.h"
+#include "src/Geometry/Plane.h"
+#include "src/Geometry/Torus.h"
 
 // settings
 const unsigned int SCR_WIDTH = 800;
@@ -187,19 +189,22 @@ int main()
 
 //    Box box(1.0f, 1.0f, 1.0f);
 //    Sphere box(1.0f, 20, 20);
-    Circle obj(2, 30);
+//    Circle obj(2, 30);
+//    Plane obj(5, 4);
+    Torus obj(0.5, 2, 20, 20);
     obj.SetColor(Vector3D(0.0f, 1.0f, 0.0f));
     Material defaultMat;
     Renderer renderer1(obj, defaultMat);
 
 
-    Mesh lightMesh(vertPos, ind);
+    Box lightMesh;//(vertPos, ind);
     Shader lightShaderTemp("TestShaders/LightCube.vs", "TestShaders/LightCube.fs");
     Material lightMat(lightShaderTemp);
     Renderer lightBox(lightMesh, lightMat);
 
     Node cube;
     cube.AttachComponent(renderer1);
+    cube.SetLocalEulerAngle(90.0f, 0.0f, 0.0f);
 
     Node light;
     light.AttachComponent(lightBox);

@@ -94,4 +94,12 @@ namespace CG184
         worldModelMatrix = Transform::Scale(worldModelMatrix, _x, _y, _z);
     }
 
+    void Node::SetLocalEulerAngle(float _x, float _y, float _z) {
+        transform.eulerAngles = Vector3D(_x, _y, _z);
+        transform.UpdateTransformMatrix();
+        worldModelMatrix = Transform::Rotate(worldModelMatrix, _x, Vector3D(1, 0, 0));
+        worldModelMatrix = Transform::Rotate(worldModelMatrix, _y, Vector3D(0, 1, 0));
+        worldModelMatrix = Transform::Rotate(worldModelMatrix, _z, Vector3D(0, 0, 1));
+    }
+
 }

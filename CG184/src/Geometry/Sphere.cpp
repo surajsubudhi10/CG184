@@ -67,9 +67,9 @@ namespace CG184 {
         }
 
 //        bool oddRow = false;
-        for (int y = 0; y < y_segments; ++y)
+        for (unsigned int y = 0; y < y_segments; ++y)
         {
-            for (int x = 0; x < x_segments; ++x)
+            for (unsigned int x = 0; x < x_segments; ++x)
             {
                 indicies.push_back((y + 1) * (x_segments + 1) + x);
                 indicies.push_back(y       * (x_segments + 1) + x);

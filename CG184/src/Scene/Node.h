@@ -31,6 +31,7 @@ namespace CG184 {
 
         void SetPosition(float _x, float _y, float _z);
         void SetLocalScale(float _x, float _y, float _z);
+        void SetLocalEulerAngle(float _x, float _y, float _z);
 
         template <typename T>
         T* GetComponent()

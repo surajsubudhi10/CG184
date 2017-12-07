@@ -13,7 +13,7 @@ namespace CG184
         m_Buffer = a_Mesh.vertices;
         m_IndexCount = (unsigned int)a_Mesh.m_Indices.size();
         indicesData = new GLuint[m_IndexCount];
-        for (int i = 0; i < m_IndexCount; i++){
+        for (unsigned int i = 0; i < m_IndexCount; i++){
             indicesData[i] = a_Mesh.m_Indices[i];
         }
         InitGLBuffers(a_Mesh.m_NumOfVert, m_IndexCount);
@@ -72,7 +72,7 @@ namespace CG184
 		m_IBO->Bind();
 
 		//glDrawArrays(GL_TRIANGLES, 0, numOfVert);
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+//		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		glDrawElements(GL_TRIANGLES, m_IndexCount, GL_UNSIGNED_INT, nullptr);
 
 		m_IBO->Unbind();

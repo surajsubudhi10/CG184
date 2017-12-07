@@ -14,7 +14,7 @@ namespace CG184{
 
     void Scene::Render()
     {
-        //TODO Call all the render function for Node having renderer Component
+        //TODO Check for the child as Null if not recursive(Traversing through all the nodes in the Scene Graph)
         for (auto &m_Node : m_Nodes) {
             if (m_Node.HasComponent(ComponentType::RendererType)) {
                 Renderer* renderer = (m_Node.GetComponent<Renderer>());
@@ -25,7 +25,7 @@ namespace CG184{
                 }
                 else {
                     std::cerr << "Renderer Null" << std::endl;
-                    exit(1);
+
 
 //                    return;
                 }
