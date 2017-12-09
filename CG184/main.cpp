@@ -9,20 +9,13 @@
 
 #include "src/Graphics/Window.h"
 #include "src/Graphics/Shader.h"
-//#include "src/Graphics/Renderer.h"
-//#include "src/Graphics/Material.h"
 
 #include "src/EventSystem/Input.h"
 #include "src/Camera/Camera.h"
-#include "src/Geometry/Mesh.h"
-#include "src/Scene/Transform.h"
-#include "src/Scene/Node.h"
-#include "src/Scene/Scene.h"
-#include "src/Geometry/Box.h"
-#include "src/Geometry/Sphere.h"
-#include "src/Geometry/Circle.h"
-#include "src/Geometry/Plane.h"
-#include "src/Geometry/Torus.h"
+
+#include "src/Scene/Nodes.h"
+#include "src/Geometry/Geometry.h"
+
 
 // settings
 const unsigned int SCR_WIDTH = 800;

@@ -43,12 +43,11 @@ namespace CG184 {
 
         //TODO Add SubMesh support for Multiple materials for a Mesh (ignore now for Simplicity)
 //        std::vector<SubMesh*> m_SubMeshes;
-//        std::vector<VertexData> vertices;
+//        std::vector<FaceData> faces;
 
         VertexData* vertices;
-//        std::vector<FaceData> faces;
-        std::vector<unsigned int> m_Indices;
         unsigned int m_NumOfVert;
+        std::vector<unsigned int> m_Indices;
 
         Mesh(std::vector<Vector3D> a_Pos, std::vector<unsigned int>a_Ind);
         Mesh(std::vector<VertexData> a_Vertices, std::vector<unsigned int>a_Ind);

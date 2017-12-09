@@ -52,9 +52,6 @@ namespace CG184 {
         std::vector<Node> m_ChildNodes;
         std::vector<Component*> m_Components;
         Node* m_ParentNode;
-
-//        Renderer* m_Renderer;
-
     };
 }
 

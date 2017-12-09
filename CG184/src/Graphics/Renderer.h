@@ -7,16 +7,13 @@
 #include "../Maths/Maths.h"
 #include "Material.h"
 #include "../Scene/Componet.h"
+#include "../Geometry/MeshFilter.h"
 
 
 namespace CG184 
 {
 
-#define SHADER_VERTEX_INDEX  0
-#define SHADER_COLOR_INDEX	 1
-#define SHADER_NORMAL_INDEX	 2
-#define SHADER_TEXCORD_INDEX 3
-#define RENDERER_VERTEX_SIZE	sizeof(VertexData)
+
 
 
 	class Mesh;
@@ -39,18 +36,12 @@ namespace CG184
 
 	public:
 
-		GLuint m_VAO;
-		GLuint m_VBO;
 
-		unsigned int m_IndexCount;
-		
-		GLuint* indicesData;
-		VertexData* m_Buffer;
-		IndexBuffer* m_IBO;
 
     private:
+        MeshFilter* m_MeshFilter;
         Material* m_Material;
-        void InitGLBuffers(unsigned int numOfVert, unsigned int indicesNum);
+
 	};
 
 	

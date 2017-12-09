@@ -12,7 +12,6 @@ namespace CG184
         worldModelMatrix(Matrix4D(1.0))
     {
         m_ParentNode = nullptr;
-//        m_Renderer = nullptr;nullptr
     }
 
     Node::Node(Transform &a_Trans):
@@ -20,7 +19,6 @@ namespace CG184
             worldModelMatrix(Matrix4D())
     {
         m_ParentNode = nullptr;
-//        m_Renderer = nullptr;
     }
 
     void Node::AddChild(Node& a_Node)
@@ -57,30 +55,23 @@ namespace CG184
     void Node::AttachComponent(Component &a_Component) {
         a_Component.attachedNode = this;
         m_Components.push_back(&a_Component);
-
-//        if(a_Component.type == ComponentType::Renderer)
-//            m_Renderer = a_Component;
     }
 
     bool Node::HasComponent(ComponentType comType) {
         for (auto &m_Component : m_Components) {
             return m_Component->type == comType;
         }
+        return false;
     }
-
-
-
 
     void Node::SetParent(Node* parentNode) {
         m_ParentNode = parentNode;
     }
 
-
     Node::~Node()
     {
 
     }
-
 
     void Node::SetPosition(float _x, float _y, float _z) {
         transform.localPosition = Vector3D(_x, _y, _z);
