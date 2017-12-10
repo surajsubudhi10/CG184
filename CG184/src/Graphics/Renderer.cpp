@@ -1,6 +1,5 @@
 #include <algorithm>
 #include "Renderer.h"
-#include "../Geometry/Mesh.h"
 #include "../Scene/Node.h"
 
 namespace CG184 
@@ -8,7 +7,7 @@ namespace CG184
 
     Renderer::Renderer(Mesh &a_Mesh, Material &a_Material) : Component()
     {
-        type = ComponentType ::RendererType;
+        m_Type = ComponentType ::RendererType;
         m_MeshFilter = new MeshFilter(a_Mesh);
         m_Material = &a_Material;
     }
@@ -22,15 +21,13 @@ namespace CG184
 
 	void Renderer::Render()
 	{
-        Matrix4D debugMat = GetModelMatrix();
-        m_Material->GetShader()->SetUniformMat4f("model", debugMat.elements);
+        m_Material->GetShader()->SetUniformMat4f("model", GetModelMatrix().elements);
 
         m_Material->GetShader()->ActivateShader();
 		glBindVertexArray(m_MeshFilter->GetVAO());
 		m_MeshFilter->GetIBO()->Bind();
 
-		//glDrawArrays(GL_TRIANGLES, 0, numOfVert);
-//		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		glDrawElements(GL_TRIANGLES, m_MeshFilter->GetIndexCount(), GL_UNSIGNED_INT, nullptr);
 
         m_MeshFilter->GetIBO()->Unbind();
@@ -39,7 +36,7 @@ namespace CG184
 	}
 
     Matrix4D Renderer::GetModelMatrix() {
-        return attachedNode->worldModelMatrix;
+        return m_AttachedNode->worldModelMatrix;
     }
 
     void Renderer::SendViewMatrixData(Matrix4D &viewMat) {

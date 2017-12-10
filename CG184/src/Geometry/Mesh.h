@@ -62,7 +62,6 @@ namespace CG184 {
     protected:
         Mesh();
         void SetIndicies(std::vector<unsigned int>a_Ind);
-
         virtual void InitMesh() = 0;
 
     };

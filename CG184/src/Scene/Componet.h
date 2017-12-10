@@ -18,17 +18,21 @@ namespace CG184{
 
     class Component{
     public:
-        Component() : type(ComponentType::CG184Type)
+        Component() : m_Type(ComponentType::CG184Type)
         {
-            attachedNode = nullptr;
+            m_AttachedNode = nullptr;
         }
-        virtual ~Component(){}
+        virtual ~Component(){ m_AttachedNode = nullptr;}
 
+        inline Node* GetAttachedNode(){ return m_AttachedNode;}
+        inline ComponentType GetComponentType(){ return m_Type;}
 
-        Node* attachedNode;
-        ComponentType type;
+        inline void SetAttachedNode(Node* a_Node){m_AttachedNode = a_Node;}
+        inline void SetComponentType(ComponentType type){m_Type = type;}
 
-    private:
+    protected:
+        Node* m_AttachedNode;
+        ComponentType m_Type;
 
     };
 }

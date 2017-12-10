@@ -59,112 +59,6 @@ int main()
 	//glfwSetInputMode(window->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 
-	// Indices
-	std::vector<GLuint> ind {
-		0, 1, 2, // first triangle
-		3, 4, 5, // second triangle
-
-		6, 7, 8,
-		9, 10, 11,
-
-		12, 13, 14,
-		15, 16, 17,
-
-		18, 19, 20,
-		21, 22, 23,
-
-		24, 25, 26,
-		27, 28, 29,
-
-		30, 31, 32,
-		33, 34, 35
-	};
-
-	// Vertex Data
-    std::vector<Vector3D> vertPos {
-		Vector3D(-0.5f, -0.5f, -0.5f),
-		Vector3D( 0.5f, -0.5f, -0.5f),
-		Vector3D( 0.5f,  0.5f, -0.5f),
-		Vector3D( 0.5f,  0.5f, -0.5f),
-		Vector3D(-0.5f,  0.5f, -0.5f),
-		Vector3D(-0.5f, -0.5f, -0.5f),
-
-		Vector3D(-0.5f, -0.5f,  0.5f),
-		Vector3D( 0.5f, -0.5f,  0.5f),
-		Vector3D( 0.5f,  0.5f,  0.5f),
-		Vector3D( 0.5f,  0.5f,  0.5f),
-        Vector3D(-0.5f,  0.5f,  0.5f),
-        Vector3D(-0.5f, -0.5f,  0.5f),
-
-        Vector3D(-0.5f,  0.5f,  0.5f),
-        Vector3D(-0.5f,  0.5f, -0.5f),
-        Vector3D(-0.5f, -0.5f, -0.5f),
-        Vector3D(-0.5f, -0.5f, -0.5f),
-        Vector3D(-0.5f, -0.5f,  0.5f),
-        Vector3D(-0.5f,  0.5f,  0.5f),
-
-        Vector3D(0.5f,  0.5f,  0.5f),
-        Vector3D(0.5f,  0.5f, -0.5f),
-        Vector3D(0.5f, -0.5f, -0.5f),
-        Vector3D(0.5f, -0.5f, -0.5f),
-        Vector3D(0.5f, -0.5f,  0.5f),
-        Vector3D(0.5f,  0.5f,  0.5f),
-
-        Vector3D(-0.5f, -0.5f, -0.5f),
-        Vector3D( 0.5f, -0.5f, -0.5f),
-        Vector3D( 0.5f, -0.5f,  0.5f),
-        Vector3D( 0.5f, -0.5f,  0.5f),
-        Vector3D(-0.5f, -0.5f,  0.5f),
-        Vector3D(-0.5f, -0.5f, -0.5f),
-
-        Vector3D(-0.5f,  0.5f, -0.5f),
-        Vector3D( 0.5f,  0.5f, -0.5f),
-        Vector3D( 0.5f,  0.5f,  0.5f),
-        Vector3D( 0.5f,  0.5f,  0.5f),
-        Vector3D(-0.5f,  0.5f,  0.5f),
-        Vector3D(-0.5f,  0.5f, -0.5f),
-	};
-
-	// Normal Data
-    std::vector<Vector3D> vertNorm {
-            Vector3D(0.0f,  0.0f, -1.0f),
-           Vector3D(  0.0f,  0.0f, -1.0f),
-           Vector3D(  0.0f,  0.0f, -1.0f),
-           Vector3D(  0.0f,  0.0f, -1.0f),
-           Vector3D(  0.0f,  0.0f, -1.0f),
-           Vector3D(  0.0f,  0.0f, -1.0f),
-           Vector3D(  0.0f,  0.0f,  1.0f),
-           Vector3D(  0.0f,  0.0f,  1.0f),
-           Vector3D(  0.0f,  0.0f,  1.0f),
-           Vector3D(  0.0f,  0.0f,  1.0f),
-           Vector3D(  0.0f,  0.0f,  1.0f),
-           Vector3D(  0.0f,  0.0f,  1.0f),
-           Vector3D( -1.0f,  0.0f,  0.0f),
-           Vector3D( -1.0f,  0.0f,  0.0f),
-           Vector3D( -1.0f,  0.0f,  0.0f),
-           Vector3D( -1.0f,  0.0f,  0.0f),
-           Vector3D( -1.0f,  0.0f,  0.0f),
-           Vector3D( -1.0f,  0.0f,  0.0f),
-           Vector3D(  1.0f,  0.0f,  0.0f),
-           Vector3D(  1.0f,  0.0f,  0.0f),
-           Vector3D(  1.0f,  0.0f,  0.0f),
-           Vector3D(  1.0f,  0.0f,  0.0f),
-           Vector3D(  1.0f,  0.0f,  0.0f),
-           Vector3D(  1.0f,  0.0f,  0.0f),
-           Vector3D(  0.0f, -1.0f,  0.0f),
-           Vector3D(  0.0f, -1.0f,  0.0f),
-           Vector3D(  0.0f, -1.0f,  0.0f),
-           Vector3D(  0.0f, -1.0f,  0.0f),
-           Vector3D(  0.0f, -1.0f,  0.0f),
-           Vector3D(  0.0f, -1.0f,  0.0f),
-           Vector3D(  0.0f,  1.0f,  0.0f),
-           Vector3D(  0.0f,  1.0f,  0.0f),
-           Vector3D(  0.0f,  1.0f,  0.0f),
-           Vector3D(  0.0f,  1.0f,  0.0f),
-           Vector3D(  0.0f,  1.0f,  0.0f),
-           Vector3D(  0.0f,  1.0f,  0.0f)
-    };
-
     // Light Data
     float LightPosition[] = {
              0.7f,  0.2f,  2.0f,
@@ -184,39 +78,54 @@ int main()
 //    Sphere box(1.0f, 20, 20);
 //    Circle obj(2, 30);
 //    Plane obj(5, 4);
-    Torus obj(0.5, 2, 20, 20);
-    obj.SetColor(Vector3D(0.0f, 1.0f, 0.0f));
-    Material defaultMat;
-    Renderer renderer1(obj, defaultMat);
-
 
     Box lightMesh;//(vertPos, ind);
     Shader lightShaderTemp("TestShaders/LightCube.vs", "TestShaders/LightCube.fs");
     Material lightMat(lightShaderTemp);
     Renderer lightBox(lightMesh, lightMat);
 
-    Node cube;
-    cube.AttachComponent(renderer1);
-    cube.SetLocalEulerAngle(90.0f, 0.0f, 0.0f);
-
     Node light;
     light.AttachComponent(lightBox);
-    light.SetPosition(lightPos.x, lightPos.y, lightPos.z);
-    light.SetLocalScale(0.2f, 0.2f, 0.2f);
+    //light.SetPosition(lightPos.x, lightPos.y, lightPos.z);
+    light.SetLocalScale(0.25f, 0.25f, 0.25f);
+    light.SetPosition(0.0, 0.0, 1.0);
+
+    Torus torusMesh(0.15, 1, 20, 20);
+    torusMesh.SetColor(Vector3D(0.0f, 1.0f, 0.0f));
+    Material torusMat;
+    Renderer renderer1(torusMesh, torusMat);
+
+    Node torus;
+    torus.AttachComponent(renderer1);
+    torus.SetLocalEulerAngle(-45.0f, 0.0f, 0.0f);
+    torus.AddChild(light);
+//    torus.SetLocalScale(0.5, 0.5, 0.5);
+//    torus.SetPosition(0.0, 0.5, 0.0);
+
+    Box referenceBoxMesh;
+    referenceBoxMesh.SetColor(Vector3D(1.0f, 0.0f, 0.0f));
+    Material referenceBoxMaterial;
+    Renderer referenceBoxRenderer(referenceBoxMesh, referenceBoxMaterial);
+
+    Node referenceBox;
+    referenceBox.AttachComponent(referenceBoxRenderer);
+    referenceBox.SetLocalScale(1.5f, 0.02f, 0.02f);
+    referenceBox.SetPosition(0, 1, 0);
 
     Camera cam;
     cam.SetAspectRatio((float)SCR_WIDTH / (float)SCR_HEIGHT);
 
     Scene rootScene(cam);
-	rootScene.AddToScene(cube);
-    rootScene.AddToScene(light);
+	rootScene.AddToScene(torus);
+    rootScene.AddToScene(referenceBox);
+//    rootScene.AddToScene(light);
 
     //ourShader.AddTexture("Resources/textures/container.jpg", TextureType::Diffuse);
     //ourShader.AddTexture("Resources/textures/awesomeface.png", TextureType::Specular);
 
 
-    Shader* ourShader = defaultMat.GetShader();
-    Shader* lightShader = lightMat.GetShader();
+    Shader* ourShader = torusMat.GetShader();
+    Shader* referenceBoxShader = referenceBoxMaterial.GetShader();
 
     while (!window->IfWindowClosed())
 	{
@@ -230,12 +139,19 @@ int main()
 
         cam.SetFOV(fov);
         cam.Set(cameraPos, cameraFront, cameraUp);
-        Matrix4D model(1.0);
+//        Matrix4D model(1.0);
+
+//        light.SetLocalEulerAngle(deltaTime * 10.0f, 0.0f, 0.0f);
         //model = Matrix4D::Translate(model, cubePositions[1].x, cubePositions[1].y, cubePositions[1].z);
 
         (*ourShader).SetUniform3f("lightColor", 1.0f, 1.0f, 1.0f);
         (*ourShader).SetUniform3f("viewPos", cam.GetCamPos().x, cam.GetCamPos().y, cam.GetCamPos().z);
         (*ourShader).SetUniform3f("lightPos", lightPos.x, lightPos.y, lightPos.z);
+
+        (*referenceBoxShader).SetUniform3f("lightColor", 1.0f, 1.0f, 1.0f);
+        (*referenceBoxShader).SetUniform3f("viewPos", cam.GetCamPos().x, cam.GetCamPos().y, cam.GetCamPos().z);
+        (*referenceBoxShader).SetUniform3f("lightPos", lightPos.x, lightPos.y, lightPos.z);
+
 //        (*ourShader).SetUniform4fArray("lightposnarray[0]", 3, LightPosition);
 //        (*ourShader).SetUniform4fArray("lightcolorarray[0]", 3, LightColor);
 
@@ -273,6 +189,16 @@ void KeyBoardEvents(Window* window, eventsystem::Input input)
 		tempVec = (tempVec * cameraSpeed);
 		cameraPos = cameraPos - tempVec;
 	}
+
+    if (input.KeyPressed(GLFW_KEY_E)){
+        Vector3D tempVec = (cameraUp * cameraSpeed);
+        cameraPos = cameraPos + tempVec;
+    }
+    if (input.KeyPressed(GLFW_KEY_Q)){
+        Vector3D tempVec = (cameraUp * cameraSpeed);
+        cameraPos = cameraPos - tempVec;
+    }
+
 		//cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
 	if (input.KeyPressed(GLFW_KEY_D)) {
 		Vector3D tempVec = cameraFront.cross(cameraUp);

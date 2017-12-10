@@ -26,6 +26,8 @@ namespace CG184 {
         Camera* m_Camera;
         std::vector<Node> m_Nodes;
 
+        void TraverseAllChildNodes(Node& a_Node);
+
     };
 }
 

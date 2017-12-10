@@ -14,23 +14,8 @@ namespace CG184{
 
     void Scene::Render()
     {
-        //TODO Check for the child as Null if not recursive(Traversing through all the nodes in the Scene Graph)
         for (auto &m_Node : m_Nodes) {
-            if (m_Node.HasComponent(ComponentType::RendererType)) {
-                Renderer* renderer = (m_Node.GetComponent<Renderer>());
-                if(renderer != nullptr) {
-                    renderer->SendViewMatrixData(m_Camera->GetViewMatrix());
-                    renderer->SendProjectionMatrixData(m_Camera->GetProjectionMatrix());
-                    renderer->Render();
-                }
-                else {
-                    std::cerr << "Renderer Null" << std::endl;
-
-
-//                    return;
-                }
-
-            }
+            TraverseAllChildNodes(m_Node);
         }
     }
 
@@ -44,5 +29,22 @@ namespace CG184{
         m_Nodes.push_back(node);
     }
 
+    void Scene::TraverseAllChildNodes(Node& a_Node){
+        for (int i = 0; i < a_Node.GetNumOfChildNode(); i++){
+            TraverseAllChildNodes(*(a_Node.GetChildNodeAt(i)));
+        }
+
+        if (a_Node.HasComponent(ComponentType::RendererType)) {
+            Renderer* renderer = (a_Node.GetComponent<Renderer>());
+            if(renderer != nullptr) {
+                renderer->SendViewMatrixData(m_Camera->GetViewMatrix());
+                renderer->SendProjectionMatrixData(m_Camera->GetProjectionMatrix());
+                renderer->Render();
+            }
+            else {
+                throw "(Null Exception) Renderer Null";
+            }
+        }
+    }
 
 }

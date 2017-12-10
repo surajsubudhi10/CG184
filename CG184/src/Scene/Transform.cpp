@@ -26,6 +26,7 @@ namespace CG184
 
     void Transform::UpdateTransformMatrix()
     {
+        transformMat = Matrix4D(1.0f);
         Rotate(transformMat, eulerAngles.x, Vector3D(1, 0, 0));
         Rotate(transformMat, eulerAngles.y, Vector3D(0, 1, 0));
         Rotate(transformMat, eulerAngles.z, Vector3D(0, 0, 1));
@@ -43,7 +44,8 @@ namespace CG184
         );
 
         //transMat = transMat.transpose();
-        return mat.multiply(transMat);
+        mat = transMat.multiply(mat);
+        return mat;
     }
 
     Matrix4D Transform::Rotate(Matrix4D& mat, float angleInDeg, const Vector3D& axis)
@@ -66,7 +68,8 @@ namespace CG184
                 (kz * kx * v) - (ky * s), (kz * ky * v) + (kx * s), (kz * kz * v) +  c      , 0,
                 0,                        0,                        0, 1
         );
-        return mat.multiply(rotMat);
+        mat = rotMat.multiply(mat);
+        return mat;
     }
 
     Matrix4D Transform::Scale(Matrix4D& mat, float sx, float sy, float sz)
@@ -78,7 +81,8 @@ namespace CG184
                 0,  0,  0, 1
         );
 
-        return mat.multiply(scaleMat);
+        mat = scaleMat.multiply(mat);
+        return mat;
     }
 
 

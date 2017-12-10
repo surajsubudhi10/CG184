@@ -33,6 +33,8 @@ namespace CG184 {
         void SetLocalScale(float _x, float _y, float _z);
         void SetLocalEulerAngle(float _x, float _y, float _z);
 
+        void UpdateWorldModelMatrix();
+
         template <typename T>
         T* GetComponent()
         {
@@ -42,14 +44,12 @@ namespace CG184 {
             }
             return nullptr;
         }
-
     public:
         Transform transform;
-        Matrix4D worldModelMatrix;
 
+        Matrix4D worldModelMatrix;
     private:
-        void SetWorldModelMatrix();
-        std::vector<Node> m_ChildNodes;
+        std::vector<Node*> m_ChildNodes;
         std::vector<Component*> m_Components;
         Node* m_ParentNode;
     };
