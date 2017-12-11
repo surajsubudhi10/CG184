@@ -77,7 +77,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)external-dependencies\GLFW\include;$(SolutionDir)external-dependencies\GLEW\include;D:\Code_Stuff\OpenGL\CG184\external-dependencies\Extras;D:\Code_Stuff\OpenGL\CG184\external-dependencies\glm</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)external-dependencies\GLFW\include;$(SolutionDir)external-dependencies\GLEW\include;$(SolutionDir)external-dependencies\Extras</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>GLEW_STATIC;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -122,7 +122,15 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="src\Camera\Camera.cpp" />
     <ClCompile Include="src\EventSystem\Input.cpp" />
+    <ClCompile Include="src\Geometry\Box.cpp" />
+    <ClCompile Include="src\Geometry\Circle.cpp" />
+    <ClCompile Include="src\Geometry\Mesh.cpp" />
+    <ClCompile Include="src\Geometry\MeshFilter.cpp" />
+    <ClCompile Include="src\Geometry\Plane.cpp" />
+    <ClCompile Include="src\Geometry\Sphere.cpp" />
+    <ClCompile Include="src\Geometry\Torus.cpp" />
     <ClCompile Include="src\Graphics\IndexBuffer.cpp" />
+    <ClCompile Include="src\Graphics\Material.cpp" />
     <ClCompile Include="src\Graphics\Renderer.cpp" />
     <ClCompile Include="src\Graphics\Shader.cpp" />
     <ClCompile Include="src\Graphics\Texture.cpp" />
@@ -131,11 +139,23 @@
     <ClCompile Include="src\Maths\Vector2D.cpp" />
     <ClCompile Include="src\Maths\Vector3D.cpp" />
     <ClCompile Include="src\Maths\Vector4D.cpp" />
+    <ClCompile Include="src\Scene\Node.cpp" />
+    <ClCompile Include="src\Scene\Scene.cpp" />
+    <ClCompile Include="src\Scene\Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Camera\Camera.h" />
     <ClInclude Include="src\EventSystem\Input.h" />
+    <ClInclude Include="src\Geometry\Box.h" />
+    <ClInclude Include="src\Geometry\Circle.h" />
+    <ClInclude Include="src\Geometry\Geometry.h" />
+    <ClInclude Include="src\Geometry\Mesh.h" />
+    <ClInclude Include="src\Geometry\MeshFilter.h" />
+    <ClInclude Include="src\Geometry\Plane.h" />
+    <ClInclude Include="src\Geometry\Sphere.h" />
+    <ClInclude Include="src\Geometry\Torus.h" />
     <ClInclude Include="src\Graphics\IndexBuffer.h" />
+    <ClInclude Include="src\Graphics\Material.h" />
     <ClInclude Include="src\Graphics\Renderer.h" />
     <ClInclude Include="src\Graphics\Shader.h" />
     <ClInclude Include="src\Graphics\Texture.h" />
@@ -145,6 +165,11 @@
     <ClInclude Include="src\Maths\Vector2D.h" />
     <ClInclude Include="src\Maths\Vector3D.h" />
     <ClInclude Include="src\Maths\Vector4D.h" />
+    <ClInclude Include="src\Scene\Componet.h" />
+    <ClInclude Include="src\Scene\Node.h" />
+    <ClInclude Include="src\Scene\Nodes.h" />
+    <ClInclude Include="src\Scene\Scene.h" />
+    <ClInclude Include="src\Scene\Transform.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

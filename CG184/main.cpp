@@ -98,7 +98,7 @@ int main()
     Node torus;
     torus.AttachComponent(renderer1);
     torus.SetLocalEulerAngle(-45.0f, 0.0f, 0.0f);
-    torus.AddChild(light);
+    //torus.AddChild(light);
 //    torus.SetLocalScale(0.5, 0.5, 0.5);
 //    torus.SetPosition(0.0, 0.5, 0.0);
 
@@ -115,10 +115,12 @@ int main()
     Camera cam;
     cam.SetAspectRatio((float)SCR_WIDTH / (float)SCR_HEIGHT);
 
+	torus.AddChild(light);
+
     Scene rootScene(cam);
-	rootScene.AddToScene(torus);
-    rootScene.AddToScene(referenceBox);
-//    rootScene.AddToScene(light);
+	rootScene.AddToScene(&torus);
+    //rootScene.AddToScene(referenceBox);
+	rootScene.AddToScene(&light);
 
     //ourShader.AddTexture("Resources/textures/container.jpg", TextureType::Diffuse);
     //ourShader.AddTexture("Resources/textures/awesomeface.png", TextureType::Specular);
@@ -127,6 +129,7 @@ int main()
     Shader* ourShader = torusMat.GetShader();
     Shader* referenceBoxShader = referenceBoxMaterial.GetShader();
 
+	float angle = 0;
     while (!window->IfWindowClosed())
 	{
         // time handle
@@ -141,7 +144,9 @@ int main()
         cam.Set(cameraPos, cameraFront, cameraUp);
 //        Matrix4D model(1.0);
 
-//        light.SetLocalEulerAngle(deltaTime * 10.0f, 0.0f, 0.0f);
+		angle += deltaTime * 10.0f;
+
+        torus.SetLocalEulerAngle(angle, 0.0f, 0.0f);
         //model = Matrix4D::Translate(model, cubePositions[1].x, cubePositions[1].y, cubePositions[1].z);
 
         (*ourShader).SetUniform3f("lightColor", 1.0f, 1.0f, 1.0f);

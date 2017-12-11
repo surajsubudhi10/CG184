@@ -15,8 +15,27 @@ namespace CG184{
     void Scene::Render()
     {
         for (auto &m_Node : m_Nodes) {
-            TraverseAllChildNodes(m_Node);
+			m_Node->UpdateWorldModelMatrix();
         }
+
+
+		/*for (auto &m_Node : m_Nodes) {
+			TraverseAllChildNodes(m_Node);
+		}*/
+
+		for (auto &m_Node : m_Nodes) {
+			if (m_Node->HasComponent(ComponentType::RendererType)) {
+				Renderer* renderer = (m_Node->GetComponent<Renderer>());
+				if (renderer != nullptr) {
+					renderer->SendViewMatrixData(m_Camera->GetViewMatrix());
+					renderer->SendProjectionMatrixData(m_Camera->GetProjectionMatrix());
+					renderer->Render();
+				}
+				else {
+					throw "(Null Exception) Renderer Null";
+				}
+			}
+		}
     }
 
     Scene::~Scene()
@@ -24,8 +43,8 @@ namespace CG184{
         m_Camera = nullptr;
     }
 
-    void Scene::AddToScene(Node &node) {
-        node.SetParent(this);
+    void Scene::AddToScene(Node* node) {
+        //node.SetParent(this);
         m_Nodes.push_back(node);
     }
 

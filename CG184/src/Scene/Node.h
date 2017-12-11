@@ -44,6 +44,18 @@ namespace CG184 {
             }
             return nullptr;
         }
+
+		const Transform& GetWorldTransform()
+		{
+			worldModelMatrix = transform.transformMat;
+			if (m_ParentNode != nullptr)
+			{
+				worldModelMatrix = m_ParentNode->GetWorldTransform().transformMat * worldModelMatrix;
+			}
+
+			return transform;
+		}
+
     public:
         Transform transform;
 

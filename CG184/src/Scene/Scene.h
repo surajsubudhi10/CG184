@@ -20,11 +20,11 @@ namespace CG184 {
         ~Scene() override;
 
         void Render();
-        void AddToScene(Node& node);
+        void AddToScene(Node* node);
 
     private:
         Camera* m_Camera;
-        std::vector<Node> m_Nodes;
+        std::vector<Node*> m_Nodes;
 
         void TraverseAllChildNodes(Node& a_Node);
 

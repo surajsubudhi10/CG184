@@ -47,12 +47,14 @@ namespace CG184
     }
 
     void Node::UpdateWorldModelMatrix() {
-        if(m_ParentNode == nullptr)
+        /*if(m_ParentNode == nullptr)
             worldModelMatrix = transform.GetTransformMat();
         else {
             worldModelMatrix = m_ParentNode->transform.GetTransformMat() * transform.GetTransformMat();
 //            worldModelMatrix = m_ParentNode->worldModelMatrix *  transform.GetTransformMat();
-        }
+        }*/
+
+		GetWorldTransform();
     }
 
     void Node::AttachComponent(Component &a_Component) {
@@ -98,14 +100,15 @@ namespace CG184
 
     void Node::SetLocalEulerAngle(float _x, float _y, float _z) {
         transform.eulerAngles = Vector3D(_x, _y, _z);
-        worldModelMatrix = Transform::Rotate(worldModelMatrix, _x, Vector3D(1, 0, 0));
+		transform.UpdateTransformMatrix();
+        /*worldModelMatrix = Transform::Rotate(worldModelMatrix, _x, Vector3D(1, 0, 0));
         worldModelMatrix = Transform::Rotate(worldModelMatrix, _y, Vector3D(0, 1, 0));
         worldModelMatrix = Transform::Rotate(worldModelMatrix, _z, Vector3D(0, 0, 1));
-        transform.UpdateTransformMatrix();
+        
 
         for(Node* childNode : m_ChildNodes){
             childNode->UpdateWorldModelMatrix();
-        }
+        }*/
     }
 
 }
