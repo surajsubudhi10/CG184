@@ -4,28 +4,34 @@
 
 #include "Node.h"
 
-
 namespace CG184
 {
-    Node::Node():
+
+    int Node::uID = 0;
+
+    Node::Node(const char* name):
+        m_NodeName(name),
+        m_InstanceID(uID++),
         transform(Transform()),
         worldModelMatrix(Matrix4D(1.0))
     {
         m_ParentNode = nullptr;
     }
 
-    Node::Node(Transform &a_Trans):
+    Node::Node(Transform &a_Trans, const char* name):
+            m_NodeName(name),
+            m_InstanceID(uID++),
             transform(a_Trans),
             worldModelMatrix(Matrix4D())
     {
         m_ParentNode = nullptr;
     }
 
-    void Node::AddChild(Node& a_Node)
+    void Node::AddChild(Node* a_Node)
     {
-        a_Node.SetParent(this);
-        a_Node.UpdateWorldModelMatrix();
-        m_ChildNodes.push_back(&a_Node);
+        a_Node->SetParent(this);
+        a_Node->UpdateWorldModelMatrix();
+        m_ChildNodes.push_back(a_Node);
     }
 
     Node* Node::GetChildNodeAt(unsigned int index)
@@ -47,13 +53,6 @@ namespace CG184
     }
 
     void Node::UpdateWorldModelMatrix() {
-        /*if(m_ParentNode == nullptr)
-            worldModelMatrix = transform.GetTransformMat();
-        else {
-            worldModelMatrix = m_ParentNode->transform.GetTransformMat() * transform.GetTransformMat();
-//            worldModelMatrix = m_ParentNode->worldModelMatrix *  transform.GetTransformMat();
-        }*/
-
 		GetWorldTransform();
     }
 
@@ -74,41 +73,30 @@ namespace CG184
     }
 
     Node::~Node()
-    {
-
-    }
+    = default;
 
     void Node::SetPosition(float _x, float _y, float _z) {
         transform.localPosition = Vector3D(_x, _y, _z);
-        worldModelMatrix = Transform::Translate(worldModelMatrix, _x, _y, _z);
         transform.UpdateTransformMatrix();
-
-//        for(Node& childNode : m_ChildNodes){
-//            childNode.UpdateWorldModelMatrix();
-//        }
     }
 
     void Node::SetLocalScale(float _x, float _y, float _z) {
         transform.localScale = Vector3D(_x, _y, _z);
-        worldModelMatrix = Transform::Scale(worldModelMatrix, _x, _y, _z);
         transform.UpdateTransformMatrix();
-
-//        for(Node& childNode : m_ChildNodes){
-//            childNode.UpdateWorldModelMatrix();
-//        }
     }
 
     void Node::SetLocalEulerAngle(float _x, float _y, float _z) {
         transform.eulerAngles = Vector3D(_x, _y, _z);
 		transform.UpdateTransformMatrix();
-        /*worldModelMatrix = Transform::Rotate(worldModelMatrix, _x, Vector3D(1, 0, 0));
-        worldModelMatrix = Transform::Rotate(worldModelMatrix, _y, Vector3D(0, 1, 0));
-        worldModelMatrix = Transform::Rotate(worldModelMatrix, _z, Vector3D(0, 0, 1));
-        
+    }
 
-        for(Node* childNode : m_ChildNodes){
-            childNode->UpdateWorldModelMatrix();
-        }*/
+    const Transform &Node::GetWorldTransform() {
+        worldModelMatrix = transform.transformMat;
+        if (m_ParentNode != nullptr){
+            worldModelMatrix = m_ParentNode->GetWorldTransform().transformMat * worldModelMatrix;
+        }
+
+        return transform;
     }
 
 }

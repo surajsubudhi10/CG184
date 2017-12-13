@@ -59,7 +59,7 @@ namespace CG184{
         }
 
         // generate all the vertices, UVs, Normals (and Tangents/Bitangents):
-        for (int i = 0; i <= m_TorusSegments; ++i)
+        for (unsigned int i = 0; i <= m_TorusSegments; ++i)
         {
             // the basis vectors of the ring equal the difference  vector between the minorRing
             // center and the donut's center position (which equals the origin (0, 0, 0)) and the

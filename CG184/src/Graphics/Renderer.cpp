@@ -36,7 +36,7 @@ namespace CG184
 	}
 
     Matrix4D Renderer::GetModelMatrix() {
-        return m_AttachedNode->worldModelMatrix;
+        return m_AttachedNode->GetWorldModelMatrix();
     }
 
     void Renderer::SendViewMatrixData(Matrix4D &viewMat) {

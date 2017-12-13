@@ -1,10 +1,6 @@
 #include <GL/glew.h>
 
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-
 #include <iostream>
 
 #include "src/Graphics/Window.h"
@@ -49,7 +45,7 @@ Vector3D lightPos(1.2f, 1.0f, 2.0f);
 int main()
 {
 
-	auto *window = new Window(SCR_WIDTH, SCR_HEIGHT, "Basic Window");
+	auto *window = new Window(SCR_WIDTH, SCR_HEIGHT, "CG184::In Development");
 	eventsystem::Input input(window);
 	
 
@@ -79,48 +75,49 @@ int main()
 //    Circle obj(2, 30);
 //    Plane obj(5, 4);
 
-    Box lightMesh;//(vertPos, ind);
+    Box lightMesh;
     Shader lightShaderTemp("TestShaders/LightCube.vs", "TestShaders/LightCube.fs");
     Material lightMat(lightShaderTemp);
     Renderer lightBox(lightMesh, lightMat);
 
-    Node light;
-    light.AttachComponent(lightBox);
+    Node* light = new Node("WightBox");
+    light->AttachComponent(lightBox);
     //light.SetPosition(lightPos.x, lightPos.y, lightPos.z);
-    light.SetLocalScale(0.25f, 0.25f, 0.25f);
-    light.SetPosition(0.0, 0.0, 1.0);
+    light->SetLocalScale(0.25f, 0.25f, 0.25f);
+    light->SetPosition(0.0, 0.0, 1.0);
 
     Torus torusMesh(0.15, 1, 20, 20);
     torusMesh.SetColor(Vector3D(0.0f, 1.0f, 0.0f));
     Material torusMat;
     Renderer renderer1(torusMesh, torusMat);
 
-    Node torus;
-    torus.AttachComponent(renderer1);
-    torus.SetLocalEulerAngle(-45.0f, 0.0f, 0.0f);
-    //torus.AddChild(light);
-//    torus.SetLocalScale(0.5, 0.5, 0.5);
-//    torus.SetPosition(0.0, 0.5, 0.0);
+    Node* torus = new Node("Torus");
+    torus->AttachComponent(renderer1);
+    torus->SetLocalEulerAngle(-90.0f, 0.0f, 0.0f);
+    torus->SetLocalScale(0.5, 0.5, 0.5);
+    torus->SetPosition(0.0, 0.5, 0.0);
 
     Box referenceBoxMesh;
     referenceBoxMesh.SetColor(Vector3D(1.0f, 0.0f, 0.0f));
     Material referenceBoxMaterial;
     Renderer referenceBoxRenderer(referenceBoxMesh, referenceBoxMaterial);
 
-    Node referenceBox;
-    referenceBox.AttachComponent(referenceBoxRenderer);
-    referenceBox.SetLocalScale(1.5f, 0.02f, 0.02f);
-    referenceBox.SetPosition(0, 1, 0);
+    Node* referenceBox = new Node("ReferenceBox");
+    referenceBox->AttachComponent(referenceBoxRenderer);
+//    referenceBox->SetPosition(0, 1, 0);
+    referenceBox->SetLocalScale(1.5f, 0.02f, 0.02f);
+
+    referenceBox->AddChild(light);
+    torus->AddChild(referenceBox);
 
     Camera cam;
     cam.SetAspectRatio((float)SCR_WIDTH / (float)SCR_HEIGHT);
 
-	torus.AddChild(light);
 
     Scene rootScene(cam);
-	rootScene.AddToScene(&torus);
-    //rootScene.AddToScene(referenceBox);
-	rootScene.AddToScene(&light);
+	rootScene.AddToScene(torus);
+    rootScene.AddToScene(referenceBox);
+	rootScene.AddToScene(light);
 
     //ourShader.AddTexture("Resources/textures/container.jpg", TextureType::Diffuse);
     //ourShader.AddTexture("Resources/textures/awesomeface.png", TextureType::Specular);
@@ -142,11 +139,10 @@ int main()
 
         cam.SetFOV(fov);
         cam.Set(cameraPos, cameraFront, cameraUp);
-//        Matrix4D model(1.0);
 
-		angle += deltaTime * 10.0f;
+		angle += deltaTime * 20.0f;
 
-        torus.SetLocalEulerAngle(angle, 0.0f, 0.0f);
+        referenceBox->SetLocalEulerAngle(angle, 0.0f, 0.0f);
         //model = Matrix4D::Translate(model, cubePositions[1].x, cubePositions[1].y, cubePositions[1].z);
 
         (*ourShader).SetUniform3f("lightColor", 1.0f, 1.0f, 1.0f);
@@ -167,6 +163,10 @@ int main()
 		rootScene.Render();
 		window->Update();
 	}
+
+    delete torus;
+    delete light;
+    delete referenceBox;
 
 	delete window;
 	return 0;
@@ -245,11 +245,10 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 
 	//glm::vec3 front;
 	Vector3D front(1.0);
-	front.x = (float)(cos(glm::radians(yaw)) * cos(glm::radians(pitch)));
-	front.y = (float)(sin(glm::radians(pitch)));
-	front.z = (float)(sin(glm::radians(yaw)) * cos(glm::radians(pitch)));
+	front.x = (cos(ToRadian(yaw)) * cos(ToRadian(pitch)));
+	front.y = (sin(ToRadian(pitch)));
+	front.z = (sin(ToRadian(yaw)) * cos(ToRadian(pitch)));
 	cameraFront = front.norm();
-	//cameraFront = glm::normalize(front);
 }
 
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)

@@ -12,6 +12,14 @@ namespace CG184 {
 #define PI           3.14159265358979323846  /* pi */
 #define TWO_PI        (2.0 * PI)
 
+    static float ToRadian(const float angleInDeg) {
+        return angleInDeg * static_cast<float>(PI / 180.0);
+    }
+
+    static float ToDegrees(const float angleInRad) {
+        return angleInRad * static_cast<float>(180.0 / PI);
+    }
+
     typedef Vector3D Color;
 
     static Color WHITE  = Vector3D(1, 1, 1);

@@ -13,18 +13,21 @@
 namespace CG184 {
 
 
-    class Scene : public Node
+
+    class Scene
     {
     public:
         explicit Scene(Camera& cam);
-        ~Scene() override;
+        ~Scene();
 
         void Render();
         void AddToScene(Node* node);
 
+
     private:
         Camera* m_Camera;
-        std::vector<Node*> m_Nodes;
+        std::vector<Node*> m_RenderQueue;
+
 
         void TraverseAllChildNodes(Node& a_Node);
 
