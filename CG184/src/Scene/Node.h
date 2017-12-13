@@ -24,7 +24,7 @@ namespace CG184 {
         void SetParent(Node* parentNode);
 
         unsigned int GetNumOfChildNode();
-        void AddChild(Node& node);
+        void AddChild(Node* node);
 
         void AttachComponent(Component& a_Component);
         bool HasComponent(ComponentType comType);
@@ -34,6 +34,8 @@ namespace CG184 {
         void SetLocalEulerAngle(float _x, float _y, float _z);
 
         void UpdateWorldModelMatrix();
+		inline Transform& GetTransformComponent() { return m_Transform; }
+		const Transform& GetWorldTransform();
 
         template <typename T>
         T* GetComponent()
@@ -45,21 +47,11 @@ namespace CG184 {
             return nullptr;
         }
 
-		const Transform& GetWorldTransform()
-		{
-			worldModelMatrix = transform.transformMat;
-			if (m_ParentNode != nullptr)
-			{
-				worldModelMatrix = m_ParentNode->GetWorldTransform().transformMat * worldModelMatrix;
-			}
+		
 
-			return transform;
-		}
-
-    public:
-        Transform transform;
-
-        Matrix4D worldModelMatrix;
+    protected:
+        Transform m_Transform;
+        //Matrix4D worldModelMatrix;
     private:
         std::vector<Node*> m_ChildNodes;
         std::vector<Component*> m_Components;

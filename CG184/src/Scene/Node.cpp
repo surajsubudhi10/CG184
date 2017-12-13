@@ -8,24 +8,22 @@
 namespace CG184
 {
     Node::Node():
-        transform(Transform()),
-        worldModelMatrix(Matrix4D(1.0))
+		m_Transform(Transform())
     {
         m_ParentNode = nullptr;
     }
 
     Node::Node(Transform &a_Trans):
-            transform(a_Trans),
-            worldModelMatrix(Matrix4D())
+		m_Transform(a_Trans)
     {
         m_ParentNode = nullptr;
     }
 
-    void Node::AddChild(Node& a_Node)
+    void Node::AddChild(Node* a_Node)
     {
-        a_Node.SetParent(this);
-        a_Node.UpdateWorldModelMatrix();
-        m_ChildNodes.push_back(&a_Node);
+        a_Node->SetParent(this);
+        a_Node->UpdateWorldModelMatrix();
+        m_ChildNodes.push_back(a_Node);
     }
 
     Node* Node::GetChildNodeAt(unsigned int index)
@@ -42,20 +40,24 @@ namespace CG184
     }
 
     unsigned int Node::GetNumOfChildNode() {
-
         return static_cast<unsigned int>(m_ChildNodes.size());
     }
 
     void Node::UpdateWorldModelMatrix() {
-        /*if(m_ParentNode == nullptr)
-            worldModelMatrix = transform.GetTransformMat();
-        else {
-            worldModelMatrix = m_ParentNode->transform.GetTransformMat() * transform.GetTransformMat();
-//            worldModelMatrix = m_ParentNode->worldModelMatrix *  transform.GetTransformMat();
-        }*/
-
 		GetWorldTransform();
     }
+
+	const Transform & Node::GetWorldTransform()
+	{
+		if (m_Transform.isDirty)
+			m_Transform.UpdateLocalTransformMatrix();
+
+		m_Transform.worldTransformMat = m_Transform.localTransformMat;
+		if (m_ParentNode != nullptr){
+			m_Transform.worldTransformMat = m_ParentNode->GetWorldTransform().worldTransformMat * m_Transform.worldTransformMat;
+		}
+		return m_Transform;
+	}
 
     void Node::AttachComponent(Component &a_Component) {
         a_Component.SetAttachedNode(this);
@@ -79,36 +81,20 @@ namespace CG184
     }
 
     void Node::SetPosition(float _x, float _y, float _z) {
-        transform.localPosition = Vector3D(_x, _y, _z);
-        worldModelMatrix = Transform::Translate(worldModelMatrix, _x, _y, _z);
-        transform.UpdateTransformMatrix();
-
-//        for(Node& childNode : m_ChildNodes){
-//            childNode.UpdateWorldModelMatrix();
-//        }
+		m_Transform.localPosition = Vector3D(_x, _y, _z);
+		m_Transform.isDirty = true;
+		//m_Transform.UpdateLocalTransformMatrix();
     }
 
     void Node::SetLocalScale(float _x, float _y, float _z) {
-        transform.localScale = Vector3D(_x, _y, _z);
-        worldModelMatrix = Transform::Scale(worldModelMatrix, _x, _y, _z);
-        transform.UpdateTransformMatrix();
-
-//        for(Node& childNode : m_ChildNodes){
-//            childNode.UpdateWorldModelMatrix();
-//        }
+		m_Transform.localScale = Vector3D(_x, _y, _z);
+		m_Transform.isDirty = true;
+		//m_Transform.UpdateLocalTransformMatrix();
     }
 
-    void Node::SetLocalEulerAngle(float _x, float _y, float _z) {
-        transform.eulerAngles = Vector3D(_x, _y, _z);
-		transform.UpdateTransformMatrix();
-        /*worldModelMatrix = Transform::Rotate(worldModelMatrix, _x, Vector3D(1, 0, 0));
-        worldModelMatrix = Transform::Rotate(worldModelMatrix, _y, Vector3D(0, 1, 0));
-        worldModelMatrix = Transform::Rotate(worldModelMatrix, _z, Vector3D(0, 0, 1));
-        
-
-        for(Node* childNode : m_ChildNodes){
-            childNode->UpdateWorldModelMatrix();
-        }*/
-    }
-
+	void Node::SetLocalEulerAngle(float _x, float _y, float _z) {
+		m_Transform.eulerAngles = Vector3D(_x, _y, _z);
+		m_Transform.isDirty = true;
+		//m_Transform.UpdateLocalTransformMatrix();
+	}
 }

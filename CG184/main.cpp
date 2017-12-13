@@ -73,6 +73,9 @@ int main()
     };
 
 
+    Camera cam;
+    cam.SetAspectRatio((float)SCR_WIDTH / (float)SCR_HEIGHT);
+
 
 //    Box box(1.0f, 1.0f, 1.0f);
 //    Sphere box(1.0f, 20, 20);
@@ -84,43 +87,38 @@ int main()
     Material lightMat(lightShaderTemp);
     Renderer lightBox(lightMesh, lightMat);
 
-    Node light;
-    light.AttachComponent(lightBox);
+    Node* light = new Node();
+    light->AttachComponent(lightBox);
     //light.SetPosition(lightPos.x, lightPos.y, lightPos.z);
-    light.SetLocalScale(0.25f, 0.25f, 0.25f);
-    light.SetPosition(0.0, 0.0, 1.0);
+    light->SetLocalScale(0.25f, 0.25f, 0.25f);
+    light->SetPosition(0.0, 0.0, 1.0);
 
     Torus torusMesh(0.15, 1, 20, 20);
     torusMesh.SetColor(Vector3D(0.0f, 1.0f, 0.0f));
     Material torusMat;
     Renderer renderer1(torusMesh, torusMat);
 
-    Node torus;
-    torus.AttachComponent(renderer1);
-    torus.SetLocalEulerAngle(-45.0f, 0.0f, 0.0f);
-    //torus.AddChild(light);
-//    torus.SetLocalScale(0.5, 0.5, 0.5);
-//    torus.SetPosition(0.0, 0.5, 0.0);
+    Node* torus = new Node();
+    torus->AttachComponent(renderer1);
+    torus->SetLocalEulerAngle(-90.0f, 0.0f, 0.0f);
 
     Box referenceBoxMesh;
     referenceBoxMesh.SetColor(Vector3D(1.0f, 0.0f, 0.0f));
     Material referenceBoxMaterial;
     Renderer referenceBoxRenderer(referenceBoxMesh, referenceBoxMaterial);
 
-    Node referenceBox;
-    referenceBox.AttachComponent(referenceBoxRenderer);
-    referenceBox.SetLocalScale(1.5f, 0.02f, 0.02f);
-    referenceBox.SetPosition(0, 1, 0);
+    Node* referenceBox = new Node(); 
+    referenceBox->AttachComponent(referenceBoxRenderer);
+    referenceBox->SetLocalScale(1.5f, 0.02f, 0.02f);
+    referenceBox->SetPosition(0, 1.5f, 0);
 
-    Camera cam;
-    cam.SetAspectRatio((float)SCR_WIDTH / (float)SCR_HEIGHT);
-
-	torus.AddChild(light);
+	torus->AddChild(light);
+	torus->AddChild(referenceBox);
 
     Scene rootScene(cam);
-	rootScene.AddToScene(&torus);
-    //rootScene.AddToScene(referenceBox);
-	rootScene.AddToScene(&light);
+	rootScene.AddToScene(torus);
+    rootScene.AddToScene(referenceBox);
+	rootScene.AddToScene(light);
 
     //ourShader.AddTexture("Resources/textures/container.jpg", TextureType::Diffuse);
     //ourShader.AddTexture("Resources/textures/awesomeface.png", TextureType::Specular);
@@ -136,18 +134,17 @@ int main()
         auto currentFrame = (float)glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
+		//std::cout << "FPS : " << static_cast<int>(1.0f / deltaTime) << std::endl;
 
         KeyBoardEvents(window, input);
         window->SetBGColor(0.0f, 0.0f, 0.0f, 1.0f);
 
         cam.SetFOV(fov);
         cam.Set(cameraPos, cameraFront, cameraUp);
-//        Matrix4D model(1.0);
 
 		angle += deltaTime * 10.0f;
-
-        torus.SetLocalEulerAngle(angle, 0.0f, 0.0f);
-        //model = Matrix4D::Translate(model, cubePositions[1].x, cubePositions[1].y, cubePositions[1].z);
+        torus->SetLocalEulerAngle(angle * 10.0f, 0.0f, 0.0f);
+		light->SetLocalEulerAngle(angle * 20.0f, 0.0f, 0.0f);
 
         (*ourShader).SetUniform3f("lightColor", 1.0f, 1.0f, 1.0f);
         (*ourShader).SetUniform3f("viewPos", cam.GetCamPos().x, cam.GetCamPos().y, cam.GetCamPos().z);
@@ -159,14 +156,14 @@ int main()
 
 //        (*ourShader).SetUniform4fArray("lightposnarray[0]", 3, LightPosition);
 //        (*ourShader).SetUniform4fArray("lightcolorarray[0]", 3, LightColor);
-
-
-        // TODO we need to create setter function for position scale and rotations as we should not mess with worldModelMatrix
-//        light.worldModelMatrix = Transform::Scale(model, 0.2f, 0.2f, 0.2f);
-
+		
 		rootScene.Render();
 		window->Update();
 	}
+
+	delete torus;
+	delete light;
+	delete referenceBox;
 
 	delete window;
 	return 0;

@@ -9,29 +9,36 @@
 namespace CG184
 {
 
-    Transform::Transform() :
-        position(Vector3D(0)),
-        localPosition(Vector3D(0)),
-        eulerAngles(Vector3D(0)),
-        localScale(Vector3D(1))
+	Transform::Transform() :
+		position(Vector3D(0)),
+		localPosition(Vector3D(0)),
+		eulerAngles(Vector3D(0)),
+		localScale(Vector3D(1)),
+		isDirty(false)
     {
-        UpdateTransformMatrix();
+        UpdateLocalTransformMatrix();
     }
 
     Transform::~Transform() = default;
 
-    Matrix4D& Transform::GetTransformMat() {
-        return transformMat;
+    Matrix4D& Transform::GetLocalTransformMat() {
+        return localTransformMat;
     }
 
-    void Transform::UpdateTransformMatrix()
+	Matrix4D & Transform::GetWorldTransformMat()
+	{
+		return worldTransformMat;
+	}
+
+    void Transform::UpdateLocalTransformMatrix()
     {
-        transformMat = Matrix4D(1.0f);
-        Rotate(transformMat, eulerAngles.x, Vector3D(1, 0, 0));
-        Rotate(transformMat, eulerAngles.y, Vector3D(0, 1, 0));
-        Rotate(transformMat, eulerAngles.z, Vector3D(0, 0, 1));
-        Scale(transformMat, localScale.x, localScale.y, localScale.z);
-        Translate(transformMat, localPosition.x, localPosition.y, localPosition.z);
+		localTransformMat = Matrix4D(1.0f);
+        Rotate(localTransformMat, eulerAngles.x, Vector3D(1, 0, 0));
+        Rotate(localTransformMat, eulerAngles.y, Vector3D(0, 1, 0));
+        Rotate(localTransformMat, eulerAngles.z, Vector3D(0, 0, 1));
+        Scale(localTransformMat, localScale.x, localScale.y, localScale.z);
+        Translate(localTransformMat, localPosition.x, localPosition.y, localPosition.z);
+		isDirty = false;
     }
 
     Matrix4D Transform::Translate(Matrix4D& mat, float _x, float _y, float _z)

@@ -5,7 +5,6 @@
 #include "Scene.h"
 
 namespace CG184{
-//    class Renderer;
 
     Scene::Scene(CG184::Camera &cam) : Node()
     {
@@ -17,11 +16,6 @@ namespace CG184{
         for (auto &m_Node : m_Nodes) {
 			m_Node->UpdateWorldModelMatrix();
         }
-
-
-		/*for (auto &m_Node : m_Nodes) {
-			TraverseAllChildNodes(m_Node);
-		}*/
 
 		for (auto &m_Node : m_Nodes) {
 			if (m_Node->HasComponent(ComponentType::RendererType)) {

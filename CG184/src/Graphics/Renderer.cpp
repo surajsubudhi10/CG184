@@ -27,7 +27,9 @@ namespace CG184
 		glBindVertexArray(m_MeshFilter->GetVAO());
 		m_MeshFilter->GetIBO()->Bind();
 
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		//glPolygonMode(GL_FRONT_AND_BACK, GL_POINTS);
+
 		glDrawElements(GL_TRIANGLES, m_MeshFilter->GetIndexCount(), GL_UNSIGNED_INT, nullptr);
 
         m_MeshFilter->GetIBO()->Unbind();
@@ -36,7 +38,7 @@ namespace CG184
 	}
 
     Matrix4D Renderer::GetModelMatrix() {
-        return m_AttachedNode->worldModelMatrix;
+        return m_AttachedNode->GetTransformComponent().GetWorldTransformMat();
     }
 
     void Renderer::SendViewMatrixData(Matrix4D &viewMat) {

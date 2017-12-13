@@ -13,9 +13,6 @@
 namespace CG184 
 {
 
-
-
-
 	class Mesh;
 	class VertexData;
 
@@ -33,13 +30,8 @@ namespace CG184
 
     private:
         Matrix4D GetModelMatrix();
-
-	public:
-
-
-
-    private:
-        MeshFilter* m_MeshFilter;
+		
+		MeshFilter* m_MeshFilter;
         Material* m_Material;
 
 	};
