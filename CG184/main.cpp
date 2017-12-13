@@ -1,10 +1,6 @@
 #include <GL/glew.h>
 
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-
 #include <iostream>
 
 #include "src/Graphics/Window.h"
@@ -49,7 +45,7 @@ Vector3D lightPos(1.2f, 1.0f, 2.0f);
 int main()
 {
 
-	auto *window = new Window(SCR_WIDTH, SCR_HEIGHT, "Basic Window");
+	auto *window = new Window(SCR_WIDTH, SCR_HEIGHT, "CG184::In Development");
 	eventsystem::Input input(window);
 	
 
@@ -82,12 +78,13 @@ int main()
 //    Circle obj(2, 30);
 //    Plane obj(5, 4);
 
-    Box lightMesh;//(vertPos, ind);
+    Box lightMesh;
     Shader lightShaderTemp("TestShaders/LightCube.vs", "TestShaders/LightCube.fs");
     Material lightMat(lightShaderTemp);
     Renderer lightBox(lightMesh, lightMat);
 
-    Node* light = new Node();
+
+    Node* light = new Node("WightBox");
     light->AttachComponent(lightBox);
     //light.SetPosition(lightPos.x, lightPos.y, lightPos.z);
     light->SetLocalScale(0.25f, 0.25f, 0.25f);
@@ -98,22 +95,25 @@ int main()
     Material torusMat;
     Renderer renderer1(torusMesh, torusMat);
 
-    Node* torus = new Node();
+    Node* torus = new Node("Torus");
     torus->AttachComponent(renderer1);
     torus->SetLocalEulerAngle(-90.0f, 0.0f, 0.0f);
+    torus->SetLocalScale(0.5, 0.5, 0.5);
+    torus->SetPosition(0.0, 0.5, 0.0);
+
 
     Box referenceBoxMesh;
     referenceBoxMesh.SetColor(Vector3D(1.0f, 0.0f, 0.0f));
     Material referenceBoxMaterial;
     Renderer referenceBoxRenderer(referenceBoxMesh, referenceBoxMaterial);
 
-    Node* referenceBox = new Node(); 
+    Node* referenceBox = new Node("ReferenceBox");
     referenceBox->AttachComponent(referenceBoxRenderer);
     referenceBox->SetLocalScale(1.5f, 0.02f, 0.02f);
     referenceBox->SetPosition(0, 1.5f, 0);
 
-	torus->AddChild(light);
-	torus->AddChild(referenceBox);
+    torus->AddChild(light);
+    torus->AddChild(referenceBox);
 
     Scene rootScene(cam);
 	rootScene.AddToScene(torus);
@@ -242,11 +242,10 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 
 	//glm::vec3 front;
 	Vector3D front(1.0);
-	front.x = (float)(cos(glm::radians(yaw)) * cos(glm::radians(pitch)));
-	front.y = (float)(sin(glm::radians(pitch)));
-	front.z = (float)(sin(glm::radians(yaw)) * cos(glm::radians(pitch)));
+	front.x = (cos(ToRadian(yaw)) * cos(ToRadian(pitch)));
+	front.y = (sin(ToRadian(pitch)));
+	front.z = (sin(ToRadian(yaw)) * cos(ToRadian(pitch)));
 	cameraFront = front.norm();
-	//cameraFront = glm::normalize(front);
 }
 
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)

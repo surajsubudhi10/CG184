@@ -10,7 +10,7 @@ namespace CG184
 	public:
 		Vector4D();
 		Vector4D(float _x, float _y, float _Z, float _w);
-		Vector4D(float val);
+		explicit Vector4D(float val);
 		Vector4D(const Vector4D& _vec);
 		Vector4D(const Vector3D& _vec, float wval);
 
@@ -20,7 +20,7 @@ namespace CG184
 		Vector4D divide(const Vector4D& vec) const;
 
 		Vector4D mult(float multiplier) const;
-		Vector4D divide(float diveder)const ;
+		Vector4D divide(float divisor)const ;
 
 		const float at(int i) const;
 		float at(int i);

@@ -4,17 +4,22 @@
 
 #include "Node.h"
 
-
 namespace CG184
 {
-    Node::Node():
-		m_Transform(Transform())
+    int Node::uID = 0;
+
+    Node::Node(const char* name):
+        m_NodeName(name),
+        m_InstanceID(uID++),
+        m_Transform(Transform())
     {
         m_ParentNode = nullptr;
     }
 
-    Node::Node(Transform &a_Trans):
-		m_Transform(a_Trans)
+    Node::Node(Transform &a_Trans, const char* name):
+            m_NodeName(name),
+            m_InstanceID(uID++),
+            m_Transform(a_Trans)
     {
         m_ParentNode = nullptr;
     }
@@ -76,9 +81,7 @@ namespace CG184
     }
 
     Node::~Node()
-    {
-
-    }
+    = default;
 
     void Node::SetPosition(float _x, float _y, float _z) {
 		m_Transform.localPosition = Vector3D(_x, _y, _z);

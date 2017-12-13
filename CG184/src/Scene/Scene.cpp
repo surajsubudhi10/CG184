@@ -6,18 +6,18 @@
 
 namespace CG184{
 
-    Scene::Scene(CG184::Camera &cam) : Node()
+    Scene::Scene(Camera &cam)
     {
         m_Camera = &cam;
     }
 
     void Scene::Render()
     {
-        for (auto &m_Node : m_Nodes) {
+        for (auto &m_Node : m_RenderQueue) {
 			m_Node->UpdateWorldModelMatrix();
         }
 
-		for (auto &m_Node : m_Nodes) {
+		for (auto &m_Node : m_RenderQueue) {
 			if (m_Node->HasComponent(ComponentType::RendererType)) {
 				Renderer* renderer = (m_Node->GetComponent<Renderer>());
 				if (renderer != nullptr) {
@@ -32,18 +32,18 @@ namespace CG184{
 		}
     }
 
-    Scene::~Scene()
-    {
+    Scene::~Scene() {
         m_Camera = nullptr;
     }
 
     void Scene::AddToScene(Node* node) {
-        //node.SetParent(this);
-        m_Nodes.push_back(node);
+        m_RenderQueue.push_back(node);
     }
 
+
+
     void Scene::TraverseAllChildNodes(Node& a_Node){
-        for (int i = 0; i < a_Node.GetNumOfChildNode(); i++){
+        for (unsigned int i = 0; i < a_Node.GetNumOfChildNode(); i++){
             TraverseAllChildNodes(*(a_Node.GetChildNodeAt(i)));
         }
 
@@ -59,5 +59,7 @@ namespace CG184{
             }
         }
     }
+
+
 
 }

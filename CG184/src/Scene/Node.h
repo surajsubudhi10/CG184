@@ -10,12 +10,15 @@
 #include "Componet.h"
 #include "../Graphics/Renderer.h"
 
+
 namespace CG184 {
+
+
     class Node {
 
     public:
-        Node();
-        explicit Node(Transform& a_Trans);
+        explicit Node(const char* name);
+        Node(Transform& a_Trans, const char* name);
 
         virtual ~Node();
 
@@ -34,8 +37,13 @@ namespace CG184 {
         void SetLocalEulerAngle(float _x, float _y, float _z);
 
         void UpdateWorldModelMatrix();
+
 		inline Transform& GetTransformComponent() { return m_Transform; }
 		const Transform& GetWorldTransform();
+
+        inline int GetInstanceID(){ return m_InstanceID;}
+        inline const char* GetName(){ return m_NodeName;}
+        inline void SetName(const char* name){m_NodeName = name;}
 
         template <typename T>
         T* GetComponent()
@@ -47,15 +55,19 @@ namespace CG184 {
             return nullptr;
         }
 
-		
-
     protected:
         Transform m_Transform;
         //Matrix4D worldModelMatrix;
     private:
+
+        const char* m_NodeName;
+        const int m_InstanceID;
+
         std::vector<Node*> m_ChildNodes;
         std::vector<Component*> m_Components;
         Node* m_ParentNode;
+
+        static int uID;
     };
 }
 

@@ -122,14 +122,7 @@ namespace CG184
 
 	bool Vector4D::isEqual(const Vector4D& vec) const
 	{
-		if (x == vec.x && y == vec.y && z == vec.z && w == vec.w)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+        return x == vec.x && y == vec.y && z == vec.z && w == vec.w;
 	}
 
 
