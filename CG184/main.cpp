@@ -40,7 +40,7 @@ float fov = 45.0f;
 float deltaTime = 0.0f;	// time between current frame and last frame
 float lastFrame = 0.0f;
 
-Vector3D lightPos(1.2f, 1.0f, 2.0f);
+Vector3D lightPos(1.2f, 2.0f, 2.0f);
 
 int main()
 {
@@ -55,19 +55,6 @@ int main()
 	//glfwSetInputMode(window->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 
-    // Light Data
-    float LightPosition[] = {
-             0.7f,  0.2f,  2.0f,
-             2.3f, -3.3f, -4.0f,
-            -4.0f,  2.0f, -12.0f
-    };
-
-    float LightColor[] = {
-            1.0f,   0.0f,   0.0f,
-            0.3f,   1.0f,   0.0f,
-            0.0f,   0.0f,   1.0f
-    };
-
 
     Camera* cam = new Camera();
     cam->SetAspectRatio((float)SCR_WIDTH / (float)SCR_HEIGHT);
@@ -75,11 +62,8 @@ int main()
 
 	Light* pointLight = new Light();
 	pointLight->SetPosition(Vector4D(lightPos.x, lightPos.y, lightPos.z, 1.0));
+    pointLight->SetAmbientColor(Vector4D(0.2, 0.2, 0.2, 1.0));
 
-//    Box box(1.0f, 1.0f, 1.0f);
-//    Sphere box(1.0f, 20, 20);
-//    Circle obj(2, 30);
-//    Plane obj(5, 4);
 
     Box lightMesh;
     Shader lightShaderTemp("TestShaders/LightCube.vs", "TestShaders/LightCube.fs");
@@ -87,18 +71,17 @@ int main()
     Renderer lightBox(lightMesh, lightMat);
 
 
-    Node* light = new Node("WightBox");
+    Node* light = new Node("lightBox");
     light->AttachComponent(lightBox);
     light->SetPosition(lightPos.x, lightPos.y, lightPos.z);
-    light->SetLocalScale(0.25f, 0.25f, 0.25f);
+    light->SetLocalScale(0.05f, 0.05f, 0.05f);
     //light->SetPosition(0.0, 0.0, 1.0);
 
     Sphere sphereMesh(1.0, 40, 40);
-	//Box sphereMesh(1.0f, 1.0f, 1.0f);
 	Shader sphereShaderTemp("TestShaders/PhongShader.vs", "TestShaders/PhongShader.fs");
-	//sphereMesh.SetColor(Vector3D(0.0f, 1.0f, 0.0f));
 	Material sphereMat(sphereShaderTemp);
-	sphereMat.SetShininess(5.0f);
+    sphereMat.SetAmbient(Vector4D(0.1, 0.1, 0.1, 1.0));
+	sphereMat.SetShininess(100.0f);
     Renderer renderer1(sphereMesh, sphereMat);
 
     Node* torus = new Node("Torus");
@@ -107,31 +90,16 @@ int main()
     torus->SetLocalScale(0.5, 0.5, 0.5);
     torus->SetPosition(0.0, 0.5, 0.0);
 
-
-    /*Box referenceBoxMesh;
-    referenceBoxMesh.SetColor(Vector3D(1.0f, 0.0f, 0.0f));
-    Material referenceBoxMaterial;
-    Renderer referenceBoxRenderer(referenceBoxMesh, referenceBoxMaterial);
-
-    Node* referenceBox = new Node("ReferenceBox");
-    referenceBox->AttachComponent(referenceBoxRenderer);
-    referenceBox->SetLocalScale(1.5f, 0.02f, 0.02f);
-    referenceBox->SetPosition(0, 1.5f, 0);*/
-
 	//torus->AddChild(light);
 	//torus->AddChild(referenceBox);
 
     Scene rootScene(cam, pointLight);
 	rootScene.AddToScene(torus);
-    //rootScene.AddToScene(referenceBox);
 	rootScene.AddToScene(light);
 
     //ourShader.AddTexture("Resources/textures/container.jpg", TextureType::Diffuse);
     //ourShader.AddTexture("Resources/textures/awesomeface.png", TextureType::Specular);
 
-
-    Shader* ourShader = sphereMat.GetShader();
-    //Shader* referenceBoxShader = referenceBoxMaterial.GetShader();
 
 	float angle = 0;
     while (!window->IfWindowClosed())
@@ -146,7 +114,7 @@ int main()
         KeyBoardEvents(window, input);
         window->SetBGColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-        //cam.SetFOV(fov);
+        cam->SetFOV(fov);
         cam->Set(cameraPos, cameraFront, cameraUp);
 		pointLight->SetPosition(Vector4D(sin(angle), lightPos.y, lightPos.z, 1.0));
 		light->SetPosition(sin(angle), lightPos.y, lightPos.z);
@@ -154,18 +122,15 @@ int main()
         //torus->SetLocalEulerAngle(angle * 10.0f, 0.0f, 0.0f);
 		//light->SetLocalEulerAngle(angle * 20.0f, 0.0f, 0.0f);
 
-
-//        (*ourShader).SetUniform4fArray("lightposnarray[0]", 3, LightPosition);
-//        (*ourShader).SetUniform4fArray("lightcolorarray[0]", 3, LightColor);
-		
 		rootScene.Render();
 		window->Update();
 	}
 
 	delete torus;
 	delete light;
-	//delete referenceBox;
 
+    delete cam;
+    delete pointLight;
 	delete window;
 	return 0;
 }
@@ -202,15 +167,12 @@ void KeyBoardEvents(Window* window, eventsystem::Input input)
         cameraPos = cameraPos - tempVec;
     }
 
-		//cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
 	if (input.KeyPressed(GLFW_KEY_D)) {
 		Vector3D tempVec = cameraFront.cross(cameraUp);
 		tempVec.normalize();
 		tempVec = (tempVec * cameraSpeed);
 		cameraPos = cameraPos + tempVec;
 	}
-		//cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
-
 }
 
 

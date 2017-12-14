@@ -64,7 +64,7 @@ void main()
     vec4 specular = light.specular * (Ks * material.specular);  
         
     vec4 result = ambient + diffuse + specular;
-	//result = max_to_one(result);
+	result = max_to_one(result);
     FragColor = result;
 	//FragColor = vec4(result, 1.0);
 

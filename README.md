@@ -13,7 +13,7 @@ Keep in mind the supplied libraries were generated with a specific compiler vers
 First make sure you have CMake, Git, and GCC by typing as root (sudo) `apt-get install g++ cmake git` and then get the required packages:
 Using root (sudo) and type `apt-get install  libglm-dev libglew-dev libglfw3-dev` . Next, create a build directory and change directory to the new build dir. There we run the `cmake ..`, it will generate necessary files and check for all the dependancies and create a make file. Then just type `make` in the terminal. This will generate the executables in the build folder.
 
-Note that CodeBlocks or other IDEs may have issues running the programs due to problems finding the shader and resource files, however it should still be able to generate the exectuables. To work around this problem it is possible to set an environment variable to tell the tutorials where the resource files can be found. 
+Note that CodeBlocks or other IDEs may have issues running the programs due to problems finding the shader and resource files, however it should still be able to generate the exectuables. To work around this problem it is possible to set an environment variable to tell the IDE where the resource files can be found. 
 
 To sum it up:
 ```

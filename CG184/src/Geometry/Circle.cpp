@@ -28,7 +28,7 @@ namespace CG184 {
         std::vector<Vector2D> texCoord;
         std::vector<Vector3D> normals;
         std::vector<unsigned int> indicies;
-        // TODO Complete the cicle mesh (we need only edge segments and radius)
+        // TODO Complete the circle mesh (we need only edge segments and radius)
         // Center Point
         positions.emplace_back(0, 0, 0);
         normals.emplace_back(0, 0, 1);
@@ -39,7 +39,6 @@ namespace CG184 {
             auto xPos = static_cast<float>(m_Radius * std::cos(edgeSegment * TWO_PI));
             auto yPos = static_cast<float>(m_Radius * std::sin(edgeSegment * TWO_PI));
 
-//                Positions.push_back(math::vec3(xPos * ringDepth, yPos * ringDepth, 0.0f));
             positions.emplace_back(xPos, yPos, 0);
             normals.emplace_back(0, 0, 1);
 //                texCoord.emplace_back(xSegment, ySegment);

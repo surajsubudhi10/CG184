@@ -20,10 +20,10 @@ namespace CG184 {
         void AttachShader(Shader& a_Shader);
         inline Shader* GetShader(){ return m_Shader;}
 
-		inline void SetAmbinet(Color col) { m_Ambient = col; }
-		inline void SetDiffuse(Color col) { m_Diffuse = col; }
-		inline void SetSpecular(Color col) { m_Specular = col; }
-		inline void SetEmission(Color col) { m_Emission = col; }
+		inline void SetAmbient(const Color &col) { m_Ambient = col; }
+		inline void SetDiffuse(const Color &col) { m_Diffuse = col; }
+		inline void SetSpecular(const Color &col) { m_Specular = col; }
+		inline void SetEmission(const Color &col) { m_Emission = col; }
 		inline void SetShininess(float shine) { m_Shininess = shine; }
 
 

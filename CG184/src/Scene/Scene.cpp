@@ -6,13 +6,13 @@
 
 namespace CG184{
 
-    Scene::Scene(Camera &cam)
+    Scene::Scene(Camera* cam)
     {
         m_Camera = cam;
 		m_Light = new Light();
     }
 
-	Scene::Scene(CG184::Camera* cam, Light* light) : Node()
+	Scene::Scene(CG184::Camera* cam, Light* light)
 	{
 		m_Camera = cam;
 		m_Light = light;

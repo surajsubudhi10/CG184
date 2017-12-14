@@ -50,14 +50,14 @@ namespace CG184
 		m_Material->GetShader()->SetUniform4f("light.diffuse"    , light->GetDiffuseColor());
 		m_Material->GetShader()->SetUniform4f("light.specular"   , light->GetSpecularColor());
 		m_Material->GetShader()->SetUniform4f("light.position"   , light->GetPosition());
-		//m_Material->GetShader()->SetUniform3f("light.attenuation", light->GetAttenuation().x, light->GetAttenuation().y, light->GetAttenuation().z);
+		m_Material->GetShader()->SetUniform3f("light.attenuation", light->GetAttenuation().x, light->GetAttenuation().y, light->GetAttenuation().z);
 	}
 
 	void Renderer::SendMaterialData() {
 		m_Material->GetShader()->SetUniform4f("material.ambient"  , m_Material->m_Ambient);
 		m_Material->GetShader()->SetUniform4f("material.diffuse"  , m_Material->m_Diffuse);
 		m_Material->GetShader()->SetUniform4f("material.specular" , m_Material->m_Specular);
-		//m_Material->GetShader()->SetUniform4f("material.emission" , m_Material->m_Emission);
+		m_Material->GetShader()->SetUniform4f("material.emission" , m_Material->m_Emission);
 		m_Material->GetShader()->SetUniform1f("material.shininess", m_Material->m_Shininess);
 	}
 

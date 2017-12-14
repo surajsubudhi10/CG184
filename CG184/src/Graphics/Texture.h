@@ -20,16 +20,13 @@ namespace CG184
 	class Texture
 	{
 	public:
-
-
-
 		Texture();
 		~Texture();
 
 		void LoadTexture(const char* texturePath);
 
-		// TODO make it private
-	public:
+        friend class Shader;
+	private:
 		GLuint textureID;
 	};
 

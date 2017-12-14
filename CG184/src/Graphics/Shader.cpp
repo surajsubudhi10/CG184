@@ -4,7 +4,6 @@
 namespace CG184 
 {
     // Helper Function
-    // TODO move it to some other place
     int GetUniformLocation(const string &name, vector<Uniform> uniformList);
 
 	Shader::Shader(const char* vertexPath, const char* fragmentPath)// : textured(false)
@@ -196,9 +195,7 @@ namespace CG184
 	void Shader::SetUniform1f(string name, float _v1)
     {
         glUseProgram(shaderID);
-        // TODO Null Check
         auto location = GetUniformLocation(name, m_Uniforms);
-        //assert(location != -1);
 		if (location != -1)
 			glUniform1f(location, _v1);
         glUseProgram(0);
@@ -207,9 +204,7 @@ namespace CG184
     void Shader::SetUniform2f(string name, float _v1, float _v2)
     {
         glUseProgram(shaderID);
-        // TODO Null Check
         auto location = GetUniformLocation(name, m_Uniforms);
-        //assert(location != -1);
 		if (location != -1)
 			glUniform2f(location, _v1, _v2);
         glUseProgram(0);
@@ -218,9 +213,7 @@ namespace CG184
     void Shader::SetUniform3f(string name, float _v1, float _v2, float _v3)
     {
         glUseProgram(shaderID);
-        // TODO Null Check
         auto location = GetUniformLocation(name, m_Uniforms);
-        //assert(location != -1);
         if (location != -1)
 			glUniform3f(location, _v1, _v2, _v3);
         glUseProgram(0);
@@ -229,9 +222,7 @@ namespace CG184
     void Shader::SetUniform4f(string name, float _v1, float _v2, float _v3, float _v4)
     {
         glUseProgram(shaderID);
-        // TODO Null Check
         auto location = GetUniformLocation(name, m_Uniforms);
-        //assert(location != -1);
 		if (location != -1)
 			glUniform4f(location, _v1, _v2, _v3, _v4);
         glUseProgram(0);
@@ -240,9 +231,7 @@ namespace CG184
 	void Shader::SetUniform4f(string name, Vector4D _vec)
 	{
 		glUseProgram(shaderID);
-		// TODO Null Check
 		auto location = GetUniformLocation(name, m_Uniforms);
-		//assert(location != -1);
 		if (location != -1)
 			glUniform4f(location, _vec.x, _vec.y, _vec.z, _vec.w);
 		glUseProgram(0);
@@ -252,7 +241,6 @@ namespace CG184
     {
         glUseProgram(shaderID);
         auto location = GetUniformLocation(name, m_Uniforms);
-        //assert(location != -1);
 		if (location != -1)
 			glUniformMatrix3fv(location, 1, GL_FALSE, val);
         glUseProgram(0);
@@ -262,7 +250,6 @@ namespace CG184
     {
         glUseProgram(shaderID);
         auto location = GetUniformLocation(name, m_Uniforms);
-        //assert(location != -1);
 		if (location != -1)
 			glUniformMatrix2fv(location, 1, GL_FALSE, val);
         glUseProgram(0);
@@ -272,7 +259,6 @@ namespace CG184
     {
         glUseProgram(shaderID);
         auto location = GetUniformLocation(name, m_Uniforms);
-        //assert(location != -1);
 		if (location != -1)
 			glUniformMatrix4fv(location, 1, GL_FALSE, val);
         glUseProgram(0);
@@ -281,8 +267,6 @@ namespace CG184
     void Shader::SetUniform4fArray(string name, unsigned int numOfElement, float *arrayList) {
         glUseProgram(shaderID);
         auto location = GetUniformLocation(name, m_Uniforms);
-//        auto location = glGetUniformLocation(shaderID, name.c_str());
-        //assert(location != -1);
 		if (location != -1)
 			glUniform4fv(location, numOfElement, arrayList);
         glUseProgram(0);
@@ -295,7 +279,6 @@ namespace CG184
             if(name == uniform.Name)
                 return uniform.Location;
         }
-
         return -1;
     }
 }

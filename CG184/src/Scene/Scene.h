@@ -8,6 +8,7 @@
 #include <iostream>
 #include "Node.h"
 #include "../Camera/Camera.h"
+#include "../Lights/Light.h"
 
 
 namespace CG184 {
@@ -17,7 +18,7 @@ namespace CG184 {
     class Scene
     {
     public:
-        explicit Scene(Camera& cam);
+        explicit Scene(Camera* cam);
         ~Scene();
 		Scene(Camera* cam, Light* light);
 

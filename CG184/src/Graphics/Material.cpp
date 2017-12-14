@@ -12,7 +12,7 @@ namespace CG184 {
 		m_Emission(BLACK),
 		m_Shininess(0.0)
     {
-        // TODO Create dafult shader (Phong, Blin, etc)
+        // TODO Create default shader (Phong, Blin, etc)
         m_Shader = new Shader("TestShaders/BoxSolid.vs", "TestShaders/BoxSolid.fs");
     }
 
