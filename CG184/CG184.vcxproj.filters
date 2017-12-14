@@ -84,6 +84,9 @@
     <ClCompile Include="src\Scene\Transform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Lights\Light.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Graphics\Window.h">
@@ -164,5 +167,22 @@
     <ClInclude Include="src\Scene\Transform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Lights\Light.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="TestShaders\BoxSolid.fs" />
+    <None Include="TestShaders\coordinate_systems.fs" />
+    <None Include="TestShaders\coordinate_systems.vs" />
+    <None Include="TestShaders\LightCube.fs" />
+    <None Include="TestShaders\LightCube.vs" />
+    <None Include="TestShaders\testShader.fs" />
+    <None Include="TestShaders\testShader.vs" />
+    <None Include="TestShaders\texture.fs" />
+    <None Include="TestShaders\texture.vs" />
+    <None Include="TestShaders\BoxSolid.vs" />
+    <None Include="TestShaders\PhongShader.vs" />
+    <None Include="TestShaders\PhongShader.fs" />
   </ItemGroup>
 </Project>

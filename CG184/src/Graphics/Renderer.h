@@ -9,7 +9,6 @@
 #include "../Scene/Componet.h"
 #include "../Geometry/MeshFilter.h"
 
-
 namespace CG184 
 {
 
@@ -26,7 +25,10 @@ namespace CG184
 		void Render();
 
         void SendProjectionMatrixData(Matrix4D& projMat);
-        void SendViewMatrixData(Matrix4D & viewMat);
+        void SendViewMatrixData(Matrix4D& viewMat);
+
+		void SendLightData(Light& light);
+		void SendMaterialData();
 
     private:
         Matrix4D GetModelMatrix();

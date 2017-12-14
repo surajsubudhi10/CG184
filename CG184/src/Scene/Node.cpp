@@ -77,7 +77,7 @@ namespace CG184
 
     Node::~Node()
     {
-
+		m_ParentNode = nullptr;
     }
 
     void Node::SetPosition(float _x, float _y, float _z) {

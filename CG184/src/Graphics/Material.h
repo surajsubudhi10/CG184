@@ -7,6 +7,7 @@
 
 #include "Shader.h"
 #include "./../Maths/Maths.h"
+#include "../Lights/Light.h"
 
 namespace CG184 {
     class Material {
@@ -18,15 +19,16 @@ namespace CG184 {
 
         void AttachShader(Shader& a_Shader);
 
-        inline Shader* GetShader()
-        {
-            return m_Shader;
-        }
+        inline Shader* GetShader(){ return m_Shader;}
 
-    public:
-        Vector3D diffuseColor;
-        Vector3D specularColor;
-        float shinyness;
+		friend class Renderer;
+    private:
+		Color m_Ambient;
+		Color m_Diffuse;
+		Color m_Specular;
+		Color m_Emission;
+		
+		float m_Shininess;
 
 
     private:

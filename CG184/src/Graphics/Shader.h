@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "Texture.h"
+#include "../Maths/Maths.h"
 
 namespace CG184 
 {
@@ -48,6 +49,7 @@ namespace CG184
         void SetUniform2f(string name, float _v1, float _v2);
         void SetUniform3f(string name, float _v1, float _v2, float _v3);
         void SetUniform4f(string name, float _v1, float _v2, float _v3, float _v4);
+		void SetUniform4f(string name, Vector4D _v4);
 
         void SetUniformMat2f(string name, float* val);
         void SetUniformMat3f(string name, float* val);

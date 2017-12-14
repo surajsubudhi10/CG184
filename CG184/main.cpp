@@ -75,7 +75,7 @@ int main()
 
     Camera cam;
     cam.SetAspectRatio((float)SCR_WIDTH / (float)SCR_HEIGHT);
-
+	cam.SetFOV(fov);
 
 //    Box box(1.0f, 1.0f, 1.0f);
 //    Sphere box(1.0f, 20, 20);
@@ -89,14 +89,14 @@ int main()
 
     Node* light = new Node();
     light->AttachComponent(lightBox);
-    //light.SetPosition(lightPos.x, lightPos.y, lightPos.z);
+    light->SetPosition(lightPos.x, lightPos.y, lightPos.z);
     light->SetLocalScale(0.25f, 0.25f, 0.25f);
-    light->SetPosition(0.0, 0.0, 1.0);
+    //light->SetPosition(0.0, 0.0, 1.0);
 
-    Torus torusMesh(0.15, 1, 20, 20);
-    torusMesh.SetColor(Vector3D(0.0f, 1.0f, 0.0f));
-    Material torusMat;
-    Renderer renderer1(torusMesh, torusMat);
+    Sphere sphereMesh(1.0, 40, 40);
+	sphereMesh.SetColor(Vector3D(0.0f, 1.0f, 0.0f));
+    Material sphereMat;
+    Renderer renderer1(sphereMesh, sphereMat);
 
     Node* torus = new Node();
     torus->AttachComponent(renderer1);
@@ -112,7 +112,7 @@ int main()
     referenceBox->SetLocalScale(1.5f, 0.02f, 0.02f);
     referenceBox->SetPosition(0, 1.5f, 0);
 
-	torus->AddChild(light);
+	//torus->AddChild(light);
 	torus->AddChild(referenceBox);
 
     Scene rootScene(cam);
@@ -124,7 +124,7 @@ int main()
     //ourShader.AddTexture("Resources/textures/awesomeface.png", TextureType::Specular);
 
 
-    Shader* ourShader = torusMat.GetShader();
+    Shader* ourShader = sphereMat.GetShader();
     Shader* referenceBoxShader = referenceBoxMaterial.GetShader();
 
 	float angle = 0;
@@ -139,12 +139,12 @@ int main()
         KeyBoardEvents(window, input);
         window->SetBGColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-        cam.SetFOV(fov);
+        //cam.SetFOV(fov);
         cam.Set(cameraPos, cameraFront, cameraUp);
 
 		angle += deltaTime * 10.0f;
-        torus->SetLocalEulerAngle(angle * 10.0f, 0.0f, 0.0f);
-		light->SetLocalEulerAngle(angle * 20.0f, 0.0f, 0.0f);
+        //torus->SetLocalEulerAngle(angle * 10.0f, 0.0f, 0.0f);
+		//light->SetLocalEulerAngle(angle * 20.0f, 0.0f, 0.0f);
 
         (*ourShader).SetUniform3f("lightColor", 1.0f, 1.0f, 1.0f);
         (*ourShader).SetUniform3f("viewPos", cam.GetCamPos().x, cam.GetCamPos().y, cam.GetCamPos().z);

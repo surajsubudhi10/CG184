@@ -233,6 +233,16 @@ namespace CG184
         glUseProgram(0);
     }
 
+	void Shader::SetUniform4f(string name, Vector4D _vec)
+	{
+		glUseProgram(shaderID);
+		// TODO Null Check
+		auto location = GetUniformLocation(name, m_Uniforms);
+		assert(location != -1);
+		glUniform4f(location, _vec.x, _vec.y, _vec.z, _vec.w);
+		glUseProgram(0);
+	}
+
     void Shader::SetUniformMat3f(string name, float *val)
     {
         glUseProgram(shaderID);
