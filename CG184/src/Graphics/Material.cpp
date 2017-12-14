@@ -6,7 +6,7 @@
 
 namespace CG184 {
     Material::Material():
-		m_Ambient(WHITE),
+		m_Ambient(GREEN),
 		m_Diffuse(GREY),
 		m_Specular(WHITE),
 		m_Emission(BLACK),
@@ -17,11 +17,11 @@ namespace CG184 {
     }
 
     Material::Material(Shader &a_Shader):
-		m_Ambient(WHITE),
+		m_Ambient(GREEN),
 		m_Diffuse(GREY),
 		m_Specular(WHITE),
 		m_Emission(BLACK),
-		m_Shininess(0.0)
+		m_Shininess(1.0)
     {
         m_Shader = new Shader(a_Shader);
     }

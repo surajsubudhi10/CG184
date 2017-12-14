@@ -6,10 +6,17 @@
 
 namespace CG184{
 
-    Scene::Scene(CG184::Camera &cam) : Node()
+    Scene::Scene(CG184::Camera* cam) : Node()
     {
-        m_Camera = &cam;
+        m_Camera = cam;
+		m_Light = new Light();
     }
+
+	Scene::Scene(CG184::Camera* cam, Light* light) : Node()
+	{
+		m_Camera = cam;
+		m_Light = light;
+	}
 
     void Scene::Render()
     {
@@ -21,8 +28,11 @@ namespace CG184{
 			if (m_Node->HasComponent(ComponentType::RendererType)) {
 				Renderer* renderer = (m_Node->GetComponent<Renderer>());
 				if (renderer != nullptr) {
+					renderer->SendCameraPosData(m_Camera);
 					renderer->SendViewMatrixData(m_Camera->GetViewMatrix());
 					renderer->SendProjectionMatrixData(m_Camera->GetProjectionMatrix());
+					renderer->SendLightData(m_Light);
+					renderer->SendMaterialData();
 					renderer->Render();
 				}
 				else {
@@ -35,6 +45,7 @@ namespace CG184{
     Scene::~Scene()
     {
         m_Camera = nullptr;
+		m_Light = nullptr;
     }
 
     void Scene::AddToScene(Node* node) {
