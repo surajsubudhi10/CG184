@@ -135,6 +135,7 @@
     <ClCompile Include="src\Graphics\Shader.cpp" />
     <ClCompile Include="src\Graphics\Texture.cpp" />
     <ClCompile Include="src\Graphics\Window.cpp" />
+    <ClCompile Include="src\Lights\Light.cpp" />
     <ClCompile Include="src\Maths\Matrix4D.cpp" />
     <ClCompile Include="src\Maths\Vector2D.cpp" />
     <ClCompile Include="src\Maths\Vector3D.cpp" />
@@ -160,6 +161,7 @@
     <ClInclude Include="src\Graphics\Shader.h" />
     <ClInclude Include="src\Graphics\Texture.h" />
     <ClInclude Include="src\Graphics\Window.h" />
+    <ClInclude Include="src\Lights\Light.h" />
     <ClInclude Include="src\Maths\Maths.h" />
     <ClInclude Include="src\Maths\Matrix4D.h" />
     <ClInclude Include="src\Maths\Vector2D.h" />
@@ -170,6 +172,20 @@
     <ClInclude Include="src\Scene\Nodes.h" />
     <ClInclude Include="src\Scene\Scene.h" />
     <ClInclude Include="src\Scene\Transform.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="TestShaders\BoxSolid.fs" />
+    <None Include="TestShaders\BoxSolid.vs" />
+    <None Include="TestShaders\coordinate_systems.fs" />
+    <None Include="TestShaders\coordinate_systems.vs" />
+    <None Include="TestShaders\LightCube.fs" />
+    <None Include="TestShaders\LightCube.vs" />
+    <None Include="TestShaders\PhongShader.fs" />
+    <None Include="TestShaders\PhongShader.vs" />
+    <None Include="TestShaders\testShader.fs" />
+    <None Include="TestShaders\testShader.vs" />
+    <None Include="TestShaders\texture.fs" />
+    <None Include="TestShaders\texture.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

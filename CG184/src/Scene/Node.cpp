@@ -81,23 +81,22 @@ namespace CG184
     }
 
     Node::~Node()
-    = default;
+    {
+		m_ParentNode = nullptr;
+    }
 
     void Node::SetPosition(float _x, float _y, float _z) {
 		m_Transform.localPosition = Vector3D(_x, _y, _z);
 		m_Transform.isDirty = true;
-		//m_Transform.UpdateLocalTransformMatrix();
     }
 
     void Node::SetLocalScale(float _x, float _y, float _z) {
 		m_Transform.localScale = Vector3D(_x, _y, _z);
 		m_Transform.isDirty = true;
-		//m_Transform.UpdateLocalTransformMatrix();
     }
 
 	void Node::SetLocalEulerAngle(float _x, float _y, float _z) {
 		m_Transform.eulerAngles = Vector3D(_x, _y, _z);
 		m_Transform.isDirty = true;
-		//m_Transform.UpdateLocalTransformMatrix();
 	}
 }

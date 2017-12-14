@@ -7,6 +7,7 @@
 
 #include "Shader.h"
 #include "./../Maths/Maths.h"
+#include "../Lights/Light.h"
 
 namespace CG184 {
     class Material {
@@ -17,19 +18,23 @@ namespace CG184 {
         ~Material();
 
         void AttachShader(Shader& a_Shader);
+        inline Shader* GetShader(){ return m_Shader;}
 
-        inline Shader* GetShader()
-        {
-            return m_Shader;
-        }
-
-    public:
-        Vector3D diffuseColor;
-        Vector3D specularColor;
-        float shinyness;
+		inline void SetAmbinet(Color col) { m_Ambient = col; }
+		inline void SetDiffuse(Color col) { m_Diffuse = col; }
+		inline void SetSpecular(Color col) { m_Specular = col; }
+		inline void SetEmission(Color col) { m_Emission = col; }
+		inline void SetShininess(float shine) { m_Shininess = shine; }
 
 
+		friend class Renderer;
     private:
+		Color m_Ambient;
+		Color m_Diffuse;
+		Color m_Specular;
+		Color m_Emission;
+		
+		float m_Shininess;
         Shader* m_Shader;
     };
 }

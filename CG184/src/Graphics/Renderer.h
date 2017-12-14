@@ -8,7 +8,7 @@
 #include "Material.h"
 #include "../Scene/Componet.h"
 #include "../Geometry/MeshFilter.h"
-
+#include "../Camera/Camera.h"
 
 namespace CG184 
 {
@@ -25,8 +25,13 @@ namespace CG184
 
 		void Render();
 
-        void SendProjectionMatrixData(Matrix4D& projMat);
-        void SendViewMatrixData(Matrix4D & viewMat);
+		void SendProjectionMatrixData(Matrix4D& projMat);
+        void SendViewMatrixData(Matrix4D& viewMat);
+
+
+		void SendCameraPosData(Camera* cam);
+		void SendLightData(Light* light);
+		void SendMaterialData();
 
     private:
         Matrix4D GetModelMatrix();

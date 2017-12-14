@@ -69,9 +69,12 @@ int main()
     };
 
 
-    Camera cam;
-    cam.SetAspectRatio((float)SCR_WIDTH / (float)SCR_HEIGHT);
+    Camera* cam = new Camera();
+    cam->SetAspectRatio((float)SCR_WIDTH / (float)SCR_HEIGHT);
+	cam->SetFOV(fov);
 
+	Light* pointLight = new Light();
+	pointLight->SetPosition(Vector4D(lightPos.x, lightPos.y, lightPos.z, 1.0));
 
 //    Box box(1.0f, 1.0f, 1.0f);
 //    Sphere box(1.0f, 20, 20);
@@ -86,14 +89,17 @@ int main()
 
     Node* light = new Node("WightBox");
     light->AttachComponent(lightBox);
-    //light.SetPosition(lightPos.x, lightPos.y, lightPos.z);
+    light->SetPosition(lightPos.x, lightPos.y, lightPos.z);
     light->SetLocalScale(0.25f, 0.25f, 0.25f);
-    light->SetPosition(0.0, 0.0, 1.0);
+    //light->SetPosition(0.0, 0.0, 1.0);
 
-    Torus torusMesh(0.15, 1, 20, 20);
-    torusMesh.SetColor(Vector3D(0.0f, 1.0f, 0.0f));
-    Material torusMat;
-    Renderer renderer1(torusMesh, torusMat);
+    Sphere sphereMesh(1.0, 40, 40);
+	//Box sphereMesh(1.0f, 1.0f, 1.0f);
+	Shader sphereShaderTemp("TestShaders/PhongShader.vs", "TestShaders/PhongShader.fs");
+	//sphereMesh.SetColor(Vector3D(0.0f, 1.0f, 0.0f));
+	Material sphereMat(sphereShaderTemp);
+	sphereMat.SetShininess(5.0f);
+    Renderer renderer1(sphereMesh, sphereMat);
 
     Node* torus = new Node("Torus");
     torus->AttachComponent(renderer1);
@@ -102,7 +108,7 @@ int main()
     torus->SetPosition(0.0, 0.5, 0.0);
 
 
-    Box referenceBoxMesh;
+    /*Box referenceBoxMesh;
     referenceBoxMesh.SetColor(Vector3D(1.0f, 0.0f, 0.0f));
     Material referenceBoxMaterial;
     Renderer referenceBoxRenderer(referenceBoxMesh, referenceBoxMaterial);
@@ -110,22 +116,22 @@ int main()
     Node* referenceBox = new Node("ReferenceBox");
     referenceBox->AttachComponent(referenceBoxRenderer);
     referenceBox->SetLocalScale(1.5f, 0.02f, 0.02f);
-    referenceBox->SetPosition(0, 1.5f, 0);
+    referenceBox->SetPosition(0, 1.5f, 0);*/
 
-    torus->AddChild(light);
-    torus->AddChild(referenceBox);
+	//torus->AddChild(light);
+	//torus->AddChild(referenceBox);
 
-    Scene rootScene(cam);
+    Scene rootScene(cam, pointLight);
 	rootScene.AddToScene(torus);
-    rootScene.AddToScene(referenceBox);
+    //rootScene.AddToScene(referenceBox);
 	rootScene.AddToScene(light);
 
     //ourShader.AddTexture("Resources/textures/container.jpg", TextureType::Diffuse);
     //ourShader.AddTexture("Resources/textures/awesomeface.png", TextureType::Specular);
 
 
-    Shader* ourShader = torusMat.GetShader();
-    Shader* referenceBoxShader = referenceBoxMaterial.GetShader();
+    Shader* ourShader = sphereMat.GetShader();
+    //Shader* referenceBoxShader = referenceBoxMaterial.GetShader();
 
 	float angle = 0;
     while (!window->IfWindowClosed())
@@ -134,25 +140,20 @@ int main()
         auto currentFrame = (float)glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
+		angle += deltaTime * 1.0f;
 		//std::cout << "FPS : " << static_cast<int>(1.0f / deltaTime) << std::endl;
 
         KeyBoardEvents(window, input);
         window->SetBGColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-        cam.SetFOV(fov);
-        cam.Set(cameraPos, cameraFront, cameraUp);
+        //cam.SetFOV(fov);
+        cam->Set(cameraPos, cameraFront, cameraUp);
+		pointLight->SetPosition(Vector4D(sin(angle), lightPos.y, lightPos.z, 1.0));
+		light->SetPosition(sin(angle), lightPos.y, lightPos.z);
 
-		angle += deltaTime * 10.0f;
-        torus->SetLocalEulerAngle(angle * 10.0f, 0.0f, 0.0f);
-		light->SetLocalEulerAngle(angle * 20.0f, 0.0f, 0.0f);
+        //torus->SetLocalEulerAngle(angle * 10.0f, 0.0f, 0.0f);
+		//light->SetLocalEulerAngle(angle * 20.0f, 0.0f, 0.0f);
 
-        (*ourShader).SetUniform3f("lightColor", 1.0f, 1.0f, 1.0f);
-        (*ourShader).SetUniform3f("viewPos", cam.GetCamPos().x, cam.GetCamPos().y, cam.GetCamPos().z);
-        (*ourShader).SetUniform3f("lightPos", lightPos.x, lightPos.y, lightPos.z);
-
-        (*referenceBoxShader).SetUniform3f("lightColor", 1.0f, 1.0f, 1.0f);
-        (*referenceBoxShader).SetUniform3f("viewPos", cam.GetCamPos().x, cam.GetCamPos().y, cam.GetCamPos().z);
-        (*referenceBoxShader).SetUniform3f("lightPos", lightPos.x, lightPos.y, lightPos.z);
 
 //        (*ourShader).SetUniform4fArray("lightposnarray[0]", 3, LightPosition);
 //        (*ourShader).SetUniform4fArray("lightcolorarray[0]", 3, LightColor);
@@ -163,7 +164,7 @@ int main()
 
 	delete torus;
 	delete light;
-	delete referenceBox;
+	//delete referenceBox;
 
 	delete window;
 	return 0;

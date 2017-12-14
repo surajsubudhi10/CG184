@@ -28,7 +28,7 @@ namespace CG184
 		m_MeshFilter->GetIBO()->Bind();
 
 		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		//glPolygonMode(GL_FRONT_AND_BACK, GL_POINTS);
+		//glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
 
 		glDrawElements(GL_TRIANGLES, m_MeshFilter->GetIndexCount(), GL_UNSIGNED_INT, nullptr);
 
@@ -44,6 +44,26 @@ namespace CG184
     void Renderer::SendViewMatrixData(Matrix4D &viewMat) {
         m_Material->GetShader()->SetUniformMat4f("view", viewMat.elements);
     }
+
+	void Renderer::SendLightData(Light* light){
+		m_Material->GetShader()->SetUniform4f("light.ambient"    , light->GetAmbientColor());
+		m_Material->GetShader()->SetUniform4f("light.diffuse"    , light->GetDiffuseColor());
+		m_Material->GetShader()->SetUniform4f("light.specular"   , light->GetSpecularColor());
+		m_Material->GetShader()->SetUniform4f("light.position"   , light->GetPosition());
+		//m_Material->GetShader()->SetUniform3f("light.attenuation", light->GetAttenuation().x, light->GetAttenuation().y, light->GetAttenuation().z);
+	}
+
+	void Renderer::SendMaterialData() {
+		m_Material->GetShader()->SetUniform4f("material.ambient"  , m_Material->m_Ambient);
+		m_Material->GetShader()->SetUniform4f("material.diffuse"  , m_Material->m_Diffuse);
+		m_Material->GetShader()->SetUniform4f("material.specular" , m_Material->m_Specular);
+		//m_Material->GetShader()->SetUniform4f("material.emission" , m_Material->m_Emission);
+		m_Material->GetShader()->SetUniform1f("material.shininess", m_Material->m_Shininess);
+	}
+
+	void Renderer::SendCameraPosData(Camera* cam){
+		m_Material->GetShader()->SetUniform3f("viewPos", cam->GetCamPos().x, cam->GetCamPos().y, cam->GetCamPos().z);
+	}
 
     void Renderer::SendProjectionMatrixData(Matrix4D &projMat) {
         m_Material->GetShader()->SetUniformMat4f("projection", projMat.elements);
