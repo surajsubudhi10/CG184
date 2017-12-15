@@ -20,7 +20,7 @@ namespace CG184
 		//SHADER_TYPE Type;
 		std::string Name;
 		int Size;
-		unsigned int Location;
+		uint32_t Location;
 	};
 
     class VertexAttribute
@@ -29,7 +29,7 @@ namespace CG184
 		//SHADER_TYPE Type;
 		std::string Name;
 		int Size;
-		unsigned int Location;
+		uint32_t Location;
 	};
 
 	class Shader
@@ -55,11 +55,11 @@ namespace CG184
         void SetUniformMat3f(string name, float* val);
         void SetUniformMat4f(string name, float* val);
 
-		void SetUniform4fArray(string name, unsigned int numOfElement, float* arrayList);
+		void SetUniform4fArray(string name, uint32_t numOfElement, float* arrayList);
 
 
 
-		unsigned int shaderID;
+		uint32_t shaderID;
 		std::vector<Uniform> m_Uniforms;
 		std::vector<VertexAttribute> m_Attributes;
 
@@ -67,7 +67,7 @@ namespace CG184
 
 		Texture m_Textures[5] = {}; // TODO Fix -> Hard Coded Fixed No. of Texture Support.
 		
-		void CompileShader(unsigned int shader, std::string type);
+		void CompileShader(uint32_t shader, std::string type);
 	};
 
 }

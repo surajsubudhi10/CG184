@@ -39,7 +39,7 @@ namespace CG184
 		const char* vShaderCode = vertexCode.c_str();
 		const char * fShaderCode = fragmentCode.c_str();
 		// 2. compile shaders
-		unsigned int vertex, fragment;
+		uint32_t vertex, fragment;
 
 		// vertex shader
 		vertex = glCreateShader(GL_VERTEX_SHADER);
@@ -72,7 +72,7 @@ namespace CG184
         m_Uniforms.resize(nUniforms);
 
         char buffer[128];
-        for (unsigned int i = 0; i < nAttributes; ++i)
+        for (int i = 0; i < nAttributes; ++i)
         {
             GLenum glType;
             glGetActiveAttrib(shaderID, i, sizeof(buffer), 0, &m_Attributes[i].Size, &glType, buffer);
@@ -83,7 +83,7 @@ namespace CG184
             m_Attributes[i].Location = glGetAttribLocation(shaderID, buffer);
         }
 
-        for (unsigned int i = 0; i < nUniforms; ++i)
+        for (int i = 0; i < nUniforms; ++i)
         {
             GLenum glType;
             glGetActiveUniform(shaderID, i, sizeof(buffer), 0, &m_Uniforms[i].Size, &glType, buffer);
@@ -164,7 +164,7 @@ namespace CG184
 	}
 
 
-	void Shader::CompileShader(unsigned int shader, std::string type)
+	void Shader::CompileShader(uint32_t shader, std::string type)
 	{
 		int success;
 		char infoLog[1024];
@@ -264,7 +264,7 @@ namespace CG184
         glUseProgram(0);
     }
 
-    void Shader::SetUniform4fArray(string name, unsigned int numOfElement, float *arrayList) {
+    void Shader::SetUniform4fArray(string name, uint32_t numOfElement, float *arrayList) {
         glUseProgram(shaderID);
         auto location = GetUniformLocation(name, m_Uniforms);
 		if (location != -1)

@@ -20,17 +20,14 @@ namespace CG184 {
 
 		bool isDirty;
 
-        static Matrix4D Translate(Matrix4D& mat, float _x, float _y, float _z);
-        static Matrix4D Rotate(Matrix4D& mat, float angleInDeg, const Vector3D& axis);
-        static Matrix4D Scale(Matrix4D& mat, float sx, float sy, float sz);
-
-//        static void Translate(Transform& trans, float _x, float _y, float _z);
-//        static void Rotate(Transform& trans, float angleInDeg, const Vector3D& axis);
-//        static void Scale(Transform& trans, float sx, float sy, float sz);
+        Matrix4D Translate(Matrix4D& mat, float _x, float _y, float _z);
+        Matrix4D Rotate(Matrix4D& mat, float angleInDeg, const Vector3D& axis);
+        Matrix4D Scale(Matrix4D& mat, float sx, float sy, float sz);
 
 
     public:
         Vector3D position;
+		Quaternion rotation;
         Vector3D localPosition;
         Vector3D eulerAngles;
         Vector3D localScale;

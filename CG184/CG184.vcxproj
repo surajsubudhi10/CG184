@@ -137,6 +137,7 @@
     <ClCompile Include="src\Graphics\Window.cpp" />
     <ClCompile Include="src\Lights\Light.cpp" />
     <ClCompile Include="src\Maths\Matrix4D.cpp" />
+    <ClCompile Include="src\Maths\Quaternions.cpp" />
     <ClCompile Include="src\Maths\Vector2D.cpp" />
     <ClCompile Include="src\Maths\Vector3D.cpp" />
     <ClCompile Include="src\Maths\Vector4D.cpp" />
@@ -162,8 +163,10 @@
     <ClInclude Include="src\Graphics\Texture.h" />
     <ClInclude Include="src\Graphics\Window.h" />
     <ClInclude Include="src\Lights\Light.h" />
+    <ClInclude Include="src\Maths\Constants.h" />
     <ClInclude Include="src\Maths\Maths.h" />
     <ClInclude Include="src\Maths\Matrix4D.h" />
+    <ClInclude Include="src\Maths\Quaternions.h" />
     <ClInclude Include="src\Maths\Vector2D.h" />
     <ClInclude Include="src\Maths\Vector3D.h" />
     <ClInclude Include="src\Maths\Vector4D.h" />

@@ -14,19 +14,19 @@ namespace CG184 {
     public:
         Circle();
         Circle(Circle& cir);
-        Circle(float rad, unsigned int seg);
+        Circle(float rad, uint32_t seg);
         ~Circle();
 
         inline void SetRadius(float rad){ m_Radius = rad;}
-        inline void SetSegments(unsigned int seg){ m_EdgeSegments = seg;}
+        inline void SetSegments(uint32_t seg){ m_EdgeSegments = seg;}
 
         inline float GetRadius(){ return  m_Radius;}
-        inline Vector2D GetSegments() const { return m_EdgeSegments;}
+        inline uint32_t GetSegments() const { return m_EdgeSegments;}
 
 
     private:
         float m_Radius;
-        unsigned int m_EdgeSegments;
+		uint32_t m_EdgeSegments;
 
         void InitMesh() override;
     };

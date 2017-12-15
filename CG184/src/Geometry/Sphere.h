@@ -13,16 +13,16 @@ namespace CG184 {
     public:
         Sphere();
         Sphere(Sphere& a_Sphere);
-        Sphere(float rad, unsigned int xSeg, unsigned int ySeg);
+        Sphere(float rad, uint32_t xSeg, uint32_t ySeg);
         ~Sphere();
 
         void SetRadius(float rad);
-        void SetSegments(unsigned int xSeg, unsigned int ySeg);
+        void SetSegments(uint32_t xSeg, uint32_t ySeg);
 
     private:
         float radius;
-        unsigned int x_segments;
-        unsigned int y_segments;
+		uint32_t x_segments;
+		uint32_t y_segments;
 
         void InitMesh() override;
     };

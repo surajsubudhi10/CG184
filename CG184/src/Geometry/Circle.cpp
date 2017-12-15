@@ -17,7 +17,7 @@ namespace CG184 {
         InitMesh();
     }
 
-    Circle::Circle(float rad, unsigned int seg):Mesh(), m_Radius(rad), m_EdgeSegments(seg)
+    Circle::Circle(float rad, uint32_t seg):Mesh(), m_Radius(rad), m_EdgeSegments(seg)
     {
         InitMesh();
     }
@@ -27,13 +27,13 @@ namespace CG184 {
         std::vector<Vector3D> positions;
         std::vector<Vector2D> texCoord;
         std::vector<Vector3D> normals;
-        std::vector<unsigned int> indicies;
+        std::vector<uint32_t> indicies;
         // TODO Complete the circle mesh (we need only edge segments and radius)
         // Center Point
         positions.emplace_back(0, 0, 0);
         normals.emplace_back(0, 0, 1);
 
-        for (unsigned int i = 0; i <= m_EdgeSegments; ++i)
+        for (uint32_t i = 0; i <= m_EdgeSegments; ++i)
         {
             float edgeSegment = (float)i / (float)m_EdgeSegments;
             auto xPos = static_cast<float>(m_Radius * std::cos(edgeSegment * TWO_PI));
@@ -44,7 +44,7 @@ namespace CG184 {
 //                texCoord.emplace_back(xSegment, ySegment);
         }
 
-        for(unsigned int i = 1; i <= m_EdgeSegments; i++)
+        for(uint32_t i = 1; i <= m_EdgeSegments; i++)
         {
             if(i == m_EdgeSegments) {
                 indicies.push_back(0);

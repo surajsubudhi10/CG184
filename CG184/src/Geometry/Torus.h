@@ -14,13 +14,13 @@ namespace CG184 {
     public:
         Torus();
         Torus(const Torus& torus);
-        Torus(float tubeRad, float torusRad, unsigned int torusSeg = 10, unsigned int tubeSeg = 10);
+        Torus(float tubeRad, float torusRad, uint32_t torusSeg = 10, uint32_t tubeSeg = 10);
         ~Torus();
 
 
         inline void SetTubeRadius(float rad){m_TubeRadius = rad;}
         inline void SetTorusRadius(float rad){m_TorusRadius = rad;}
-        inline void SetSegments(unsigned int torusSeg, unsigned int tubeSeg){ m_TorusSegments = torusSeg; m_TubeSegments = tubeSeg;}
+        inline void SetSegments(uint32_t torusSeg, uint32_t tubeSeg){ m_TorusSegments = torusSeg; m_TubeSegments = tubeSeg;}
 
         inline float GetTubeRadius(){ return  m_TubeRadius;}
         inline float GetTorusRadius(){ return  m_TorusRadius;}
@@ -31,8 +31,8 @@ namespace CG184 {
         float m_TubeRadius;
         float m_TorusRadius;
 
-        unsigned int m_TubeSegments;
-        unsigned int m_TorusSegments;
+        uint32_t m_TubeSegments;
+        uint32_t m_TorusSegments;
 
 
     };

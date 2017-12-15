@@ -29,7 +29,7 @@ namespace CG184 {
 
         inline GLuint& GetVAO() { return m_VAO;}
         inline IndexBuffer* GetIBO() { return m_IBO;}
-        inline unsigned int GetIndexCount() const { return m_IndexCount;}
+        inline uint32_t GetIndexCount() const { return m_IndexCount;}
 
     private:
         GLuint m_VAO;
@@ -38,11 +38,11 @@ namespace CG184 {
 
         GLuint* indicesData;
         VertexData* m_Buffer;
-        unsigned int m_IndexCount;
+		uint32_t m_IndexCount;
 
         Mesh* m_Mesh;
     private:
-        void InitGLBuffers(unsigned int numOfVert, unsigned int indicesNum);
+        void InitGLBuffers(uint32_t numOfVert, uint32_t indicesNum);
     };
 }
 

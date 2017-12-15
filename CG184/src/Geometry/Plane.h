@@ -13,13 +13,13 @@ namespace CG184 {
     {
     public:
         Plane();
-        Plane(unsigned int xSeg, unsigned  int ySeg);
+        Plane(uint32_t xSeg, uint32_t ySeg);
         Plane(const Plane& plane);
         ~Plane();
 
     private:
-        unsigned int m_XSegments;
-        unsigned int m_YSegments;
+		uint32_t m_XSegments;
+		uint32_t m_YSegments;
 
         void InitMesh() override;
     };

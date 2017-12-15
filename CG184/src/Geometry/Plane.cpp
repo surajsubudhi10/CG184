@@ -12,7 +12,7 @@ namespace CG184{
         InitMesh();
     }
 
-    Plane::Plane(unsigned int xSeg, unsigned int ySeg): Mesh(), m_XSegments(xSeg), m_YSegments(ySeg)
+    Plane::Plane(uint32_t xSeg, uint32_t ySeg): Mesh(), m_XSegments(xSeg), m_YSegments(ySeg)
     {
         InitMesh();
     }
@@ -31,17 +31,17 @@ namespace CG184{
         std::vector<Vector3D> positions;
         std::vector<Vector2D> texCoord;
         std::vector<Vector3D> normals;
-        std::vector<unsigned int> indicies;
+        std::vector<uint32_t> indicies;
 
-        unsigned int numOfVert = (m_XSegments + 1) * (m_YSegments + 1);
+		uint32_t numOfVert = (m_XSegments + 1) * (m_YSegments + 1);
 
 
         float dX = 1.0f / m_XSegments;
         float dY = 1.0f / m_YSegments;
 
-        for (int y = 0; y <= m_YSegments; ++y)
+        for (uint32_t y = 0; y <= m_YSegments; ++y)
         {
-            for (int x = 0; x <= m_XSegments; ++x)
+            for (uint32_t x = 0; x <= m_XSegments; ++x)
             {
                 positions.emplace_back(dX * x * 2.0f - 1.0f, dY * y * 2.0f - 1.0f, 0);
                 texCoord.emplace_back(dX * x, 1.0f - y * dY);
@@ -50,7 +50,7 @@ namespace CG184{
         }
 
         int maxIndex = -1;
-        unsigned int index = 0;
+		uint32_t index = 0;
         while(maxIndex != numOfVert - 1)
         {
             if(index % (m_XSegments + 1) != m_XSegments) {

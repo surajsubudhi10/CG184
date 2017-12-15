@@ -31,7 +31,7 @@ namespace CG184
         m_ChildNodes.push_back(a_Node);
     }
 
-    Node* Node::GetChildNodeAt(unsigned int index)
+    Node* Node::GetChildNodeAt(uint32_t index)
     {
         if(index >= m_ChildNodes.size())
             return nullptr;
@@ -44,8 +44,8 @@ namespace CG184
         return m_ParentNode;
     }
 
-    unsigned int Node::GetNumOfChildNode() {
-        return static_cast<unsigned int>(m_ChildNodes.size());
+	uint32_t Node::GetNumOfChildNode() {
+        return static_cast<uint32_t>(m_ChildNodes.size());
     }
 
     void Node::UpdateWorldModelMatrix() {
@@ -97,6 +97,16 @@ namespace CG184
 
 	void Node::SetLocalEulerAngle(float _x, float _y, float _z) {
 		m_Transform.eulerAngles = Vector3D(_x, _y, _z);
+		m_Transform.rotation = ToQuaternion(m_Transform.eulerAngles);
+		m_Transform.isDirty = true;
+	}
+
+	void Node::SetRotation(float angle, Vector3D axis) 
+	{
+		axis.normalize();
+		Quaternion quat(angle, axis);
+		m_Transform.eulerAngles = quat.ToEulerAngles();
+		m_Transform.rotation = quat;
 		m_Transform.isDirty = true;
 	}
 }

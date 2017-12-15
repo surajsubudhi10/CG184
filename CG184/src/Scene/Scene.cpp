@@ -54,7 +54,7 @@ namespace CG184{
 
 
     void Scene::TraverseAllChildNodes(Node& a_Node){
-        for (unsigned int i = 0; i < a_Node.GetNumOfChildNode(); i++){
+        for (uint32_t i = 0; i < a_Node.GetNumOfChildNode(); i++){
             TraverseAllChildNodes(*(a_Node.GetChildNodeAt(i)));
         }
 

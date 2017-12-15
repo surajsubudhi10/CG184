@@ -30,7 +30,7 @@ namespace CG184
 
 	Matrix4D::Matrix4D(const Matrix4D& mat)
 	{
-		for (unsigned int i = 0; i < 16; i++)
+		for (uint32_t i = 0; i < 16; i++)
 		{
 			elements[i] = mat.elements[i];
 		}
@@ -119,7 +119,7 @@ namespace CG184
 
 	void Matrix4D::Set(float diagonal)
 	{
-		for (unsigned int i = 0; i < 16; i++)
+		for (uint32_t i = 0; i < 16; i++)
 		{
 			elements[i] = 0.0f;
 		}
@@ -172,7 +172,7 @@ namespace CG184
 			return *this;
 		}
 
-		for (unsigned int i = 0; i < 16; i++) {
+		for (uint32_t i = 0; i < 16; i++) {
 			elements[i] = rhs.elements[i];
 		}
 

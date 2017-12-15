@@ -1,6 +1,4 @@
 #include <GL/glew.h>
-
-
 #include <iostream>
 
 #include "src/Graphics/Window.h"
@@ -14,8 +12,8 @@
 
 
 // settings
-const unsigned int SCR_WIDTH = 800;
-const unsigned int SCR_HEIGHT = 600;
+const uint32_t SCR_WIDTH = 800;
+const uint32_t SCR_HEIGHT = 600;
 using namespace CG184;
 
 void KeyBoardEvents(Window* window, eventsystem::Input input);
@@ -62,7 +60,7 @@ int main()
 
 	Light* pointLight = new Light();
 	pointLight->SetPosition(Vector4D(lightPos.x, lightPos.y, lightPos.z, 1.0));
-    pointLight->SetAmbientColor(Vector4D(0.2, 0.2, 0.2, 1.0));
+    pointLight->SetAmbientColor(Vector4D(0.2f, 0.2f, 0.2f, 1.0f));
 
 
     Box lightMesh;
@@ -77,16 +75,17 @@ int main()
     light->SetLocalScale(0.05f, 0.05f, 0.05f);
     //light->SetPosition(0.0, 0.0, 1.0);
 
-    Sphere sphereMesh(1.0, 40, 40);
+    //Sphere sphereMesh(1.0, 40, 40);
+	Torus sphereMesh(0.5f, 1.0f, 40, 40);
 	Shader sphereShaderTemp("TestShaders/PhongShader.vs", "TestShaders/PhongShader.fs");
 	Material sphereMat(sphereShaderTemp);
-    sphereMat.SetAmbient(Vector4D(0.1, 0.1, 0.1, 1.0));
+    sphereMat.SetAmbient(Vector4D(0.1f, 0.1f, 0.1f, 1.0f));
 	sphereMat.SetShininess(100.0f);
     Renderer renderer1(sphereMesh, sphereMat);
 
     Node* torus = new Node("Torus");
     torus->AttachComponent(renderer1);
-    torus->SetLocalEulerAngle(-90.0f, 0.0f, 0.0f);
+    torus->SetLocalEulerAngle(-45.0f, 0.0f, 0.0f);
     torus->SetLocalScale(0.5, 0.5, 0.5);
     torus->SetPosition(0.0, 0.5, 0.0);
 
@@ -109,7 +108,7 @@ int main()
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 		angle += deltaTime * 1.0f;
-		//std::cout << "FPS : " << static_cast<int>(1.0f / deltaTime) << std::endl;
+		std::cout << "FPS : " << static_cast<int>(1.0f / deltaTime) << std::endl;
 
         KeyBoardEvents(window, input);
         window->SetBGColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -119,7 +118,9 @@ int main()
 		pointLight->SetPosition(Vector4D(sin(angle), lightPos.y, lightPos.z, 1.0));
 		light->SetPosition(sin(angle), lightPos.y, lightPos.z);
 
-        //torus->SetLocalEulerAngle(angle * 10.0f, 0.0f, 0.0f);
+		torus->SetPosition(sin(angle), 0, 0);
+		//torus->SetLocalScale(sin(angle), sin(angle), sin(angle));
+		torus->SetRotation(angle * 2.0f, Vector3D(1.0f, 1.0f, 0.0f));
 		//light->SetLocalEulerAngle(angle * 20.0f, 0.0f, 0.0f);
 
 		rootScene.Render();
@@ -174,7 +175,6 @@ void KeyBoardEvents(Window* window, eventsystem::Input input)
 		cameraPos = cameraPos + tempVec;
 	}
 }
-
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {

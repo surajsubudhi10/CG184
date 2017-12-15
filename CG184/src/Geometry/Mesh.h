@@ -28,9 +28,9 @@ namespace CG184 {
 
     struct FaceData
     {
-        unsigned int _v1;
-        unsigned int _v2;
-        unsigned int _v3;
+        uint32_t _v1;
+        uint32_t _v2;
+        uint32_t _v3;
 
         Vector3D faceNormal;
     };
@@ -46,11 +46,11 @@ namespace CG184 {
 //        std::vector<FaceData> faces;
 
         VertexData* vertices;
-        unsigned int m_NumOfVert;
-        std::vector<unsigned int> m_Indices;
+		uint32_t m_NumOfVert;
+        std::vector<uint32_t> m_Indices;
 
-        Mesh(std::vector<Vector3D> a_Pos, std::vector<unsigned int>a_Ind);
-        Mesh(std::vector<VertexData> a_Vertices, std::vector<unsigned int>a_Ind);
+        Mesh(std::vector<Vector3D> a_Pos, std::vector<uint32_t>a_Ind);
+        Mesh(std::vector<VertexData> a_Vertices, std::vector<uint32_t>a_Ind);
 
         void SetPositions(std::vector<Vector3D> a_Positions);
         void SetColors(std::vector<Vector3D> a_Colors);
@@ -61,7 +61,7 @@ namespace CG184 {
 
     protected:
         Mesh();
-        void SetIndicies(std::vector<unsigned int>a_Ind);
+        void SetIndicies(std::vector<uint32_t>a_Ind);
         virtual void InitMesh() = 0;
 
     };

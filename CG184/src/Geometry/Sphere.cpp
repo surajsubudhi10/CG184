@@ -20,7 +20,7 @@ namespace CG184 {
         InitMesh();
     }
 
-    Sphere::Sphere(float rad, unsigned int xSeg, unsigned int ySeg):
+    Sphere::Sphere(float rad, uint32_t xSeg, uint32_t ySeg):
             Mesh(), radius(rad),
             x_segments(xSeg),
             y_segments(ySeg)
@@ -33,7 +33,7 @@ namespace CG184 {
         radius = rad;
     }
 
-    void Sphere::SetSegments(unsigned int xSeg, unsigned int ySeg)
+    void Sphere::SetSegments(uint32_t xSeg, uint32_t ySeg)
     {
         x_segments = xSeg;
         y_segments = ySeg;
@@ -47,11 +47,11 @@ namespace CG184 {
         std::vector<Vector3D> positions;
         std::vector<Vector2D> texCoord;
         std::vector<Vector3D> normals;
-        std::vector<unsigned int> indicies;
+        std::vector<uint32_t> indicies;
 
-        for (unsigned int y = 0; y <= y_segments; ++y)
+        for (uint32_t y = 0; y <= y_segments; ++y)
         {
-            for (unsigned int x = 0; x <= x_segments; ++x)
+            for (uint32_t x = 0; x <= x_segments; ++x)
             {
                 float xSegment = (float)x / (float)y_segments;
                 float ySegment = (float)y / (float)y_segments;
@@ -66,10 +66,9 @@ namespace CG184 {
             }
         }
 
-//        bool oddRow = false;
-        for (unsigned int y = 0; y < y_segments; ++y)
+        for (uint32_t y = 0; y < y_segments; ++y)
         {
-            for (unsigned int x = 0; x < x_segments; ++x)
+            for (uint32_t x = 0; x < x_segments; ++x)
             {
                 indicies.push_back((y + 1) * (x_segments + 1) + x);
                 indicies.push_back(y       * (x_segments + 1) + x);

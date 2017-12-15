@@ -22,11 +22,11 @@ namespace CG184 {
 
         virtual ~Node();
 
-        Node* GetChildNodeAt(unsigned int index);
+        Node* GetChildNodeAt(uint32_t index);
         Node* GetParent();
         void SetParent(Node* parentNode);
 
-        unsigned int GetNumOfChildNode();
+		uint32_t GetNumOfChildNode();
         void AddChild(Node* node);
 
         void AttachComponent(Component& a_Component);
@@ -35,6 +35,7 @@ namespace CG184 {
         void SetPosition(float _x, float _y, float _z);
         void SetLocalScale(float _x, float _y, float _z);
         void SetLocalEulerAngle(float _x, float _y, float _z);
+		void SetRotation(float angle, Vector3D axis);
 
         void UpdateWorldModelMatrix();
 

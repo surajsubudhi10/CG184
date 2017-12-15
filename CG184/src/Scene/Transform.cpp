@@ -4,7 +4,7 @@
 
 #include <cmath>
 #include "Transform.h"
-
+#include "../Maths/Maths.h"
 
 namespace CG184
 {
@@ -12,6 +12,7 @@ namespace CG184
 	Transform::Transform() :
 		position(Vector3D(0)),
 		localPosition(Vector3D(0)),
+		rotation(Quaternion()),
 		eulerAngles(Vector3D(0)),
 		localScale(Vector3D(1)),
 		isDirty(false)
@@ -33,10 +34,15 @@ namespace CG184
     void Transform::UpdateLocalTransformMatrix()
     {
 		localTransformMat = Matrix4D(1.0f);
-        Rotate(localTransformMat, eulerAngles.x, Vector3D(1, 0, 0));
-        Rotate(localTransformMat, eulerAngles.y, Vector3D(0, 1, 0));
-        Rotate(localTransformMat, eulerAngles.z, Vector3D(0, 0, 1));
-        Scale(localTransformMat, localScale.x, localScale.y, localScale.z);
+		
+		float angleInDeg;
+		Vector3D axis;
+		rotation.ToAxisAngle(axis, angleInDeg);
+		angleInDeg = ToDegrees(angleInDeg);
+		if(axis.length() > 0.0f)
+			Rotate(localTransformMat, angleInDeg, axis);
+        
+		Scale(localTransformMat, localScale.x, localScale.y, localScale.z);
         Translate(localTransformMat, localPosition.x, localPosition.y, localPosition.z);
 		isDirty = false;
     }

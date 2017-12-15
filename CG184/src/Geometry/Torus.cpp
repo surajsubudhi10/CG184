@@ -24,7 +24,7 @@ namespace CG184{
         InitMesh();
     }
 
-    Torus::Torus(float tubeRad, float torusRad, unsigned int torusSeg, unsigned int tubeSeg):
+    Torus::Torus(float tubeRad, float torusRad, uint32_t torusSeg, uint32_t tubeSeg):
             Mesh(),
             m_TubeRadius(tubeRad), m_TorusRadius(torusRad),
             m_TubeSegments(tubeSeg), m_TorusSegments(torusSeg)
@@ -43,12 +43,12 @@ namespace CG184{
         std::vector<Vector3D> positions((m_TorusSegments + 1) * (m_TubeSegments + 1));
         std::vector<Vector2D> texCoord((m_TorusSegments + 1) * (m_TubeSegments + 1));
         std::vector<Vector3D> normals((m_TorusSegments + 1) * (m_TubeSegments + 1));
-        std::vector<unsigned int> indicies(m_TorusSegments * m_TubeSegments * 6);
+        std::vector<uint32_t> indicies(m_TorusSegments * m_TubeSegments * 6);
 
         std::vector<Vector3D> p(m_TorusSegments + 1);
         float a = 0.0f;
         auto step = (float)(2.0f * PI / m_TorusSegments);
-        for (unsigned int i = 0; i <= m_TorusSegments; ++i)
+        for (uint32_t i = 0; i <= m_TorusSegments; ++i)
         {
             float x = std::cos(a) * m_TorusRadius;
             float y = std::sin(a) * m_TorusRadius;
@@ -59,7 +59,7 @@ namespace CG184{
         }
 
         // generate all the vertices, UVs, Normals (and Tangents/Bitangents):
-        for (unsigned int i = 0; i <= m_TorusSegments; ++i)
+        for (uint32_t i = 0; i <= m_TorusSegments; ++i)
         {
             // the basis vectors of the ring equal the difference  vector between the minorRing
             // center and the donut's center position (which equals the origin (0, 0, 0)) and the
@@ -69,8 +69,8 @@ namespace CG184{
 
             // create the vertices of each minor ring segment:
             auto a = 0.0f;
-            auto step = 2.0f * PI / m_TubeSegments;
-            for (unsigned int j = 0; j <= m_TubeSegments; ++j)
+            auto step = static_cast<float>(2.0f * PI / m_TubeSegments);
+            for (uint32_t j = 0; j <= m_TubeSegments; ++j)
             {
                 auto c = (float)cos(a);
                 auto s = (float)sin(a);
@@ -85,12 +85,12 @@ namespace CG184{
 
 
         int index = 0;
-        for (unsigned int i = 0; i < m_TorusSegments; ++i)
+        for (uint32_t i = 0; i < m_TorusSegments; ++i)
         {
             int i1 = i;
             int i2 = (i1 + 1);
 
-            for (unsigned int j = 0; j < m_TubeSegments; ++j)
+            for (uint32_t j = 0; j < m_TubeSegments; ++j)
             {
                 int j1 = j;
                 int j2 = (j1 + 1);
