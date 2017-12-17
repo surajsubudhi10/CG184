@@ -20,16 +20,15 @@ namespace CG184 {
     public:
         explicit Scene(Camera* cam);
         ~Scene();
-		Scene(Camera* cam, Light* light);
 
         void Render();
         void AddToScene(Node* node);
-
+        void AddLight(Light* light);
 
     private:
         Camera* m_Camera;
         std::vector<Node*> m_RenderQueue;
-		Light* m_Light;
+		std::vector<Light*> m_Lights;
 
         void TraverseAllChildNodes(Node& a_Node);
 

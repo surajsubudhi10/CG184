@@ -45,12 +45,15 @@ namespace CG184
         m_Material->GetShader()->SetUniformMat4f("view", viewMat.elements);
     }
 
-	void Renderer::SendLightData(Light* light){
-		m_Material->GetShader()->SetUniform4f("light.ambient"    , light->GetAmbientColor());
-		m_Material->GetShader()->SetUniform4f("light.diffuse"    , light->GetDiffuseColor());
-		m_Material->GetShader()->SetUniform4f("light.specular"   , light->GetSpecularColor());
-		m_Material->GetShader()->SetUniform4f("light.position"   , light->GetPosition());
-		m_Material->GetShader()->SetUniform3f("light.attenuation", light->GetAttenuation().x, light->GetAttenuation().y, light->GetAttenuation().z);
+	void Renderer::SendLightData(Light* light, int index){
+        string lightName = "light";
+        //int val = 0;
+        lightName = lightName + "[" + to_string(index) + "]";
+		m_Material->GetShader()->SetUniform4f(lightName + ".ambient"    , light->GetAmbientColor());
+		m_Material->GetShader()->SetUniform4f(lightName + ".diffuse"    , light->GetDiffuseColor());
+		m_Material->GetShader()->SetUniform4f(lightName + ".specular"   , light->GetSpecularColor());
+		m_Material->GetShader()->SetUniform4f(lightName + ".position"   , light->GetPosition());
+		m_Material->GetShader()->SetUniform3f(lightName + ".attenuation", light->GetAttenuation().x, light->GetAttenuation().y, light->GetAttenuation().z);
 	}
 
 	void Renderer::SendMaterialData() {

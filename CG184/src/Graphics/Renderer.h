@@ -30,7 +30,7 @@ namespace CG184
 
 
 		void SendCameraPosData(Camera* cam);
-		void SendLightData(Light* light);
+		void SendLightData(Light* light, int index = 0);
 		void SendMaterialData();
 
     private:

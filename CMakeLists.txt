@@ -53,12 +53,15 @@ find_package(GLEW REQUIRED)
 
 configure_file (${PROJECT_SOURCE_DIR}/CG184/Resources/textures/container.jpg Resources/textures/container.jpg COPYONLY)
 
-configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/BoxSolid.vs    TestShaders/BoxSolid.vs    COPYONLY)
-configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/BoxSolid.fs    TestShaders/BoxSolid.fs    COPYONLY)
-configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/LightCube.vs   TestShaders/LightCube.vs   COPYONLY)
-configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/LightCube.fs   TestShaders/LightCube.fs   COPYONLY)
-configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/PhongShader.fs TestShaders/PhongShader.fs COPYONLY)
-configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/PhongShader.vs TestShaders/PhongShader.vs COPYONLY)
+configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/BoxSolid.vs         TestShaders/BoxSolid.vs         COPYONLY)
+configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/BoxSolid.fs         TestShaders/BoxSolid.fs         COPYONLY)
+configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/LightCube.vs        TestShaders/LightCube.vs        COPYONLY)
+configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/LightCube.fs        TestShaders/LightCube.fs        COPYONLY)
+configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/PhongShader.fs      TestShaders/PhongShader.fs      COPYONLY)
+configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/PhongShader.vs      TestShaders/PhongShader.vs      COPYONLY)
+configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/multipleLights.vs   TestShaders/multipleLights.vs   COPYONLY)
+configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/multipleLights.fs   TestShaders/multipleLights.fs   COPYONLY)
+
 #configure_file (${PROJECT_SOURCE_DIR}/src/Shaders/basic.fs basic.fs COPYONLY)
 #configure_file (${PROJECT_SOURCE_DIR}/src/Shaders/myText.txt myText.txt COPYONLY)
 

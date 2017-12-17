@@ -59,8 +59,12 @@ int main()
 	cam->SetFOV(fov);
 
 	Light* pointLight = new Light();
-	pointLight->SetPosition(Vector4D(lightPos.x, lightPos.y, lightPos.z, 1.0));
+	pointLight->SetPosition(Vector4D(lightPos.x, lightPos.y, lightPos.z, 1.0f));
     pointLight->SetAmbientColor(Vector4D(0.2f, 0.2f, 0.2f, 1.0f));
+
+    Light* pointLight1 = new Light();
+    pointLight1->SetPosition(Vector4D(lightPos.x+100.0f, lightPos.y - 100.0f, lightPos.z, 100.0f));
+    pointLight1->SetAmbientColor(Vector4D(0.1f, 0.1f, 0.1f, 1.0f));
 
 
     Box lightMesh;
@@ -77,7 +81,7 @@ int main()
 
     //Sphere sphereMesh(1.0, 40, 40);
 	Torus sphereMesh(0.5f, 1.0f, 40, 40);
-	Shader sphereShaderTemp("TestShaders/PhongShader.vs", "TestShaders/PhongShader.fs");
+	Shader sphereShaderTemp("TestShaders/multipleLights.vs", "TestShaders/multipleLights.fs");
 	Material sphereMat(sphereShaderTemp);
     sphereMat.SetAmbient(Vector4D(0.1f, 0.1f, 0.1f, 1.0f));
 	sphereMat.SetShininess(100.0f);
@@ -92,10 +96,11 @@ int main()
 	//torus->AddChild(light);
 	//torus->AddChild(referenceBox);
 
-    Scene rootScene(cam, pointLight);
+    Scene rootScene(cam);
 	rootScene.AddToScene(torus);
 	rootScene.AddToScene(light);
-
+    rootScene.AddLight(pointLight);
+    rootScene.AddLight(pointLight1);
     //ourShader.AddTexture("Resources/textures/container.jpg", TextureType::Diffuse);
     //ourShader.AddTexture("Resources/textures/awesomeface.png", TextureType::Specular);
 
@@ -116,11 +121,12 @@ int main()
         cam->SetFOV(fov);
         cam->Set(cameraPos, cameraFront, cameraUp);
 		pointLight->SetPosition(Vector4D(sin(angle), lightPos.y, lightPos.z, 1.0));
+        //pointLight1->SetPosition(Vector4D(sin(angle) + 3.0f, lightPos.y, lightPos.z, 1.0));
 		light->SetPosition(sin(angle), lightPos.y, lightPos.z);
 
-		torus->SetPosition(sin(angle), 0, 0);
+		//torus->SetPosition(sin(angle), 0, 0);
 		//torus->SetLocalScale(sin(angle), sin(angle), sin(angle));
-		torus->SetRotation(angle * 2.0f, Vector3D(1.0f, 1.0f, 0.0f));
+		//torus->SetRotation(angle * 2.0f, Vector3D(1.0f, 1.0f, 0.0f));
 		//light->SetLocalEulerAngle(angle * 20.0f, 0.0f, 0.0f);
 
 		rootScene.Render();
