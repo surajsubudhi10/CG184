@@ -38,7 +38,7 @@ float fov = 45.0f;
 float deltaTime = 0.0f;	// time between current frame and last frame
 float lastFrame = 0.0f;
 
-Vector3D lightPos(1.2f, 2.0f, 2.0f);
+Vector3D lightPos(1.2f, 1.0f, 1.0f);
 
 int main()
 {
@@ -53,19 +53,27 @@ int main()
 	//glfwSetInputMode(window->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 
+    // ####################################### Camera ###############################################
 
-    Camera* cam = new Camera();
+    auto* cam = new Camera();
     cam->SetAspectRatio((float)SCR_WIDTH / (float)SCR_HEIGHT);
 	cam->SetFOV(fov);
 
-	Light* pointLight = new Light();
+    // ####################################### Lights ###############################################
+
+    auto* pointLight = new Light();
 	pointLight->SetPosition(Vector4D(lightPos.x, lightPos.y, lightPos.z, 1.0f));
     pointLight->SetAmbientColor(Vector4D(0.2f, 0.2f, 0.2f, 1.0f));
 
-    Light* pointLight1 = new Light();
-    pointLight1->SetPosition(Vector4D(lightPos.x+100.0f, lightPos.y - 100.0f, lightPos.z, 100.0f));
+    auto* pointLight1 = new Light();
+    pointLight1->SetPosition(Vector4D(lightPos.x + 100.0f, lightPos.y, lightPos.z, 1.0f));
     pointLight1->SetAmbientColor(Vector4D(0.1f, 0.1f, 0.1f, 1.0f));
 
+    auto* pointLight2 = new Light();
+    pointLight2->SetPosition(Vector4D(lightPos.x, lightPos.y, lightPos.z - 1.0f, 1.0f));
+    pointLight2->SetAmbientColor(Vector4D(0.1f, 0.1f, 0.1f, 1.0f));
+
+    // ##############################################################################################
 
     Box lightMesh;
     Shader lightShaderTemp("TestShaders/LightCube.vs", "TestShaders/LightCube.fs");
@@ -73,7 +81,7 @@ int main()
     Renderer lightBox(lightMesh, lightMat);
 
 
-    Node* light = new Node("lightBox");
+    auto* light = new Node("lightBox");
     light->AttachComponent(lightBox);
     light->SetPosition(lightPos.x, lightPos.y, lightPos.z);
     light->SetLocalScale(0.05f, 0.05f, 0.05f);
@@ -87,7 +95,7 @@ int main()
 	sphereMat.SetShininess(100.0f);
     Renderer renderer1(sphereMesh, sphereMat);
 
-    Node* torus = new Node("Torus");
+    auto* torus = new Node("Torus");
     torus->AttachComponent(renderer1);
     torus->SetLocalEulerAngle(-45.0f, 0.0f, 0.0f);
     torus->SetLocalScale(0.5, 0.5, 0.5);
@@ -96,11 +104,27 @@ int main()
 	//torus->AddChild(light);
 	//torus->AddChild(referenceBox);
 
+    Plane groundPlaneMesh(40, 40);
+    Shader groundPlaneShader("TestShaders/multipleLights.vs", "TestShaders/multipleLights.fs");
+    Material groundPlaneMat(groundPlaneShader);
+    groundPlaneMat.SetAmbient(Vector4D(0.1f, 0.1f, 0.1f, 1.0f));
+    groundPlaneMat.SetShininess(100.0f);
+    Renderer groundPlaneRenderer(groundPlaneMesh, groundPlaneMat);
+
+    auto* groundPlane = new Node("Ground Plane");
+    groundPlane->AttachComponent(groundPlaneRenderer);
+    groundPlane->SetLocalEulerAngle(-45.0f, 0.0f, 0.0f);
+    groundPlane->SetLocalScale(3.5, 3.5, 3.5);
+
+
     Scene rootScene(cam);
 	rootScene.AddToScene(torus);
 	rootScene.AddToScene(light);
+    rootScene.AddToScene(groundPlane);
     rootScene.AddLight(pointLight);
     rootScene.AddLight(pointLight1);
+    rootScene.AddLight(pointLight2);
+
     //ourShader.AddTexture("Resources/textures/container.jpg", TextureType::Diffuse);
     //ourShader.AddTexture("Resources/textures/awesomeface.png", TextureType::Specular);
 
@@ -113,7 +137,7 @@ int main()
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 		angle += deltaTime * 1.0f;
-		std::cout << "FPS : " << static_cast<int>(1.0f / deltaTime) << std::endl;
+		//std::cout << "FPS : " << static_cast<int>(1.0f / deltaTime) << std::endl;
 
         KeyBoardEvents(window, input);
         window->SetBGColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -121,6 +145,7 @@ int main()
         cam->SetFOV(fov);
         cam->Set(cameraPos, cameraFront, cameraUp);
 		pointLight->SetPosition(Vector4D(sin(angle), lightPos.y, lightPos.z, 1.0));
+		//pointLight2->SetPosition(Vector4D(lightPos.x - 100.0f, sin(angle), lightPos.z, 1.0));
         //pointLight1->SetPosition(Vector4D(sin(angle) + 3.0f, lightPos.y, lightPos.z, 1.0));
 		light->SetPosition(sin(angle), lightPos.y, lightPos.z);
 
@@ -138,6 +163,7 @@ int main()
 
     delete cam;
     delete pointLight;
+    delete pointLight1;
 	delete window;
 	return 0;
 }

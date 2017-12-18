@@ -12,6 +12,7 @@ namespace CG184{
 		m_DiffuseColor(WHITE),
 		m_AmbientColor(WHITE),
 		m_SpecularColor(WHITE),
+        m_Attenuation(Vector3D(1.0)),
 		m_Type(LightType::Point)
     {}
 
@@ -20,6 +21,7 @@ namespace CG184{
 		m_DiffuseColor(diffCol),
 		m_AmbientColor(specCol),
 		m_SpecularColor(ambCol),
+        m_Attenuation(Vector3D(1.0)),
 		m_Type(type)
     {
 		position.x = lightPos.x;
@@ -38,6 +40,7 @@ namespace CG184{
 		m_DiffuseColor(light.m_DiffuseColor),
 		m_AmbientColor(light.m_AmbientColor),
 		m_SpecularColor(light.m_SpecularColor),
+        m_Attenuation(light.m_Attenuation),
 		m_Type(light.m_Type)
     {}
 

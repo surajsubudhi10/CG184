@@ -1,6 +1,5 @@
 #pragma once
 
-//#include "../Maths/Vector3D.h"
 #include "../Maths/Matrix4D.h"
 
 namespace CG184 

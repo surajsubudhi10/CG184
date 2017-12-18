@@ -54,6 +54,12 @@ void main()
     FragColor = result;
 }
 
+float GetIntensity(vec3 attenuation, float distance)
+{
+    float inten = 1.0 / (attenuation.x + (attenuation.y * distance) + (attenuation.z * distance * distance));
+    return inten;
+}
+
 
 vec4 CalculatePointLight(Light _light, vec3 _normal, vec3 _fragPos, vec3 _viewPos)
 {
@@ -61,19 +67,22 @@ vec4 CalculatePointLight(Light _light, vec3 _normal, vec3 _fragPos, vec3 _viewPo
 
     // diffuse
     vec3 norm       = normalize(_normal);
+    float dis       = length(_light.position.xyz - _fragPos);
+    float intensity = GetIntensity(_light.attenuation, dis);
     vec3 lightDir   = normalize(_light.position.xyz - _fragPos);
     if (_light.position.w == 0){
     	lightDir = _light.position.xyz;
+    	intensity = 1.0;
     }
 
     float Kd     = max(dot(norm, lightDir), 0.0);
-    vec4 diffuse = _light.diffuse * (Kd * material.diffuse);
+    vec4 diffuse = (intensity * _light.diffuse) * (Kd * material.diffuse);
 
     // specular
     vec3 viewDir    = normalize(_viewPos - _fragPos);
     vec3 reflectDir = reflect(-lightDir, norm);
-    float Ks        = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
-    vec4 specular   = _light.specular * (Ks * material.specular);
+    float Ks        = max(pow(dot(viewDir, reflectDir), material.shininess), 0.0);
+    vec4 specular   = (intensity * _light.specular) * (Ks * material.specular);
 
     vec4 result = ambient + diffuse + specular;
     result = max_to_one(result);
