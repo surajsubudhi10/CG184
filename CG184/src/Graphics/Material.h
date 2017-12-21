@@ -14,7 +14,7 @@ namespace CG184 {
 
     public:
         Material();
-        Material(Shader& a_Shader);
+        explicit Material(Shader& a_Shader);
         ~Material();
 
         void AttachShader(Shader& a_Shader);

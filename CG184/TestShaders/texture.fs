@@ -21,9 +21,11 @@ void main()
 	}
 	else
 	{
-		texColor = vec4(ourColor, 1.0);
+		//texColor = vec4(ourColor, 1.0);
+		texColor = vec4(0.0, 1.0, 0.0, 1.0);
 	}
 
+    texColor = vec4(0.0, 1.0, 0.0, 1.0);
 	FragColor = texColor;
 	//FragColor = texture(texture1, TexCoord);
 }

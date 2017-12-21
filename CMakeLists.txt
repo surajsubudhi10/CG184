@@ -51,7 +51,9 @@ find_package(OpenGL REQUIRED)
 include_directories( ${OPENGL_INCLUDE_DIR})
 find_package(GLEW REQUIRED)
 
-configure_file (${PROJECT_SOURCE_DIR}/CG184/Resources/textures/container.jpg Resources/textures/container.jpg COPYONLY)
+configure_file (${PROJECT_SOURCE_DIR}/CG184/Resources/textures/container.jpg  Resources/textures/container.jpg COPYONLY)
+configure_file (${PROJECT_SOURCE_DIR}/CG184/Resources/textures/container2.png Resources/textures/container2.png COPYONLY)
+configure_file (${PROJECT_SOURCE_DIR}/CG184/Resources/textures/container2_specular.png Resources/textures/container2_specular.png COPYONLY)
 
 configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/BoxSolid.vs         TestShaders/BoxSolid.vs         COPYONLY)
 configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/BoxSolid.fs         TestShaders/BoxSolid.fs         COPYONLY)
@@ -61,6 +63,10 @@ configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/PhongShader.fs      Test
 configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/PhongShader.vs      TestShaders/PhongShader.vs      COPYONLY)
 configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/multipleLights.vs   TestShaders/multipleLights.vs   COPYONLY)
 configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/multipleLights.fs   TestShaders/multipleLights.fs   COPYONLY)
+configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/texture.vs          TestShaders/texture.vs          COPYONLY)
+configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/texture.fs          TestShaders/texture.fs          COPYONLY)
+configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/TextureSetup.vs     TestShaders/TextureSetup.vs     COPYONLY)
+configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/TextureSetup.fs     TestShaders/TextureSetup.fs     COPYONLY)
 
 #configure_file (${PROJECT_SOURCE_DIR}/src/Shaders/basic.fs basic.fs COPYONLY)
 #configure_file (${PROJECT_SOURCE_DIR}/src/Shaders/myText.txt myText.txt COPYONLY)

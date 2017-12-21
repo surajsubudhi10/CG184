@@ -105,7 +105,10 @@ int main()
 	//torus->AddChild(referenceBox);
 
     Plane groundPlaneMesh(40, 40);
-    Shader groundPlaneShader("TestShaders/multipleLights.vs", "TestShaders/multipleLights.fs");
+    groundPlaneMesh.SetColor(Vector3D(1.0f, 0.0f, 0.0f));
+//    Shader groundPlaneShader("TestShaders/multipleLights.vs", "TestShaders/multipleLights.fs");
+    Shader groundPlaneShader("TestShaders/TextureSetup.vs", "TestShaders/TextureSetup.fs");
+    groundPlaneShader.AddTexture("Resources/textures/container2.png", TextureType::Diffuse);
     Material groundPlaneMat(groundPlaneShader);
     groundPlaneMat.SetAmbient(Vector4D(0.1f, 0.1f, 0.1f, 1.0f));
     groundPlaneMat.SetShininess(100.0f);
@@ -125,7 +128,9 @@ int main()
     rootScene.AddLight(pointLight1);
     rootScene.AddLight(pointLight2);
 
-    //ourShader.AddTexture("Resources/textures/container.jpg", TextureType::Diffuse);
+//    Shader* ourShader = groundPlaneMat.GetShader();
+
+//    ourShader->AddTexture("Resources/textures/awesomeface.png", TextureType::Diffuse);
     //ourShader.AddTexture("Resources/textures/awesomeface.png", TextureType::Specular);
 
 
