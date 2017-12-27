@@ -8,41 +8,41 @@
 namespace CG184{
 
     Light::Light():
-        position(Vector4D(0, 0, 0, 1)),
-		m_DiffuseColor(WHITE),
-		m_AmbientColor(WHITE),
-		m_SpecularColor(WHITE),
-        m_Attenuation(Vector3D(1.0)),
-		m_Type(LightType::Point)
+            m_Position(Vector4D(0, 0, 0, 1)),
+		    m_DiffuseColor(WHITE),
+		    m_AmbientColor(WHITE),
+		    m_SpecularColor(WHITE),
+            m_Attenuation(Vector3D(1.0)),
+		    m_Type(LightType::Point)
     {}
 
     Light::Light(Vector3D &lightPos, LightType& type, Color& diffCol, Color& specCol, Color& ambCol):
-        position(Vector4D(0, 0, 0, 1)),
-		m_DiffuseColor(diffCol),
-		m_AmbientColor(specCol),
-		m_SpecularColor(ambCol),
-        m_Attenuation(Vector3D(1.0)),
-		m_Type(type)
-    {
-		position.x = lightPos.x;
-		position.y = lightPos.y;
-		position.z = lightPos.z;
+            m_Position(Vector4D(0, 0, 0, 1)),
+	    	m_DiffuseColor(diffCol),
+		    m_AmbientColor(specCol),
+		    m_SpecularColor(ambCol),
+            m_Attenuation(Vector3D(1.0)),
+            m_Type(type)
+{
+        m_Position.x = lightPos.x;
+        m_Position.y = lightPos.y;
+        m_Position.z = lightPos.z;
 		
 		if (m_Type == LightType::DirectionalLight)
-			position.w = 0.0;
+            m_Position.w = 0.0;
 		else
-			position.w = 1.0;
+            m_Position.w = 1.0;
 		
 	}
 
     Light::Light(const Light &light):
-        position(light.position),
+        m_Position(light.m_Position),
 		m_DiffuseColor(light.m_DiffuseColor),
 		m_AmbientColor(light.m_AmbientColor),
 		m_SpecularColor(light.m_SpecularColor),
         m_Attenuation(light.m_Attenuation),
-		m_Type(light.m_Type)
-    {}
+        m_Type(light.m_Type)
+{}
 
     Light::~Light() = default;
 }

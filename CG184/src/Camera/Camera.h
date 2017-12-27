@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Maths/Matrix4D.h"
+#include <memory>
 
 namespace CG184 
 {
@@ -10,6 +11,7 @@ namespace CG184
 		Camera();
 		Camera(const Vector3D& pos, const Vector3D& _front, const Vector3D& _up);
 		Camera(float camFov, float aspect, float camNear, float camFar);
+        Camera(Camera& cam);
 		~Camera();
 
 		void SetFrustrum(float camFov, float aspect, float camNear, float camFar);
@@ -49,5 +51,5 @@ namespace CG184
 		Matrix4D projectionMatrix;
 	};
 
-	
+    typedef std::shared_ptr<Camera> CameraPtr;
 }

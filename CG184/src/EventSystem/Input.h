@@ -10,7 +10,7 @@ namespace CG184
 		class Input
 		{
 		public:
-			Input(Window* window);
+			explicit Input(WindowPtr window);
 
 			bool KeyPressed(std::string key);
 			bool KeyPressed(int keyVal); // Temporary
@@ -24,7 +24,7 @@ namespace CG184
 			void processInput();
 
 
-			Window* win;
+			WindowPtr m_Window;
 		};
 
 		

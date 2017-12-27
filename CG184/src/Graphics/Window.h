@@ -3,12 +3,10 @@
 // Created by Suraj Subudhi on 08-Sep-17.
 //
 
-
-
-
 #include <GLFW/glfw3.h>
 #include <string>
 #include <iostream>
+#include <memory>
 
 namespace CG184 {
 
@@ -36,5 +34,7 @@ namespace CG184 {
 		const char* m_WindowTitle;
 		GLFWwindow* window;
 	};
+
+    typedef std::shared_ptr<Window> WindowPtr;
 }
 

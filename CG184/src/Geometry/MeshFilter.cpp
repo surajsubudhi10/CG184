@@ -8,7 +8,7 @@
 
 namespace CG184{
 
-    MeshFilter::MeshFilter(Mesh& a_Mesh) : m_Mesh(&a_Mesh)
+    MeshFilter::MeshFilter(Mesh* a_Mesh) : m_Mesh(a_Mesh)
     {
         if(m_Mesh != nullptr) {
             m_Buffer = m_Mesh->vertices;

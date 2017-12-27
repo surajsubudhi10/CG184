@@ -23,7 +23,7 @@ namespace CG184 {
     class MeshFilter
     {
     public:
-        explicit MeshFilter(Mesh& a_Mesh);
+        explicit MeshFilter(Mesh* a_Mesh);
         ~MeshFilter();
 
 

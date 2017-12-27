@@ -24,14 +24,14 @@ namespace CG184
         m_ParentNode = nullptr;
     }
 
-    void Node::AddChild(Node* a_Node)
+    void Node::AddChild(NodePtr a_Node)
     {
-        a_Node->SetParent(this);
+        a_Node->SetParent(NodePtr(this));
         a_Node->UpdateWorldModelMatrix();
         m_ChildNodes.push_back(a_Node);
     }
 
-    Node* Node::GetChildNodeAt(uint32_t index)
+    NodePtr Node::GetChildNodeAt(uint32_t index)
     {
         if(index >= m_ChildNodes.size())
             return nullptr;
@@ -39,7 +39,7 @@ namespace CG184
         return m_ChildNodes[index];
     }
 
-    Node* Node::GetParent()
+    NodePtr Node::GetParent()
     {
         return m_ParentNode;
     }
@@ -64,9 +64,9 @@ namespace CG184
 		return m_Transform;
 	}
 
-    void Node::AttachComponent(Component &a_Component) {
-        a_Component.SetAttachedNode(this);
-        m_Components.push_back(&a_Component);
+    void Node::AttachComponent(Component* a_Component) {
+        a_Component->SetAttachedNode(this);
+        m_Components.push_back(a_Component);
     }
 
     bool Node::HasComponent(ComponentType comType) {
@@ -76,8 +76,8 @@ namespace CG184
         return false;
     }
 
-    void Node::SetParent(Node* parentNode) {
-        m_ParentNode = parentNode;
+    void Node::SetParent(NodePtr parentNode) {
+        m_ParentNode = std::move(parentNode);
     }
 
     Node::~Node()
@@ -109,4 +109,14 @@ namespace CG184
 		m_Transform.rotation = quat;
 		m_Transform.isDirty = true;
 	}
+
+    Node::Node(Node* node):
+            m_NodeName(node->m_NodeName),
+            m_InstanceID(uID++),
+            m_Transform(node->m_Transform)
+    {
+        m_ParentNode = node->m_ParentNode;
+        m_ChildNodes = node->m_ChildNodes;
+        m_Components = node->m_Components;
+    }
 }

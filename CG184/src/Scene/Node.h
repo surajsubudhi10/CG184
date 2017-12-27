@@ -6,30 +6,30 @@
 #define CGENGINE_NODE_H
 
 #include <vector>
+#include <memory>
 #include "Transform.h"
 #include "Componet.h"
 #include "../Graphics/Renderer.h"
 
 
-namespace CG184 {
-
-
-    class Node {
-
+namespace CG184
+{
+    class Node
+    {
     public:
         explicit Node(const char* name);
         Node(Transform& a_Trans, const char* name);
-
+        Node(Node* node);
         virtual ~Node();
 
-        Node* GetChildNodeAt(uint32_t index);
-        Node* GetParent();
-        void SetParent(Node* parentNode);
+        std::shared_ptr<Node> GetChildNodeAt(uint32_t index);
+        std::shared_ptr<Node> GetParent();
+        void SetParent(std::shared_ptr<Node> parentNode);
 
 		uint32_t GetNumOfChildNode();
-        void AddChild(Node* node);
+        void AddChild(std::shared_ptr<Node> node);
 
-        void AttachComponent(Component& a_Component);
+        void AttachComponent(Component* a_Component);
         bool HasComponent(ComponentType comType);
 
         void SetPosition(float _x, float _y, float _z);
@@ -58,18 +58,20 @@ namespace CG184 {
 
     protected:
         Transform m_Transform;
-        //Matrix4D worldModelMatrix;
     private:
 
         const char* m_NodeName;
         const int m_InstanceID;
 
-        std::vector<Node*> m_ChildNodes;
+        std::vector<std::shared_ptr<Node>> m_ChildNodes;
         std::vector<Component*> m_Components;
-        Node* m_ParentNode;
+        std::shared_ptr<Node> m_ParentNode;
 
         static int uID;
     };
+
+    typedef std::shared_ptr<Node> NodePtr;
+
 }
 
 

@@ -6,9 +6,9 @@
 
 namespace CG184{
 
-    Scene::Scene(Camera* cam)
+    Scene::Scene(CameraPtr cam)
     {
-        m_Camera = cam;
+        m_Camera = std::move(cam);
     }
 
 
@@ -44,7 +44,7 @@ namespace CG184{
 
     }
 
-    void Scene::AddToScene(Node* node) {
+    void Scene::AddToScene(NodePtr node) {
         m_RenderQueue.push_back(node);
     }
 
@@ -67,7 +67,7 @@ namespace CG184{
         }
     }
 
-    void Scene::AddLight(Light *light) {
+    void Scene::AddLight(LightPtr light) {
         m_Lights.push_back(light);
     }
 

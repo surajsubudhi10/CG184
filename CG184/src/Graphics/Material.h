@@ -14,10 +14,10 @@ namespace CG184 {
 
     public:
         Material();
-        explicit Material(Shader& a_Shader);
+        explicit Material(Shader* a_Shader);
         ~Material();
 
-        void AttachShader(Shader& a_Shader);
+        void AttachShader(Shader* a_Shader);
         inline Shader* GetShader(){ return m_Shader;}
 
 		inline void SetAmbient(const Color &col) { m_Ambient = col; }

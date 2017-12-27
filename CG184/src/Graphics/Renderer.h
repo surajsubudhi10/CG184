@@ -20,8 +20,8 @@ namespace CG184
 	{
 	public:
 
-		Renderer(Mesh& a_Mesh, Material& a_Material);
-		~Renderer();
+		Renderer(Mesh* a_Mesh, Material* a_Material);
+		~Renderer() override ;
 
 		void Render();
 
@@ -29,8 +29,8 @@ namespace CG184
         void SendViewMatrixData(Matrix4D& viewMat);
 
 
-		void SendCameraPosData(Camera* cam);
-		void SendLightData(Light* light, int index = 0);
+		void SendCameraPosData(CameraPtr cam);
+		void SendLightData(LightPtr light, int index = 0);
 		void SendMaterialData();
 
     private:

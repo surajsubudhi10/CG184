@@ -16,22 +16,21 @@ namespace CG184 {
         m_Shader = new Shader("TestShaders/BoxSolid.vs", "TestShaders/BoxSolid.fs");
     }
 
-    Material::Material(Shader &a_Shader):
+    Material::Material(Shader *a_Shader):
 		m_Ambient(GREEN),
 		m_Diffuse(GREY),
 		m_Specular(WHITE),
 		m_Emission(BLACK),
 		m_Shininess(1.0)
     {
-        m_Shader = new Shader(a_Shader);
+        m_Shader = a_Shader;
     }
 
     Material::~Material() {
-        delete m_Shader;
         m_Shader = nullptr;
     }
 
-    void Material::AttachShader(Shader &a_Shader) {
-        m_Shader = &a_Shader;
+    void Material::AttachShader(Shader* a_Shader) {
+        m_Shader = a_Shader;
     }
 }

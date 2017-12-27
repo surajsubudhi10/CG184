@@ -9,6 +9,7 @@
 
 #include "src/Scene/Nodes.h"
 #include "src/Geometry/Geometry.h"
+#include "src/Lights/Lights.h"
 
 
 // settings
@@ -16,7 +17,7 @@ const uint32_t SCR_WIDTH = 800;
 const uint32_t SCR_HEIGHT = 600;
 using namespace CG184;
 
-void KeyBoardEvents(Window* window, eventsystem::Input input);
+void KeyBoardEvents(const WindowPtr window, eventsystem::Input input);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 // stores how much we're seeing of either texture
@@ -43,7 +44,7 @@ Vector3D lightPos(1.2f, 1.0f, 1.0f);
 int main()
 {
 
-	auto *window = new Window(SCR_WIDTH, SCR_HEIGHT, "CG184::In Development");
+    WindowPtr window(new Window(SCR_WIDTH, SCR_HEIGHT, "CG184::In Development"));
 	eventsystem::Input input(window);
 	
 
@@ -55,21 +56,21 @@ int main()
 
     // ####################################### Camera ###############################################
 
-    auto* cam = new Camera();
+    CameraPtr cam(new Camera());
     cam->SetAspectRatio((float)SCR_WIDTH / (float)SCR_HEIGHT);
 	cam->SetFOV(fov);
 
     // ####################################### Lights ###############################################
 
-    auto* pointLight = new Light();
-	pointLight->SetPosition(Vector4D(lightPos.x, lightPos.y, lightPos.z, 1.0f));
+    LightPtr pointLight(new PointLight());
+    pointLight->SetPosition(Vector4D(lightPos.x, lightPos.y, lightPos.z, 1.0f));
     pointLight->SetAmbientColor(Vector4D(0.2f, 0.2f, 0.2f, 1.0f));
 
-    auto* pointLight1 = new Light();
+    LightPtr pointLight1(new PointLight());
     pointLight1->SetPosition(Vector4D(lightPos.x + 100.0f, lightPos.y, lightPos.z, 1.0f));
     pointLight1->SetAmbientColor(Vector4D(0.1f, 0.1f, 0.1f, 1.0f));
 
-    auto* pointLight2 = new Light();
+    LightPtr pointLight2(new PointLight());
     pointLight2->SetPosition(Vector4D(lightPos.x, lightPos.y, lightPos.z - 1.0f, 1.0f));
     pointLight2->SetAmbientColor(Vector4D(0.1f, 0.1f, 0.1f, 1.0f));
 
@@ -77,26 +78,24 @@ int main()
 
     Box lightMesh;
     Shader lightShaderTemp("TestShaders/LightCube.vs", "TestShaders/LightCube.fs");
-    Material lightMat(lightShaderTemp);
-    Renderer lightBox(lightMesh, lightMat);
+    Material lightMat(&lightShaderTemp);
+    Renderer lightBox(&lightMesh, &lightMat);
 
-
-    auto* light = new Node("lightBox");
-    light->AttachComponent(lightBox);
+    NodePtr light(new Node("lightBox"));
+    light->AttachComponent(&lightBox);
     light->SetPosition(lightPos.x, lightPos.y, lightPos.z);
     light->SetLocalScale(0.05f, 0.05f, 0.05f);
-    //light->SetPosition(0.0, 0.0, 1.0);
 
     //Sphere sphereMesh(1.0, 40, 40);
 	Torus sphereMesh(0.5f, 1.0f, 40, 40);
 	Shader sphereShaderTemp("TestShaders/multipleLights.vs", "TestShaders/multipleLights.fs");
-	Material sphereMat(sphereShaderTemp);
+	Material sphereMat(&sphereShaderTemp);
     sphereMat.SetAmbient(Vector4D(0.1f, 0.1f, 0.1f, 1.0f));
 	sphereMat.SetShininess(100.0f);
-    Renderer renderer1(sphereMesh, sphereMat);
+    Renderer renderer1(&sphereMesh, &sphereMat);
 
-    auto* torus = new Node("Torus");
-    torus->AttachComponent(renderer1);
+    NodePtr torus(new Node("Torus"));
+    torus->AttachComponent(&renderer1);
     torus->SetLocalEulerAngle(-45.0f, 0.0f, 0.0f);
     torus->SetLocalScale(0.5, 0.5, 0.5);
     torus->SetPosition(0.0, 0.5, 0.0);
@@ -106,18 +105,18 @@ int main()
 
     Plane groundPlaneMesh(40, 40);
     groundPlaneMesh.SetColor(Vector3D(1.0f, 0.0f, 0.0f));
-//    Shader groundPlaneShader("TestShaders/multipleLights.vs", "TestShaders/multipleLights.fs");
     Shader groundPlaneShader("TestShaders/TextureSetup.vs", "TestShaders/TextureSetup.fs");
     groundPlaneShader.AddTexture("Resources/textures/container2.png", TextureType::Diffuse);
-    Material groundPlaneMat(groundPlaneShader);
+    groundPlaneShader.AddTexture("Resources/textures/container2_specular.png", TextureType::Specular);
+    Material groundPlaneMat(&groundPlaneShader);
     groundPlaneMat.SetAmbient(Vector4D(0.1f, 0.1f, 0.1f, 1.0f));
     groundPlaneMat.SetShininess(100.0f);
-    Renderer groundPlaneRenderer(groundPlaneMesh, groundPlaneMat);
+    Renderer groundPlaneRenderer(&groundPlaneMesh, &groundPlaneMat);
 
-    auto* groundPlane = new Node("Ground Plane");
-    groundPlane->AttachComponent(groundPlaneRenderer);
+    NodePtr groundPlane(new Node("Ground Plane"));
+    groundPlane->AttachComponent(&groundPlaneRenderer);
     groundPlane->SetLocalEulerAngle(-45.0f, 0.0f, 0.0f);
-    groundPlane->SetLocalScale(3.5, 3.5, 3.5);
+    groundPlane->SetLocalScale(2.0, 2.0, 2.0);
 
 
     Scene rootScene(cam);
@@ -128,11 +127,6 @@ int main()
     rootScene.AddLight(pointLight1);
     rootScene.AddLight(pointLight2);
 
-//    Shader* ourShader = groundPlaneMat.GetShader();
-
-//    ourShader->AddTexture("Resources/textures/awesomeface.png", TextureType::Diffuse);
-    //ourShader.AddTexture("Resources/textures/awesomeface.png", TextureType::Specular);
-
 
 	float angle = 0;
     while (!window->IfWindowClosed())
@@ -142,16 +136,16 @@ int main()
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 		angle += deltaTime * 1.0f;
-		//std::cout << "FPS : " << static_cast<int>(1.0f / deltaTime) << std::endl;
+//		std::cout << "FPS : " << static_cast<int>(1.0f / deltaTime) << std::endl;
 
         KeyBoardEvents(window, input);
         window->SetBGColor(0.0f, 0.0f, 0.0f, 1.0f);
 
         cam->SetFOV(fov);
         cam->Set(cameraPos, cameraFront, cameraUp);
-		pointLight->SetPosition(Vector4D(sin(angle), lightPos.y, lightPos.z, 1.0));
-		//pointLight2->SetPosition(Vector4D(lightPos.x - 100.0f, sin(angle), lightPos.z, 1.0));
-        //pointLight1->SetPosition(Vector4D(sin(angle) + 3.0f, lightPos.y, lightPos.z, 1.0));
+		pointLight->SetPosition(Vector4D(sin(angle), lightPos.y - 1.0f, lightPos.z, 1.0));
+        pointLight2->SetPosition(Vector4D(lightPos.x, lightPos.y - 1.0f, sin(angle), 1.0f));
+//        pointLight1->SetPosition(Vector4D( lightPos.x, sin(angle) + 3.0f, lightPos.z, 1.0));
 		light->SetPosition(sin(angle), lightPos.y, lightPos.z);
 
 		//torus->SetPosition(sin(angle), 0, 0);
@@ -163,19 +157,12 @@ int main()
 		window->Update();
 	}
 
-	delete torus;
-	delete light;
-
-    delete cam;
-    delete pointLight;
-    delete pointLight1;
-	delete window;
 	return 0;
 }
 
 
 
-void KeyBoardEvents(Window* window, eventsystem::Input input) 
+void KeyBoardEvents(const WindowPtr window, eventsystem::Input input)
 {
 	if (input.KeyPressed(GLFW_KEY_ESCAPE))
 		window->Close();

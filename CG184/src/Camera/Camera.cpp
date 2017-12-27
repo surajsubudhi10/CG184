@@ -110,4 +110,18 @@ namespace CG184
 		return lookMat;
 	}
 
+    Camera::Camera(Camera &cam) {
+        position    = cam.position;
+        front       = cam.front;
+        up          = cam.up;
+
+        fov = cam.fov;
+        aspect_ratio = cam.aspect_ratio;
+        near = cam.near;
+        far = cam.far;
+
+        viewMatrix = cam.viewMatrix;
+        projectionMatrix = cam.projectionMatrix;
+    }
+
 }

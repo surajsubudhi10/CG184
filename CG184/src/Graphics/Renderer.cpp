@@ -5,11 +5,11 @@
 namespace CG184 
 {
 
-    Renderer::Renderer(Mesh &a_Mesh, Material &a_Material) : Component()
+    Renderer::Renderer(Mesh *a_Mesh, Material* a_Material) : Component()
     {
         m_Type = ComponentType ::RendererType;
         m_MeshFilter = new MeshFilter(a_Mesh);
-        m_Material = &a_Material;
+        m_Material = a_Material;
     }
 
 	Renderer::~Renderer()
@@ -45,9 +45,8 @@ namespace CG184
         m_Material->GetShader()->SetUniformMat4f("view", viewMat.elements);
     }
 
-	void Renderer::SendLightData(Light* light, int index){
+	void Renderer::SendLightData(LightPtr light, int index){
         string lightName = "light";
-        //int val = 0;
         lightName = lightName + "[" + to_string(index) + "]";
 		m_Material->GetShader()->SetUniform4f(lightName + ".ambient"    , light->GetAmbientColor());
 		m_Material->GetShader()->SetUniform4f(lightName + ".diffuse"    , light->GetDiffuseColor());
@@ -64,7 +63,7 @@ namespace CG184
 		m_Material->GetShader()->SetUniform1f("material.shininess", m_Material->m_Shininess);
 	}
 
-	void Renderer::SendCameraPosData(Camera* cam){
+	void Renderer::SendCameraPosData(CameraPtr cam){
 		m_Material->GetShader()->SetUniform3f("viewPos", cam->GetCamPos().x, cam->GetCamPos().y, cam->GetCamPos().z);
 	}
 

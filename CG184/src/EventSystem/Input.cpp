@@ -4,9 +4,9 @@ namespace CG184
 {
 	namespace eventsystem 
 	{
-		Input::Input(Window* window)
+		Input::Input(WindowPtr window)
 		{
-			win = window;
+			m_Window = window;
 
 		}
 
@@ -14,7 +14,7 @@ namespace CG184
 		{
 			const char c = *key.c_str();
 			int keyVal = int(c);
-			if (glfwGetKey(win->window, keyVal) == GLFW_PRESS)
+			if (glfwGetKey(m_Window->window, keyVal) == GLFW_PRESS)
 				return true;
 
 			return false;
@@ -24,7 +24,7 @@ namespace CG184
 		// TODO Temp Function 
 		bool Input::KeyPressed(int keyVal)
 		{
-			if (glfwGetKey(win->window, keyVal) == GLFW_PRESS)
+			if (glfwGetKey(m_Window->window, keyVal) == GLFW_PRESS)
 				return true;
 
 			return false;
@@ -44,8 +44,8 @@ namespace CG184
 
 		void Input::processInput()
 		{
-			if (glfwGetKey(win->window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-				glfwSetWindowShouldClose(win->window, true);
+			if (glfwGetKey(m_Window->window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+				glfwSetWindowShouldClose(m_Window->window, true);
 
 			/*float cameraSpeed = 2.5 * deltaTime;
 			if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
