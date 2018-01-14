@@ -66,66 +66,21 @@ int main()
     pointLight->SetPosition(Vector4D(lightPos.x, lightPos.y, lightPos.z, 1.0f));
     pointLight->SetAmbientColor(Vector4D(0.2f, 0.2f, 0.2f, 1.0f));
 
-    LightPtr pointLight1(new PointLight());
-    pointLight1->SetPosition(Vector4D(lightPos.x + 100.0f, lightPos.y, lightPos.z, 1.0f));
-    pointLight1->SetAmbientColor(Vector4D(0.1f, 0.1f, 0.1f, 1.0f));
-
-    LightPtr pointLight2(new PointLight());
-    pointLight2->SetPosition(Vector4D(lightPos.x, lightPos.y, lightPos.z - 1.0f, 1.0f));
-    pointLight2->SetAmbientColor(Vector4D(0.1f, 0.1f, 0.1f, 1.0f));
-
     // ##############################################################################################
 
-    Box lightMesh;
-    Shader lightShaderTemp("TestShaders/LightCube.vs", "TestShaders/LightCube.fs");
-    Material lightMat(&lightShaderTemp);
-    Renderer lightBox(&lightMesh, &lightMat);
+    Box boxMesh;
+    Shader boxShaderTemp("TestShaders/multipleLights.vs", "TestShaders/multipleLights.fs");
+    Material boxMat(&boxShaderTemp);
+    boxMat.SetAmbient(Vector4D(0.1f, 0.1f, 0.1f, 1.0f));
+    Renderer boxRenderer(&boxMesh, &boxMat);
 
-    NodePtr light(new Node("lightBox"));
-    light->AttachComponent(&lightBox);
-    light->SetPosition(lightPos.x, lightPos.y, lightPos.z);
-    light->SetLocalScale(0.05f, 0.05f, 0.05f);
-
-    //Sphere sphereMesh(1.0, 40, 40);
-	Torus sphereMesh(0.5f, 1.0f, 40, 40);
-	Shader sphereShaderTemp("TestShaders/multipleLights.vs", "TestShaders/multipleLights.fs");
-	Material sphereMat(&sphereShaderTemp);
-    sphereMat.SetAmbient(Vector4D(0.1f, 0.1f, 0.1f, 1.0f));
-	sphereMat.SetShininess(100.0f);
-    Renderer renderer1(&sphereMesh, &sphereMat);
-
-    NodePtr torus(new Node("Torus"));
-    torus->AttachComponent(&renderer1);
-    torus->SetLocalEulerAngle(-45.0f, 0.0f, 0.0f);
-    torus->SetLocalScale(0.5, 0.5, 0.5);
-    torus->SetPosition(0.0, 0.5, 0.0);
-
-	//torus->AddChild(light);
-	//torus->AddChild(referenceBox);
-
-    Plane groundPlaneMesh(40, 40);
-    groundPlaneMesh.SetColor(Vector3D(1.0f, 0.0f, 0.0f));
-    Shader groundPlaneShader("TestShaders/TextureSetup.vs", "TestShaders/TextureSetup.fs");
-    groundPlaneShader.AddTexture("Resources/textures/container2.png", TextureType::Diffuse);
-    groundPlaneShader.AddTexture("Resources/textures/container2_specular.png", TextureType::Specular);
-    Material groundPlaneMat(&groundPlaneShader);
-    groundPlaneMat.SetAmbient(Vector4D(0.1f, 0.1f, 0.1f, 1.0f));
-    groundPlaneMat.SetShininess(100.0f);
-    Renderer groundPlaneRenderer(&groundPlaneMesh, &groundPlaneMat);
-
-    NodePtr groundPlane(new Node("Ground Plane"));
-    groundPlane->AttachComponent(&groundPlaneRenderer);
-    groundPlane->SetLocalEulerAngle(-45.0f, 0.0f, 0.0f);
-    groundPlane->SetLocalScale(2.0, 2.0, 2.0);
-
+    NodePtr box(new Node("box"));
+    box->AttachComponent(&boxRenderer);
+    box->SetPosition(0, 0, 0);
 
     Scene rootScene(cam);
-	rootScene.AddToScene(torus);
-	rootScene.AddToScene(light);
-    rootScene.AddToScene(groundPlane);
+	rootScene.AddToScene(box);
     rootScene.AddLight(pointLight);
-    rootScene.AddLight(pointLight1);
-    rootScene.AddLight(pointLight2);
 
 
 	float angle = 0;
@@ -143,15 +98,6 @@ int main()
 
         cam->SetFOV(fov);
         cam->Set(cameraPos, cameraFront, cameraUp);
-		pointLight->SetPosition(Vector4D(sin(angle), lightPos.y - 1.0f, lightPos.z, 1.0));
-        pointLight2->SetPosition(Vector4D(lightPos.x, lightPos.y - 1.0f, sin(angle), 1.0f));
-//        pointLight1->SetPosition(Vector4D( lightPos.x, sin(angle) + 3.0f, lightPos.z, 1.0));
-		light->SetPosition(sin(angle), lightPos.y, lightPos.z);
-
-		//torus->SetPosition(sin(angle), 0, 0);
-		//torus->SetLocalScale(sin(angle), sin(angle), sin(angle));
-		//torus->SetRotation(angle * 2.0f, Vector3D(1.0f, 1.0f, 0.0f));
-		//light->SetLocalEulerAngle(angle * 20.0f, 0.0f, 0.0f);
 
 		rootScene.Render();
 		window->Update();

@@ -65,6 +65,7 @@ namespace CG184
 	}
 
     void Node::AttachComponent(Component* a_Component) {
+        // TODO Check if the node has already a component of same type if there then remove the reference
         a_Component->SetAttachedNode(this);
         m_Components.push_back(a_Component);
     }

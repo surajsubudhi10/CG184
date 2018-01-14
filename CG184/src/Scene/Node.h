@@ -60,11 +60,11 @@ namespace CG184
         Transform m_Transform;
     private:
 
-        const char* m_NodeName;
         const int m_InstanceID;
+        const char* m_NodeName;
 
         std::vector<std::shared_ptr<Node>> m_ChildNodes;
-        std::vector<Component*> m_Components;
+        std::vector<Component*> m_Components; // TODO use list instead of vector
         std::shared_ptr<Node> m_ParentNode;
 
         static int uID;

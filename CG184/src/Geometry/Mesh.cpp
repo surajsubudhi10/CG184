@@ -75,6 +75,11 @@ namespace CG184
         vertices -= m_NumOfVert;
     }
 
+    void Mesh::SetColor(float a_ColorR, float a_ColorG, float a_ColorB)
+    {
+        SetColor(Vector3D(a_ColorR, a_ColorG, a_ColorB));
+    }
+
     void Mesh::SetNormals(std::vector<Vector3D> a_Normals)
     {
         assert(a_Normals.size() == m_NumOfVert);

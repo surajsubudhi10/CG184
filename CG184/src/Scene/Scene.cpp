@@ -22,18 +22,20 @@ namespace CG184{
 			if (m_Node->HasComponent(ComponentType::RendererType)) {
 				Renderer* renderer = (m_Node->GetComponent<Renderer>());
 				if (renderer != nullptr) {
-					renderer->SendCameraPosData(m_Camera);
-					renderer->SendViewMatrixData(m_Camera->GetViewMatrix());
-					renderer->SendProjectionMatrixData(m_Camera->GetProjectionMatrix());
+                    if(renderer->IsEnabled()) {
+                        renderer->SendCameraPosData(m_Camera);
+                        renderer->SendViewMatrixData(m_Camera->GetViewMatrix());
+                        renderer->SendProjectionMatrixData(m_Camera->GetProjectionMatrix());
 
-                    for(auto i = 0; i < m_Lights.size(); i++)
-                        renderer->SendLightData(m_Lights[i], i);
+                        for (unsigned int i = 0; i < m_Lights.size(); i++)
+                            renderer->SendLightData(m_Lights[i], i);
 
-                    renderer->SendMaterialData();
-					renderer->Render();
+                        renderer->SendMaterialData();
+                        renderer->Render();
+                    }
 				}
 				else {
-					throw "(Null Exception) Renderer Null";
+					throw "(Null Exception) Renderer Null or Disabled.";
 				}
 			}
 		}

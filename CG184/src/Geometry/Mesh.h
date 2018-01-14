@@ -55,6 +55,7 @@ namespace CG184 {
         void SetPositions(std::vector<Vector3D> a_Positions);
         void SetColors(std::vector<Vector3D> a_Colors);
         void SetColor(Vector3D a_Color);
+        void SetColor(float a_ColorR, float a_ColorG, float a_ColorB);
         void SetNormals(std::vector<Vector3D> a_Normals);
         void SetUVs(std::vector<Vector2D> a_UV);
         ~Mesh();

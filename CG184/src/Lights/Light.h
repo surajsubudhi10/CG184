@@ -40,9 +40,9 @@ namespace CG184 {
 		inline void SetAmbientColor (const Color& col) { m_AmbientColor  = col; }
 
     protected:
-		Color m_DiffuseColor;
-		Color m_SpecularColor;
-		Color m_AmbientColor;
+        Color m_AmbientColor;
+        Color m_DiffuseColor;
+        Color m_SpecularColor;
 
         Vector4D m_Position;
 		Vector3D m_Attenuation;
