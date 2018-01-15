@@ -18,9 +18,7 @@ const uint32_t SCR_HEIGHT = 600;
 using namespace CG184;
 
 void KeyBoardEvents(const WindowPtr window, Eventsystem::Input input);
-//void MouseEvents(GLFWwindow* window, double xpos, double ypos);
-void mouse_cursor_callback(GLFWwindow* window, double xpos, double ypos);
-void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
+void MouseEvents(const WindowPtr window, Eventsystem::Input input);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 // stores how much we're seeing of either texture
 float mixValue = 0.2f;
@@ -50,12 +48,7 @@ int main()
 	Eventsystem::Input input(window);
 	
 
-	glfwSetCursorPosCallback(window->window, mouse_cursor_callback);
-	glfwSetMouseButtonCallback(window->window, mouse_button_callback);
 	glfwSetScrollCallback(window->window, scroll_callback);
-	// tell GLFW to capture our mouse
-	//glfwSetInputMode(window->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
 
     // ####################################### Camera ###############################################
 
@@ -80,7 +73,7 @@ int main()
 
     NodePtr box(new Node("Box"));
 	box->AttachComponent(&boxRenderer);
-	//box->SetLocalEulerAngle(-45.0f, 0.0f, 0.0f);
+	box->SetLocalEulerAngle(0.0f, -45.0f, 0.0f);
 	//box->SetLocalScale(0.5, 0.5, 0.5);
 	box->SetPosition(0.0, 0.0, 0.0);
 
@@ -102,6 +95,7 @@ int main()
 		//std::cout << "FPS : " << static_cast<int>(1.0f / deltaTime) << std::endl;
 
         KeyBoardEvents(window, input);
+        MouseEvents(window, input);
         window->SetBGColor(0.0f, 0.0f, 0.0f, 1.0f);
 
         cam->SetFOV(fov);
@@ -119,96 +113,80 @@ int main()
 
 void KeyBoardEvents(const WindowPtr window, Eventsystem::Input input)
 {
-	if (input.KeyPressed(GLFW_KEY_ESCAPE))
+	if (input.IsKeyPressed(GLFW_KEY_ESCAPE))
 		window->Close();
 
+    if(input.IsKeyPressed(GLFW_KEY_SPACE)){
+        cameraPos   = Vector3D(0.0f, 0.0f, 3.0f);
+        cameraFront = Vector3D(0.0f, 0.0f, -1.0f);
+        cameraUp    = Vector3D::Up;
+    }
+
 	auto cameraSpeed = (float)(2.5 * deltaTime);
-	if (input.KeyPressed(GLFW_KEY_W)) {
-		Vector3D tempVec = (cameraFront * cameraSpeed);
+	if (input.IsKeyPressed(GLFW_KEY_W)) {
+        Vector3D tempVec = (Vector3D::Forward * cameraSpeed);
+		cameraPos = cameraPos - tempVec;
+	}
+	if (input.IsKeyPressed(GLFW_KEY_S)) {
+        Vector3D tempVec = (Vector3D::Forward * cameraSpeed);
 		cameraPos = cameraPos + tempVec;
 	}
-	if (input.KeyPressed(GLFW_KEY_S)) {
-		Vector3D tempVec = (cameraFront * cameraSpeed);
-		cameraPos = cameraPos - tempVec;
-	}
-	if (input.KeyPressed(GLFW_KEY_A)){
-		Vector3D tempVec = cameraFront.cross(cameraUp);
-		tempVec.normalize();
-		tempVec = (tempVec * cameraSpeed);
-		cameraPos = cameraPos - tempVec;
+	if (input.IsKeyPressed(GLFW_KEY_A)){
+        Vector3D tempVec = (Vector3D::Right * cameraSpeed);
+		cameraPos = cameraPos + tempVec;
 	}
 
-    if (input.KeyPressed(GLFW_KEY_E)){
-        Vector3D tempVec = (cameraUp * cameraSpeed);
-        cameraPos = cameraPos + tempVec;
-    }
-    if (input.KeyPressed(GLFW_KEY_Q)){
-        Vector3D tempVec = (cameraUp * cameraSpeed);
+    if (input.IsKeyPressed(GLFW_KEY_E)){
+        Vector3D tempVec = (Vector3D::Up * cameraSpeed);
         cameraPos = cameraPos - tempVec;
     }
+    if (input.IsKeyPressed(GLFW_KEY_Q)){
+        Vector3D tempVec = (Vector3D::Up * cameraSpeed);
+        cameraPos = cameraPos + tempVec;
+    }
 
-	if (input.KeyPressed(GLFW_KEY_D)) {
-		Vector3D tempVec = cameraFront.cross(cameraUp);
-		tempVec.normalize();
-		tempVec = (tempVec * cameraSpeed);
-		cameraPos = cameraPos + tempVec;
+	if (input.IsKeyPressed(GLFW_KEY_D)) {
+        Vector3D tempVec = (Vector3D::Right * cameraSpeed);
+		cameraPos = cameraPos - tempVec;
 	}
 }
 
-
-
-void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+void MouseEvents(const WindowPtr window, Eventsystem::Input input)
 {
-	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
-	{
-		double xpos, ypos;
-		//getting cursor position
-		glfwGetCursorPos(window, &xpos, &ypos);
-		firstMouse = true;
-		//cout << firstMouse << endl;
-		//cout << "Cursor Position at (" << xpos << " : " << ypos << ")" << endl;
-	}
+    firstMouse = input.IsMouseClicked(GLFW_MOUSE_BUTTON_LEFT);
 
-	if(action == GLFW_RELEASE){
-		firstMouse = false;
-	}
-	
-}
+    if (!firstMouse)
+    {
+        lastX = input.mousePosition.x;
+        lastY = input.mousePosition.y;
+    }
 
+    if(input.IsMouseClicked(GLFW_MOUSE_BUTTON_LEFT)) {
+        auto xoffset = input.mousePosition.x - lastX;
+        auto yoffset = lastY - input.mousePosition.y; // reversed since y-coordinates go from bottom to top
+        lastX = (input.mousePosition.x);
+        lastY = (input.mousePosition.y);
 
-void mouse_cursor_callback(GLFWwindow* window, double xpos, double ypos)
-{
-	if (!firstMouse)
-	{
-		lastX = (float)xpos;
-		lastY = (float)ypos;
-		/*firstMouse = false;*/
-	}
+        float sensitivity = 0.1f; // change this value to your liking
+        xoffset *= sensitivity;
+        yoffset *= sensitivity;
 
-	auto xoffset = (float)(xpos - lastX);
-	auto yoffset = (float)(lastY - ypos); // reversed since y-coordinates go from bottom to top
-	lastX = (float)(xpos);
-	lastY = (float)(ypos);
+        yaw += xoffset;
+        pitch += yoffset;
 
-	float sensitivity = 0.1f; // change this value to your liking
-	xoffset *= sensitivity;
-	yoffset *= sensitivity;
+        // make sure that when pitch is out of bounds, screen doesn't get flipped
+        if (pitch > 89.0f)
+            pitch = 89.0f;
+        if (pitch < -89.0f)
+            pitch = -89.0f;
 
-	yaw += xoffset;
-	pitch += yoffset;
-
-	// make sure that when pitch is out of bounds, screen doesn't get flipped
-	if (pitch > 89.0f)
-		pitch = 89.0f;
-	if (pitch < -89.0f)
-		pitch = -89.0f;
-
-	//glm::vec3 front;
-	Vector3D front(1.0);
-	front.x = (cos(ToRadian(yaw)) * cos(ToRadian(pitch)));
-	front.y = (sin(ToRadian(pitch)));
-	front.z = (sin(ToRadian(yaw)) * cos(ToRadian(pitch)));
-	cameraFront = front.norm();
+        Vector3D front(1.0);
+        front.x = (cos(ToRadian(yaw)) * cos(ToRadian(pitch)));
+        front.y = (sin(ToRadian(pitch)));
+        front.z = (sin(ToRadian(yaw)) * cos(ToRadian(pitch)));
+        cameraFront = front.norm();
+    }
+//    cout << cameraFront;
 }
 
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)

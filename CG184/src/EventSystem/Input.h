@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Graphics/Window.h"
+#include "../Maths/Vector2D.h"
 #include <string>
 
 namespace CG184 
@@ -13,20 +14,19 @@ namespace CG184
 			explicit Input(WindowPtr window);
 
 			bool KeyPressed(std::string key);
-			bool KeyPressed(int keyVal); // Temporary
+			bool IsKeyPressed(int keyVal); // Temporary
 			bool KeyReleased(std::string key);
 
-			bool MouseClicked(std::string key);
+			bool IsMouseClicked(int button);
 
 			~Input();
 
+            Vector2D static mousePosition;
 		private:
 			void processInput();
-
-			double mouseX;
-			double mouseY;
 			WindowPtr m_Window;
-		};
+
+        };
 
 		
 	}

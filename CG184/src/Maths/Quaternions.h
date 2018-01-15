@@ -122,6 +122,8 @@ namespace CG184 {
 		return ToQuaternion(eulerAngle.x, eulerAngle.y, eulerAngle.z);
 	}
 
+    std::ostream& operator<< (std::ostream& stream, const Quaternion& quat);
+
 }
 
 

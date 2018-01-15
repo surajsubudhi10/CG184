@@ -51,5 +51,5 @@ namespace CG184
 		float x, y, z, w;
 	};
 
-
+    std::ostream& operator<< (std::ostream& stream, const Vector4D& vec);
 }

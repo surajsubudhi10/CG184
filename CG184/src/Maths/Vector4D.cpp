@@ -220,4 +220,9 @@ namespace CG184
 		return !(isEqual(vec));
 	}
 
+    std::ostream& operator<< (std::ostream& stream, const Vector4D& vec){
+        stream << "(" << vec.x << ", " << vec.y << ", " << vec.z << ", " << vec.w << ")" << '\n';
+        return stream;
+    }
+
 }

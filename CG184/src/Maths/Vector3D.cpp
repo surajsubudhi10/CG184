@@ -4,6 +4,11 @@
 
 namespace CG184 
 {
+
+    const Vector3D Vector3D::Up      = Vector3D(0.0, 1.0, 0.0);
+    const Vector3D Vector3D::Right   = Vector3D(1.0, 0.0, 0.0);
+    const Vector3D Vector3D::Forward = Vector3D(0.0, 0.0, 1.0);
+
 	Vector3D::Vector3D() : x(0), y(0), z(0)
 	{
 	}
@@ -210,6 +215,10 @@ namespace CG184
 		return mult(val);
 	}
 
+    Vector3D    Vector3D::operator*(float val) const{
+        return mult(val);
+    }
+
 	Vector3D   Vector3D::operator/(float val)
 	{
 		return divide(val);
@@ -259,5 +268,10 @@ namespace CG184
 	{
 		return !(isEqual(vec));
 	}
+
+    std::ostream& operator<< (std::ostream& stream, const Vector3D& vec){
+        stream << "(" << vec.x << ", " << vec.y << ", " << vec.z << ")" << '\n';
+        return stream;
+    }
 
 }
