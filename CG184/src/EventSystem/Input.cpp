@@ -4,7 +4,7 @@ namespace CG184
 {
 	namespace Eventsystem 
 	{
-		Input::Input(WindowPtr window)
+		Input::Input(WindowPtr window) : mouseX(0.0), mouseY(0.0)
 		{
 			m_Window = window;
 

@@ -18,7 +18,9 @@ const uint32_t SCR_HEIGHT = 600;
 using namespace CG184;
 
 void KeyBoardEvents(const WindowPtr window, Eventsystem::Input input);
-void mouse_callback(GLFWwindow* window, double xpos, double ypos);
+//void MouseEvents(GLFWwindow* window, double xpos, double ypos);
+void mouse_cursor_callback(GLFWwindow* window, double xpos, double ypos);
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 // stores how much we're seeing of either texture
 float mixValue = 0.2f;
@@ -28,7 +30,7 @@ Vector3D cameraPos(0.0f, 0.0f, 3.0f);
 Vector3D cameraFront(0.0f, 0.0f, -1.0f);
 Vector3D cameraUp(0.0f, 1.0f, 0.0f);
 
-bool firstMouse = true;
+bool firstMouse = false;
 float yaw = -90.0f;	// yaw is initialized to -90.0 degrees since a yaw of 0.0 results in a direction vector pointing to the right so we initially rotate a bit to the left.
 float pitch = 0.0f;
 float lastX = SCR_WIDTH / 2.0f;
@@ -48,7 +50,8 @@ int main()
 	Eventsystem::Input input(window);
 	
 
-	glfwSetCursorPosCallback(window->window, mouse_callback);
+	glfwSetCursorPosCallback(window->window, mouse_cursor_callback);
+	glfwSetMouseButtonCallback(window->window, mouse_button_callback);
 	glfwSetScrollCallback(window->window, scroll_callback);
 	// tell GLFW to capture our mouse
 	//glfwSetInputMode(window->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -64,68 +67,28 @@ int main()
 
     LightPtr pointLight(new PointLight());
     pointLight->SetPosition(Vector4D(lightPos.x, lightPos.y, lightPos.z, 1.0f));
-    pointLight->SetAmbientColor(Vector4D(0.2f, 0.2f, 0.2f, 1.0f));
-
-    LightPtr pointLight1(new PointLight());
-    pointLight1->SetPosition(Vector4D(lightPos.x + 100.0f, lightPos.y, lightPos.z, 1.0f));
-    pointLight1->SetAmbientColor(Vector4D(0.1f, 0.1f, 0.1f, 1.0f));
-
-    LightPtr pointLight2(new PointLight());
-    pointLight2->SetPosition(Vector4D(lightPos.x, lightPos.y, lightPos.z - 1.0f, 1.0f));
-    pointLight2->SetAmbientColor(Vector4D(0.1f, 0.1f, 0.1f, 1.0f));
+    pointLight->SetAmbientColor(Vector4D(0.7f, 0.7f, 0.7f, 1.0f));
 
     // ##############################################################################################
 
-    Box lightMesh;
-    Shader lightShaderTemp("TestShaders/LightCube.vs", "TestShaders/LightCube.fs");
-    Material lightMat(&lightShaderTemp);
-    Renderer lightBox(&lightMesh, &lightMat);
+	Box boxMesh;
+	Shader boxShaderTemp("TestShaders/multipleLights.vs", "TestShaders/multipleLights.fs");
+	Material boxMat(&boxShaderTemp);
+	boxMat.SetAmbient(Vector4D(0.1f, 0.1f, 0.1f, 1.0f));
+	boxMat.SetShininess(100.0f);
+    Renderer boxRenderer(&boxMesh, &boxMat);
 
-    NodePtr light(new Node("lightBox"));
-    light->AttachComponent(&lightBox);
-    light->SetPosition(lightPos.x, lightPos.y, lightPos.z);
-    light->SetLocalScale(0.05f, 0.05f, 0.05f);
+    NodePtr box(new Node("Box"));
+	box->AttachComponent(&boxRenderer);
+	//box->SetLocalEulerAngle(-45.0f, 0.0f, 0.0f);
+	//box->SetLocalScale(0.5, 0.5, 0.5);
+	box->SetPosition(0.0, 0.0, 0.0);
 
-    //Sphere sphereMesh(1.0, 40, 40);
-	Torus sphereMesh(0.5f, 1.0f, 40, 40);
-	Shader sphereShaderTemp("TestShaders/multipleLights.vs", "TestShaders/multipleLights.fs");
-	Material sphereMat(&sphereShaderTemp);
-    sphereMat.SetAmbient(Vector4D(0.1f, 0.1f, 0.1f, 1.0f));
-	sphereMat.SetShininess(100.0f);
-    Renderer renderer1(&sphereMesh, &sphereMat);
-
-    NodePtr torus(new Node("Torus"));
-    torus->AttachComponent(&renderer1);
-    torus->SetLocalEulerAngle(-45.0f, 0.0f, 0.0f);
-    torus->SetLocalScale(0.5, 0.5, 0.5);
-    torus->SetPosition(0.0, 0.5, 0.0);
-
-	//torus->AddChild(light);
-	//torus->AddChild(referenceBox);
-
-    Plane groundPlaneMesh(40, 40);
-    groundPlaneMesh.SetColor(Vector3D(1.0f, 0.0f, 0.0f));
-    Shader groundPlaneShader("TestShaders/TextureSetup.vs", "TestShaders/TextureSetup.fs");
-    groundPlaneShader.AddTexture("Resources/textures/container2.png", TextureType::Diffuse);
-    groundPlaneShader.AddTexture("Resources/textures/container2_specular.png", TextureType::Specular);
-    Material groundPlaneMat(&groundPlaneShader);
-    groundPlaneMat.SetAmbient(Vector4D(0.1f, 0.1f, 0.1f, 1.0f));
-    groundPlaneMat.SetShininess(100.0f);
-    Renderer groundPlaneRenderer(&groundPlaneMesh, &groundPlaneMat);
-
-    NodePtr groundPlane(new Node("Ground Plane"));
-    groundPlane->AttachComponent(&groundPlaneRenderer);
-    groundPlane->SetLocalEulerAngle(-45.0f, 0.0f, 0.0f);
-    groundPlane->SetLocalScale(2.0, 2.0, 2.0);
 
 
     Scene rootScene(cam);
-	rootScene.AddToScene(torus);
-	rootScene.AddToScene(light);
-    rootScene.AddToScene(groundPlane);
+	rootScene.AddToScene(box);
     rootScene.AddLight(pointLight);
-    rootScene.AddLight(pointLight1);
-    rootScene.AddLight(pointLight2);
 
 
 	float angle = 0;
@@ -136,22 +99,14 @@ int main()
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 		angle += deltaTime * 1.0f;
-		std::cout << "FPS : " << static_cast<int>(1.0f / deltaTime) << std::endl;
+		//std::cout << "FPS : " << static_cast<int>(1.0f / deltaTime) << std::endl;
 
         KeyBoardEvents(window, input);
         window->SetBGColor(0.0f, 0.0f, 0.0f, 1.0f);
 
         cam->SetFOV(fov);
         cam->Set(cameraPos, cameraFront, cameraUp);
-		pointLight->SetPosition(Vector4D(sin(angle), lightPos.y - 1.0f, lightPos.z, 1.0));
-        pointLight2->SetPosition(Vector4D(lightPos.x, lightPos.y - 1.0f, sin(angle), 1.0f));
-//        pointLight1->SetPosition(Vector4D( lightPos.x, sin(angle) + 3.0f, lightPos.z, 1.0));
-		light->SetPosition(sin(angle), lightPos.y, lightPos.z);
-
-		//torus->SetPosition(sin(angle), 0, 0);
-		//torus->SetLocalScale(sin(angle), sin(angle), sin(angle));
-		//torus->SetRotation(angle * 2.0f, Vector3D(1.0f, 1.0f, 0.0f));
-		//light->SetLocalEulerAngle(angle * 20.0f, 0.0f, 0.0f);
+		//pointLight->SetPosition(Vector4D(sin(angle), lightPos.y - 1.0f, lightPos.z, 1.0));
 
 		rootScene.Render();
 		window->Update();
@@ -200,13 +155,34 @@ void KeyBoardEvents(const WindowPtr window, Eventsystem::Input input)
 	}
 }
 
-void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+
+
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
-	if (firstMouse)
+	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+	{
+		double xpos, ypos;
+		//getting cursor position
+		glfwGetCursorPos(window, &xpos, &ypos);
+		firstMouse = true;
+		//cout << firstMouse << endl;
+		//cout << "Cursor Position at (" << xpos << " : " << ypos << ")" << endl;
+	}
+
+	if(action == GLFW_RELEASE){
+		firstMouse = false;
+	}
+	
+}
+
+
+void mouse_cursor_callback(GLFWwindow* window, double xpos, double ypos)
+{
+	if (!firstMouse)
 	{
 		lastX = (float)xpos;
 		lastY = (float)ypos;
-		firstMouse = false;
+		/*firstMouse = false;*/
 	}
 
 	auto xoffset = (float)(xpos - lastX);

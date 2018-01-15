@@ -94,9 +94,9 @@ namespace CG184
 
 		Vector3D u = s.cross(f);
 
-		float ex = -s.dot(eyePos);
+		/*float ex = -s.dot(eyePos);
 		float ey = -u.dot(eyePos);
-		float ez = f.dot(eyePos);
+		float ez = f.dot(eyePos);*/
 
 		Matrix4D lookMat(
 			 s.x,  s.y,  s.z, -eyePos.x, //ex,

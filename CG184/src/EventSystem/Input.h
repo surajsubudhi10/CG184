@@ -23,7 +23,8 @@ namespace CG184
 		private:
 			void processInput();
 
-
+			double mouseX;
+			double mouseY;
 			WindowPtr m_Window;
 		};
 
