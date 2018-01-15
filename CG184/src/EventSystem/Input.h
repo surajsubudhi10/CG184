@@ -5,7 +5,7 @@
 
 namespace CG184 
 {
-	namespace eventsystem 
+	namespace Eventsystem 
 	{
 		class Input
 		{

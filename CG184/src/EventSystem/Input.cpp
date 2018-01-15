@@ -2,7 +2,7 @@
 
 namespace CG184 
 {
-	namespace eventsystem 
+	namespace Eventsystem 
 	{
 		Input::Input(WindowPtr window)
 		{

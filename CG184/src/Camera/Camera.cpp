@@ -99,10 +99,10 @@ namespace CG184
 		float ez = f.dot(eyePos);
 
 		Matrix4D lookMat(
-			s.x, s.y, s.z, ex,
-			u.x, u.y, u.z, ey,
-			-f.x, -f.y, -f.z, ez,
-			0, 0, 0, 1
+			 s.x,  s.y,  s.z, -eyePos.x, //ex,
+			 u.x,  u.y,  u.z, -eyePos.y, //ey,
+			-f.x, -f.y, -f.z, -eyePos.z, //ez,
+			   0,    0,    0,  1
 		);
 
 		//lookMat = lookMat.transpose();

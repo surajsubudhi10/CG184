@@ -17,7 +17,7 @@ const uint32_t SCR_WIDTH = 800;
 const uint32_t SCR_HEIGHT = 600;
 using namespace CG184;
 
-void KeyBoardEvents(const WindowPtr window, eventsystem::Input input);
+void KeyBoardEvents(const WindowPtr window, Eventsystem::Input input);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 // stores how much we're seeing of either texture
@@ -45,7 +45,7 @@ int main()
 {
 
     WindowPtr window(new Window(SCR_WIDTH, SCR_HEIGHT, "CG184::In Development"));
-	eventsystem::Input input(window);
+	Eventsystem::Input input(window);
 	
 
 	glfwSetCursorPosCallback(window->window, mouse_callback);
@@ -136,7 +136,7 @@ int main()
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 		angle += deltaTime * 1.0f;
-//		std::cout << "FPS : " << static_cast<int>(1.0f / deltaTime) << std::endl;
+		std::cout << "FPS : " << static_cast<int>(1.0f / deltaTime) << std::endl;
 
         KeyBoardEvents(window, input);
         window->SetBGColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -162,7 +162,7 @@ int main()
 
 
 
-void KeyBoardEvents(const WindowPtr window, eventsystem::Input input)
+void KeyBoardEvents(const WindowPtr window, Eventsystem::Input input)
 {
 	if (input.KeyPressed(GLFW_KEY_ESCAPE))
 		window->Close();
