@@ -1,5 +1,7 @@
 #pragma once
 
+#include <ostream>
+
 namespace CG184
 {
     // TODO Create Template classes for Vector2D
@@ -59,5 +61,6 @@ namespace CG184
 		float x, y;
 	};
 
+    std::ostream& operator<< (std::ostream& stream, const Vector2D& matrix);
 
 }

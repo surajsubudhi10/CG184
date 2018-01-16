@@ -166,5 +166,10 @@ namespace CG184
 	Quaternion::~Quaternion()
 	{
 	}
+
+    std::ostream& operator<< (std::ostream& stream, const Quaternion& quat){
+        stream << "(" << quat.x << ", " << quat.y << ", " << quat.z << ", " << quat.w << ")" << '\n';
+        return stream;
+    }
 }
 

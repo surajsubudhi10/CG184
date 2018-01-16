@@ -210,5 +210,13 @@ namespace CG184
 
 	}
 
+    std::ostream& operator<< (std::ostream& stream, const Matrix4D& mat){
+        stream << "(" << mat.elements[0] << ", " << mat.elements[4] << ", " << mat.elements[ 8] << ", " << mat.elements[12] << "," << '\n'
+               << "(" << mat.elements[1] << ", " << mat.elements[5] << ", " << mat.elements[ 9] << ", " << mat.elements[13] << "," << '\n'
+               << "(" << mat.elements[2] << ", " << mat.elements[6] << ", " << mat.elements[10] << ", " << mat.elements[14] << "," << '\n'
+               << "(" << mat.elements[3] << ", " << mat.elements[7] << ", " << mat.elements[11] << ", " << mat.elements[15] << ")" << '\n';
+        return stream;
+    }
+
 
 }

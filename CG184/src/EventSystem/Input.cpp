@@ -2,34 +2,32 @@
 
 namespace CG184 
 {
-	namespace eventsystem 
+	namespace Eventsystem 
 	{
-		Input::Input(WindowPtr window)
+        Vector2D Input::mousePosition = Vector2D();
+
+        void mouse_cursor_callback(GLFWwindow* window, double xpos, double ypos);
+
+		Input::Input(WindowPtr window) //: mousePosition(Vector2D())
 		{
 			m_Window = window;
-
+            glfwSetCursorPosCallback(m_Window->window, mouse_cursor_callback);
+            glfwSetInputMode(window->window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 		}
 
 		bool Input::KeyPressed(std::string key)
 		{
 			const char c = *key.c_str();
 			int keyVal = int(c);
-			if (glfwGetKey(m_Window->window, keyVal) == GLFW_PRESS)
-				return true;
+            return glfwGetKey(m_Window->window, keyVal) == GLFW_PRESS;
 
-			return false;
-				
-		}
+        }
 
 		// TODO Temp Function 
-		bool Input::KeyPressed(int keyVal)
+		bool Input::IsKeyPressed(int keyVal)
 		{
-			if (glfwGetKey(m_Window->window, keyVal) == GLFW_PRESS)
-				return true;
-
-			return false;
-
-		}
+            return glfwGetKey(m_Window->window, keyVal) == GLFW_PRESS;
+        }
 
 
 		bool Input::KeyReleased(std::string key)
@@ -37,30 +35,30 @@ namespace CG184
 			return false;
 		}
 
-		bool Input::MouseClicked(std::string key)
+		bool Input::IsMouseClicked(int button)
 		{
-			return false;
+			return (glfwGetMouseButton(m_Window->window, button) == GLFW_PRESS);
 		}
 
 		void Input::processInput()
 		{
 			if (glfwGetKey(m_Window->window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 				glfwSetWindowShouldClose(m_Window->window, true);
-
-			/*float cameraSpeed = 2.5 * deltaTime;
-			if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-			cameraPos += cameraSpeed * cameraFront;
-			if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-			cameraPos -= cameraSpeed * cameraFront;
-			if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-			cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
-			if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-			cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;*/
-
 		}
 
 		Input::~Input()
 		{
 		}
+
+
+        void mouse_cursor_callback(GLFWwindow* window, double xpos, double ypos)
+        {
+            double xPos;
+            double yPos;
+            glfwGetCursorPos(window, &xPos, &yPos);
+
+            Input::mousePosition = Vector2D((float)xPos, (float)yPos);
+        }
+
 	}
 }

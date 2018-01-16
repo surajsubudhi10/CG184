@@ -65,13 +65,10 @@ namespace CG184
 
 		~Matrix4D();
 
-
-		
-
-
 	private:
 		
 	};
 
+    std::ostream& operator<< (std::ostream& stream, const Matrix4D& mat);
 	
 }

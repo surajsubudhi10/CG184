@@ -1,6 +1,8 @@
 #pragma once
 
-namespace CG184 
+#include <ostream>
+
+namespace CG184
 {
     // TODO Create Template classes for Vector3D
 	class Vector3D
@@ -38,12 +40,13 @@ namespace CG184
 
 		float		operator[](int i) const;
 		Vector3D&	operator=(const Vector3D& vec);
-		Vector3D   operator+(const Vector3D& vec);
-		Vector3D   operator-(const Vector3D& vec);
-		Vector3D   operator*(const Vector3D& vec);
-		Vector3D   operator/(const Vector3D& vec);
-		Vector3D   operator*(float val);
-		Vector3D   operator/(float val);
+		Vector3D    operator+(const Vector3D& vec);
+		Vector3D    operator-(const Vector3D& vec);
+		Vector3D    operator*(const Vector3D& vec);
+		Vector3D    operator/(const Vector3D& vec);
+		Vector3D    operator*(float val);
+		Vector3D    operator*(float val) const;
+		Vector3D    operator/(float val);
 		Vector3D&   operator+=(const Vector3D& vec);
 		Vector3D&   operator-=(const Vector3D& vec);
 		Vector3D&   operator*=(const Vector3D& vec);
@@ -56,10 +59,14 @@ namespace CG184
 
 		~Vector3D();
 
+        const static Vector3D Up;
+        const static Vector3D Right;
+        const static Vector3D Forward ;
+
 	public:
 		float x, y, z;
 	};
 
-
+    std::ostream& operator<< (std::ostream& stream, const Vector3D& vec);
 
 }
