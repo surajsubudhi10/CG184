@@ -100,9 +100,9 @@ namespace CG184
 
 	Shader::Shader(const Shader &a_Shader)
 	{
-		shaderID = a_Shader.shaderID;
-		m_Uniforms = a_Shader.m_Uniforms;
-		m_Attributes = a_Shader.m_Attributes;
+		shaderID		= a_Shader.shaderID;
+		m_Uniforms		= a_Shader.m_Uniforms;
+		m_Attributes	= a_Shader.m_Attributes;
 
 		for(auto i = 0; i < 5; i++) {
 			m_Textures[i] = a_Shader.m_Textures[i];
@@ -200,6 +200,15 @@ namespace CG184
 			glUniform1f(location, _v1);
         glUseProgram(0);
     }
+
+	void Shader::SetUniform1i(string name, int _v1)
+	{
+		glUseProgram(shaderID);
+		auto location = GetUniformLocation(name, m_Uniforms);
+		if (location != -1)
+			glUniform1i(location, _v1);
+		glUseProgram(0);
+	}
 
     void Shader::SetUniform2f(string name, float _v1, float _v2)
     {

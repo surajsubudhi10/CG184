@@ -14,6 +14,7 @@ namespace CG184 {
 
     public:
         Material();
+		explicit Material(const Material& mat);
         explicit Material(Shader* a_Shader);
         ~Material();
 

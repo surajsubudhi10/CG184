@@ -8,7 +8,6 @@
 namespace CG184 {
 
 	void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-	//void processInput(GLFWwindow *window);
 
 	Window::Window()
 		: m_width(960), m_height(540), m_WindowTitle("Hello Window!!"), window(nullptr)
@@ -58,12 +57,6 @@ namespace CG184 {
 		return glfwWindowShouldClose(window);
 	}
 
-	//void Window::ProcessInput()
-	//{
-	//	// input
-	//	// -----
-	//	processInput(window);
-	//}
 
 	void Window::Update()
 	{
@@ -92,23 +85,6 @@ namespace CG184 {
 		window = nullptr;
 	}
 
-
-	//void processInput(GLFWwindow *window)
-	//{
-	//	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-	//		glfwSetWindowShouldClose(window, true);
-
-	//	/*float cameraSpeed = 2.5 * deltaTime;
-	//	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-	//		cameraPos += cameraSpeed * cameraFront;
-	//	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-	//		cameraPos -= cameraSpeed * cameraFront;
-	//	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-	//		cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
-	//	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-	//		cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;*/
-
-	//}
 
 	// glfw: whenever the window size changed (by OS or user resize) this callback function executes
 	// ---------------------------------------------------------------------------------------------

@@ -22,6 +22,22 @@ namespace CG184{
             throw "(Null Exception) Mesh is a null Pointer.";
     }
 
+	MeshFilter::MeshFilter(const MeshFilter& a_MeshFilter) : m_Mesh(a_MeshFilter.m_Mesh)
+	{
+		if (m_Mesh != nullptr) {
+			m_Buffer = m_Mesh->vertices;
+			m_IndexCount = (uint32_t)m_Mesh->m_Indices.size();
+			indicesData = new GLuint[m_IndexCount];
+			for (uint32_t i = 0; i < m_IndexCount; i++) {
+				indicesData[i] = m_Mesh->m_Indices[i];
+			}
+			InitGLBuffers(m_Mesh->m_NumOfVert, m_IndexCount);
+		}
+		else
+			throw "(Null Exception) Mesh is a null Pointer.";
+	}
+
+
     void MeshFilter::InitGLBuffers(uint32_t numOfVert, uint32_t indicesNum)
     {
         glGenVertexArrays(1, &m_VAO);

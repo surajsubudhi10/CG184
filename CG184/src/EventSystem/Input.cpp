@@ -1,64 +1,111 @@
+#include "../Scene/Scene.h"
 #include "Input.h"
 
 namespace CG184 
 {
-	namespace Eventsystem 
+    Vector2D Input::mousePosition = Vector2D();
+
+    void mouse_cursor_callback(GLFWwindow* window, double xpos, double ypos);
+
+	Input::Input(WindowPtr window, Scene* scene)
 	{
-        Vector2D Input::mousePosition = Vector2D();
-
-        void mouse_cursor_callback(GLFWwindow* window, double xpos, double ypos);
-
-		Input::Input(WindowPtr window) //: mousePosition(Vector2D())
-		{
-			m_Window = window;
-            glfwSetCursorPosCallback(m_Window->window, mouse_cursor_callback);
-            glfwSetInputMode(window->window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-		}
-
-		bool Input::KeyPressed(std::string key)
-		{
-			const char c = *key.c_str();
-			int keyVal = int(c);
-            return glfwGetKey(m_Window->window, keyVal) == GLFW_PRESS;
-
-        }
-
-		// TODO Temp Function 
-		bool Input::IsKeyPressed(int keyVal)
-		{
-            return glfwGetKey(m_Window->window, keyVal) == GLFW_PRESS;
-        }
-
-
-		bool Input::KeyReleased(std::string key)
-		{
-			return false;
-		}
-
-		bool Input::IsMouseClicked(int button)
-		{
-			return (glfwGetMouseButton(m_Window->window, button) == GLFW_PRESS);
-		}
-
-		void Input::processInput()
-		{
-			if (glfwGetKey(m_Window->window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-				glfwSetWindowShouldClose(m_Window->window, true);
-		}
-
-		Input::~Input()
-		{
-		}
-
-
-        void mouse_cursor_callback(GLFWwindow* window, double xpos, double ypos)
-        {
-            double xPos;
-            double yPos;
-            glfwGetCursorPos(window, &xPos, &yPos);
-
-            Input::mousePosition = Vector2D((float)xPos, (float)yPos);
-        }
-
+		m_Window = window;
+		m_Scene = scene;
+        glfwSetCursorPosCallback(m_Window->window, mouse_cursor_callback);
+        glfwSetInputMode(window->window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 	}
+
+	bool Input::KeyPressed(std::string key){
+		const char c = *key.c_str();
+		int keyVal = int(c);
+        return glfwGetKey(m_Window->window, keyVal) == GLFW_PRESS;
+    }
+
+	// TODO Temp Function 
+	bool Input::IsKeyPressed(int keyVal){
+        return glfwGetKey(m_Window->window, keyVal) == GLFW_PRESS;
+    }
+
+
+	bool Input::KeyReleased(std::string key){
+		return false;
+	}
+
+	bool Input::IsMouseClicked(int button){
+		return (glfwGetMouseButton(m_Window->window, button) == GLFW_PRESS);
+	}
+
+	void Input::processInput(){
+		if (glfwGetKey(m_Window->window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+			glfwSetWindowShouldClose(m_Window->window, true);
+	}
+		
+	void Input::ProcessSelection() {
+
+		unsigned char res[4];
+		GLint viewport[4];
+
+		RenderSelection();
+
+		glGetIntegerv(GL_VIEWPORT, viewport);
+		glReadPixels((int)mousePosition.x, viewport[3] - (int)mousePosition.y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, &res);
+		switch (res[0]) {
+			case 0: 
+				printf("Nothing Picked \n"); 
+				break;
+			default:
+				printf("Picked Object ID: %d\n", res[0]);
+		}
+	}
+
+	void Input::RenderSelection() 
+	{
+		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		Shader pickerShader("TestShaders/picker.vs", "TestShaders/picker.fs");
+		Material pickerMat(&pickerShader);
+
+		for (auto &m_Node : m_Scene->m_RenderQueue) {
+			m_Node->UpdateWorldModelMatrix();
+		}
+
+		for (auto &m_Node : m_Scene->m_RenderQueue) {
+			if (m_Node->HasComponent(ComponentType::RendererType)) {
+				Renderer* renderer = (m_Node->GetComponent<Renderer>());
+				if (renderer != nullptr) {
+					Renderer pickRenderer(renderer->GetMesh(), &pickerMat);
+					pickerMat.GetShader()->SetUniform1i("code", m_Node->GetInstanceID() + 1);
+					pickRenderer.SendViewMatrixData(m_Scene->m_Camera->GetViewMatrix());
+					pickRenderer.SendProjectionMatrixData(m_Scene->m_Camera->GetProjectionMatrix());
+
+					Matrix4D modelMatrix = m_Node->GetTransformComponent().GetWorldTransformMat();
+					pickRenderer.GetMaterial().GetShader()->SetUniformMat4f("model", modelMatrix.elements);
+					pickRenderer.Render();
+				}
+				else {
+					throw "(Null Exception) Renderer Null";
+					exit(1);
+				}
+			}
+		}
+
+		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+	}
+
+
+	Input::~Input()
+	{
+	}
+
+
+    void mouse_cursor_callback(GLFWwindow* window, double xpos, double ypos)
+    {
+        double xPos;
+        double yPos;
+        glfwGetCursorPos(window, &xPos, &yPos);
+
+        Input::mousePosition = Vector2D((float)xPos, (float)yPos);
+    }
+
 }

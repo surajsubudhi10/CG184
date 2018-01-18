@@ -17,8 +17,8 @@ const uint32_t SCR_WIDTH = 800;
 const uint32_t SCR_HEIGHT = 600;
 using namespace CG184;
 
-void KeyBoardEvents(const WindowPtr window, Eventsystem::Input input);
-void MouseEvents(const WindowPtr window, Eventsystem::Input input);
+void KeyBoardEvents(const WindowPtr window, Input input);
+void MouseEvents(const WindowPtr window, Input input);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 // stores how much we're seeing of either texture
 float mixValue = 0.2f;
@@ -45,8 +45,6 @@ int main()
 {
 
     WindowPtr window(new Window(SCR_WIDTH, SCR_HEIGHT, "CG184::In Development"));
-	Eventsystem::Input input(window);
-	
 
 	glfwSetScrollCallback(window->window, scroll_callback);
 
@@ -71,18 +69,25 @@ int main()
 	boxMat.SetShininess(100.0f);
     Renderer boxRenderer(&boxMesh, &boxMat);
 
-    NodePtr box(new Node("Box"));
+    NodePtr box(new Node("box1"));
 	box->AttachComponent(&boxRenderer);
 	box->SetLocalEulerAngle(0.0f, -45.0f, 0.0f);
-	//box->SetLocalScale(0.5, 0.5, 0.5);
 	box->SetPosition(0.0, 0.0, 0.0);
 
+	Renderer boxRenderer1(&boxMesh, &boxMat);
+	boxRenderer1.GetMaterial().SetAmbient(Vector4D(0.3f, 0.1f, 0.1f, 1.0f));
 
+	NodePtr box1(new Node("box2"));
+	box1->AttachComponent(&boxRenderer1);
+	box1->SetLocalScale(0.5, 0.5, 0.5);
+	box1->SetPosition(2.0, 0.0, 0.0);
 
     Scene rootScene(cam);
 	rootScene.AddToScene(box);
+	rootScene.AddToScene(box1);
     rootScene.AddLight(pointLight);
 
+	Input input(window, &rootScene);
 
 	float angle = 0;
     while (!window->IfWindowClosed())
@@ -110,8 +115,7 @@ int main()
 }
 
 
-
-void KeyBoardEvents(const WindowPtr window, Eventsystem::Input input)
+void KeyBoardEvents(const WindowPtr window, Input input)
 {
 	if (input.IsKeyPressed(GLFW_KEY_ESCAPE))
 		window->Close();
@@ -151,7 +155,7 @@ void KeyBoardEvents(const WindowPtr window, Eventsystem::Input input)
 	}
 }
 
-void MouseEvents(const WindowPtr window, Eventsystem::Input input)
+void MouseEvents(const WindowPtr window, Input input)
 {
     firstMouse = input.IsMouseClicked(GLFW_MOUSE_BUTTON_LEFT);
 
@@ -187,6 +191,8 @@ void MouseEvents(const WindowPtr window, Eventsystem::Input input)
         cameraFront = front.norm();
     }
 //    cout << cameraFront;
+
+	if (input.IsMouseClicked(GLFW_MOUSE_BUTTON_RIGHT)) { input.ProcessSelection(); }
 }
 
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
