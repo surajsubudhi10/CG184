@@ -65,9 +65,16 @@ namespace CG184
 	}
 
     void Node::AttachComponent(Component* a_Component) {
-        // TODO Check if the node has already a component of same type if there then remove the reference
-        a_Component->SetAttachedNode(this);
-        m_Components.push_back(a_Component);
+
+		if (a_Component->GetComponentType() == ComponentType::RendererType) {
+			Renderer* renderer = GetComponent<Renderer>();
+			if (renderer != nullptr) {
+				renderer = dynamic_cast<Renderer*>(a_Component);
+			}
+		}
+
+		m_Components.push_back(a_Component);
+		a_Component->SetAttachedNode(this);
     }
 
     bool Node::HasComponent(ComponentType comType) {
@@ -111,13 +118,13 @@ namespace CG184
 		m_Transform.isDirty = true;
 	}
 
-    Node::Node(Node* node):
-            m_NodeName(node->m_NodeName),
+    Node::Node(const Node& node):
+            m_NodeName(node.m_NodeName + std::to_string(uID)),
             m_InstanceID(uID++),
-            m_Transform(node->m_Transform)
+            m_Transform(node.m_Transform)
     {
-        m_ParentNode = node->m_ParentNode;
-        m_ChildNodes = node->m_ChildNodes;
-        m_Components = node->m_Components;
+        m_ParentNode = node.m_ParentNode;
+        m_ChildNodes = node.m_ChildNodes;
+        m_Components = node.m_Components;
     }
 }

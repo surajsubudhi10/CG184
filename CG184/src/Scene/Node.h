@@ -19,7 +19,7 @@ namespace CG184
     public:
         explicit Node(const char* name);
         Node(Transform& a_Trans, const char* name);
-        Node(Node* node);
+        Node(const Node& node);
         virtual ~Node();
 
         std::shared_ptr<Node> GetChildNodeAt(uint32_t index);
@@ -43,7 +43,7 @@ namespace CG184
 		const Transform& GetWorldTransform();
 
         inline int GetInstanceID(){ return m_InstanceID;}
-        inline const char* GetName(){ return m_NodeName;}
+        inline string GetName(){ return m_NodeName;}
         inline void SetName(const char* name){m_NodeName = name;}
 
         template <typename T>
@@ -60,8 +60,8 @@ namespace CG184
         Transform m_Transform;
     private:
 
+        string m_NodeName;
         const int m_InstanceID;
-        const char* m_NodeName;
 
         std::vector<std::shared_ptr<Node>> m_ChildNodes;
         std::vector<Component*> m_Components; // TODO use list instead of vector

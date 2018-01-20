@@ -214,5 +214,7 @@
     <None Include="TestShaders\BoxSolid.vs" />
     <None Include="TestShaders\PhongShader.vs" />
     <None Include="TestShaders\PhongShader.fs" />
+    <None Include="TestShaders\picker.vs" />
+    <None Include="TestShaders\picker.fs" />
   </ItemGroup>
 </Project>

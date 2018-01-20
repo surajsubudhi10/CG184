@@ -192,6 +192,8 @@
     <None Include="TestShaders\LightCube.vs" />
     <None Include="TestShaders\PhongShader.fs" />
     <None Include="TestShaders\PhongShader.vs" />
+    <None Include="TestShaders\picker.fs" />
+    <None Include="TestShaders\picker.vs" />
     <None Include="TestShaders\testShader.fs" />
     <None Include="TestShaders\testShader.vs" />
     <None Include="TestShaders\texture.fs" />

@@ -6,28 +6,29 @@
 
 namespace CG184 
 {
-	namespace Eventsystem 
+	class Scene;
+	class Input
 	{
-		class Input
-		{
-		public:
-			explicit Input(WindowPtr window);
+	public:
+		explicit Input(WindowPtr window, Scene* scene);
 
-			bool KeyPressed(std::string key);
-			bool IsKeyPressed(int keyVal); // Temporary
-			bool KeyReleased(std::string key);
+		bool KeyPressed(std::string key);
+		bool IsKeyPressed(int keyVal); // Temporary
+		bool KeyReleased(std::string key);
 
-			bool IsMouseClicked(int button);
+		bool IsMouseClicked(int button);
 
-			~Input();
+		void RenderSelection();
+		void ProcessSelection();
 
-            Vector2D static mousePosition;
-		private:
-			void processInput();
-			WindowPtr m_Window;
+		~Input();
 
-        };
+        Vector2D static mousePosition;
+	private:
+		void processInput();
+		WindowPtr m_Window;
+		Scene* m_Scene;
 
+    };
 		
-	}
 }

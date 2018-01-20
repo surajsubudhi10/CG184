@@ -14,7 +14,6 @@
 namespace CG184 {
 
 
-
     class Scene
     {
     public:
@@ -24,6 +23,8 @@ namespace CG184 {
         void Render();
         void AddToScene(NodePtr node);
         void AddLight(LightPtr light);
+
+		friend class Input;
 
     private:
         CameraPtr m_Camera;

@@ -46,6 +46,7 @@ namespace CG184
 
 		// TODO add More Uniform Setter functions
         void SetUniform1f(string name, float _v1);
+		void SetUniform1i(string name, int _v1);
         void SetUniform2f(string name, float _v1, float _v2);
         void SetUniform3f(string name, float _v1, float _v2, float _v3);
         void SetUniform4f(string name, float _v1, float _v2, float _v3, float _v4);
@@ -57,13 +58,12 @@ namespace CG184
 
 		void SetUniform4fArray(string name, uint32_t numOfElement, float* arrayList);
 
+		uint32_t GetShaderID() const { return shaderID; }
 
-
+	private:
 		uint32_t shaderID;
 		std::vector<Uniform> m_Uniforms;
 		std::vector<VertexAttribute> m_Attributes;
-
-	private:
 
 		Texture m_Textures[5] = {}; // TODO Fix -> Hard Coded Fixed No. of Texture Support.
 		

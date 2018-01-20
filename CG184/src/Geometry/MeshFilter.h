@@ -24,12 +24,13 @@ namespace CG184 {
     {
     public:
         explicit MeshFilter(Mesh* a_Mesh);
+		explicit MeshFilter(const MeshFilter& a_MeshFilter);
         ~MeshFilter();
 
-
-        inline GLuint& GetVAO() { return m_VAO;}
+        inline GLuint&		GetVAO() { return m_VAO;}
         inline IndexBuffer* GetIBO() { return m_IBO;}
-        inline uint32_t GetIndexCount() const { return m_IndexCount;}
+        inline uint32_t		GetIndexCount() const { return m_IndexCount;}
+		inline Mesh*		GetMesh()		const { return m_Mesh; }
 
     private:
         GLuint m_VAO;

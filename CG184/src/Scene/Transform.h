@@ -25,14 +25,13 @@ namespace CG184 {
         Matrix4D Scale(Matrix4D& mat, float sx, float sy, float sz);
 
 
-    public:
+    private:
         Vector3D position;
 		Quaternion rotation;
         Vector3D localPosition;
         Vector3D eulerAngles;
         Vector3D localScale;
 
-    private:
         Matrix4D localTransformMat;
 		Matrix4D worldTransformMat;
 

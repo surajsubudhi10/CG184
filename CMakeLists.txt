@@ -67,6 +67,8 @@ configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/texture.vs          Test
 configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/texture.fs          TestShaders/texture.fs          COPYONLY)
 configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/TextureSetup.vs     TestShaders/TextureSetup.vs     COPYONLY)
 configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/TextureSetup.fs     TestShaders/TextureSetup.fs     COPYONLY)
+configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/picker.vs     TestShaders/picker.vs     COPYONLY)
+configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/picker.fs     TestShaders/picker.fs     COPYONLY)
 
 #configure_file (${PROJECT_SOURCE_DIR}/src/Shaders/basic.fs basic.fs COPYONLY)
 #configure_file (${PROJECT_SOURCE_DIR}/src/Shaders/myText.txt myText.txt COPYONLY)

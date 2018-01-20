@@ -11,7 +11,6 @@ namespace CG184{
         m_Camera = std::move(cam);
     }
 
-
     void Scene::Render()
     {
         for (auto &m_Node : m_RenderQueue) {
@@ -23,9 +22,12 @@ namespace CG184{
 				Renderer* renderer = (m_Node->GetComponent<Renderer>());
 				if (renderer != nullptr) {
                     if(renderer->IsEnabled()) {
-                        renderer->SendCameraPosData(m_Camera);
-                        renderer->SendViewMatrixData(m_Camera->GetViewMatrix());
-                        renderer->SendProjectionMatrixData(m_Camera->GetProjectionMatrix());
+
+				    	// Sending Data to Associated Shader
+    					renderer->SendCameraPosData(m_Camera);
+	    				renderer->SendViewMatrixData(m_Camera->GetViewMatrix());
+		    			renderer->SendProjectionMatrixData(m_Camera->GetProjectionMatrix());
+			    		renderer->SendModelMatrixData(m_Node->GetTransformComponent().GetWorldTransformMat());
 
                         for (unsigned int i = 0; i < m_Lights.size(); i++)
                             renderer->SendLightData(m_Lights[i], i);
@@ -43,13 +45,11 @@ namespace CG184{
 
     Scene::~Scene() {
         m_Camera = nullptr;
-
     }
 
     void Scene::AddToScene(NodePtr node) {
         m_RenderQueue.push_back(node);
     }
-
 
     void Scene::TraverseAllChildNodes(Node& a_Node){
         for (uint32_t i = 0; i < a_Node.GetNumOfChildNode(); i++){
@@ -72,6 +72,5 @@ namespace CG184{
     void Scene::AddLight(LightPtr light) {
         m_Lights.push_back(light);
     }
-
 
 }
