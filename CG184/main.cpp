@@ -90,6 +90,7 @@ int main()
 	box1->SetPosition(2.0, 0.0, 0.0);
 
     // #################################### ANCHOR ###############################################
+
     float scale = 0.5f;
     NodePtr xAnchor(new Node("XAxis"));
     Renderer xRenderer(&boxMesh, &boxMat);
@@ -116,7 +117,7 @@ int main()
     NodePtr Anchor(new Node("Anchor"));
     Anchor->AddChild(xAnchor);
     Anchor->AddChild(yAnchor);
-    Anchor->AddChild(zAnchor);
+	Anchor->AddChild(zAnchor);
     // ##############################################################################################
 
 
@@ -126,7 +127,7 @@ int main()
     rootScene.AddToScene(xAnchor);
     rootScene.AddToScene(yAnchor);
     rootScene.AddToScene(zAnchor);
-    rootScene.AddToScene(Anchor);
+    //rootScene.AddToScene(Anchor);
     rootScene.AddLight(pointLight);
 
 	Input input(window, &rootScene);

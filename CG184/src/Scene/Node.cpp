@@ -24,9 +24,9 @@ namespace CG184
         m_ParentNode = nullptr;
     }
 
-    void Node::AddChild(NodePtr a_Node)
+    void Node::AddChild(std::shared_ptr<Node> a_Node)
     {
-        a_Node->SetParent(NodePtr(this));
+        a_Node->SetParent(this);
         a_Node->UpdateWorldModelMatrix();
         m_ChildNodes.push_back(a_Node);
     }
@@ -39,7 +39,7 @@ namespace CG184
         return m_ChildNodes[index];
     }
 
-    NodePtr Node::GetParent()
+	Node* Node::GetParent()
     {
         return m_ParentNode;
     }
@@ -84,13 +84,14 @@ namespace CG184
         return false;
     }
 
-    void Node::SetParent(NodePtr parentNode) {
-        m_ParentNode = std::move(parentNode);
+    void Node::SetParent(Node* parentNode) {
+        m_ParentNode = parentNode;
     }
 
     Node::~Node()
     {
-		//m_ParentNode = nullptr;
+		if(m_ParentNode != nullptr)
+			m_ParentNode = nullptr;
     }
 
     void Node::SetPosition(float _x, float _y, float _z) {
