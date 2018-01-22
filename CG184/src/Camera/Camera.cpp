@@ -7,49 +7,49 @@ namespace CG184
 	
 	Camera::Camera() 
 	{
-		fov = 45.0; aspect_ratio = (float)(8 / 6); near = 0.1f; far = 100.0f;
-		position = Vector3D(0.0f, 0.0f, 3.0f);
-		front = Vector3D(0.0f, 0.0f, -1.0f);
-		up = Vector3D(0.0f, 1.0f, 0.0f);
+		m_Fov = 45.0; m_AspectRatio = (float)(8 / 6); m_Near = 0.1f; m_Far = 100.0f;
+		m_Position = Vector3D(0.0f, 0.0f, 3.0f);
+		m_Target = Vector3D(0.0f, 0.0f, -1.0f);
+		m_Up = Vector3D(0.0f, 1.0f, 0.0f);
 
-		viewMatrix = LookAt(position, position + front, up);
-		projectionMatrix = prespective(fov, aspect_ratio, near, far);
+		UpdateViewMatrix();
+        UpdateProjectionMatrix();
 	}
 
-	Camera::Camera(const Vector3D& pos, const Vector3D& _front, const Vector3D& _up) 
+	Camera::Camera(const Vector3D& pos, const Vector3D& _m_Target, const Vector3D& _m_Up) 
 	{
-		fov = 45.0; aspect_ratio = (float)(8 / 6); near = 0.1f; far = 100.0f;
-		position	= pos;
-		front		= _front;
-		up			= _up;
+		m_Fov = 45.0; m_AspectRatio = (float)(8 / 6); m_Near = 0.1f; m_Far = 100.0f;
+		m_Position	= pos;
+		m_Target		= _m_Target;
+		m_Up			= _m_Up;
 
-		viewMatrix = LookAt(position, position + front, up);
-		projectionMatrix = prespective(fov, aspect_ratio, near, far);
+        UpdateViewMatrix();
+        UpdateProjectionMatrix();
 	}
 
 
-	Camera::Camera(float camFov, float aspect, float camNear, float camFar)
+	Camera::Camera(float camm_Fov, float aspect, float camm_Near, float camm_Far)
 	{
-		fov = camFov; aspect_ratio = aspect; near = camNear; far = camFar;
-		position = Vector3D(0.0f, 0.0f,  3.0f);
-		front	 = Vector3D(0.0f, 0.0f, -1.0f);
-		up		 = Vector3D(0.0f, 1.0f,  0.0f);
+		m_Fov = camm_Fov; m_AspectRatio = aspect; m_Near = camm_Near; m_Far = camm_Far;
+		m_Position = Vector3D(0.0f, 0.0f,  3.0f);
+		m_Target	 = Vector3D(0.0f, 0.0f, -1.0f);
+		m_Up		 = Vector3D(0.0f, 1.0f,  0.0f);
 
-		viewMatrix = LookAt(position, position + front, up);
-		projectionMatrix = prespective(fov, aspect_ratio, near, far);
+        UpdateViewMatrix();
+        UpdateProjectionMatrix();
 	}
 
-	void Camera::SetFrustrum(float camFov, float aspect, float camNear, float camFar) 
+	void Camera::SetFrustrum(float camm_Fov, float aspect, float camm_Near, float camm_Far) 
 	{
-		fov = camFov; aspect_ratio = aspect; near = camNear; far = camFar;
+		m_Fov = camm_Fov; m_AspectRatio = aspect; m_Near = camm_Near; m_Far = camm_Far;
 		UpdateProjectionMatrix();
 	}
 
-	void Camera::Set(const Vector3D& pos, const Vector3D& _front, const Vector3D& _up) 
+	void Camera::Set(const Vector3D& pos, const Vector3D& _m_Target, const Vector3D& _m_Up) 
 	{
-		position = pos;
-		front	 = _front;
-		up		 = _up;
+		m_Position = pos;
+		m_Target	 = _m_Target;
+		m_Up		 = _m_Up;
 		UpdateViewMatrix();
 	}
 
@@ -57,52 +57,52 @@ namespace CG184
 	{
 	}
 
-	void Camera::UpdateProjectionMatrix() 
+	void Camera::UpdateProjectionMatrix()
 	{
-		projectionMatrix = prespective(fov, aspect_ratio, near, far);
+		m_ProjectionMatrix = Prespective(m_Fov, m_AspectRatio, m_Near, m_Far);
 	}
 
-	void Camera::UpdateViewMatrix() 
+	void Camera::UpdateViewMatrix()
 	{
-		viewMatrix = LookAt(position, position + front, up);
+		m_ViewMatrix = LookAt(m_Position, m_Target, m_Up);
 	}
 
-	Matrix4D Camera::prespective(float fovInDeg, float aspect_ratio, float near, float far)
+	Matrix4D Camera::Prespective(float m_FovInDeg, float m_AspectRatio, float m_Near, float m_Far)
 	{
-		auto fovInRad = (float)(PI * fovInDeg / 180.0f);
-		const float tanHalfFov = tan(fovInRad / 2.0f);
+		auto m_FovInRad = (float)(PI * m_FovInDeg / 180.0f);
+		const float tanHalfm_Fov = tan(m_FovInRad / 2.0f);
 
 		Matrix4D result(1.0f);
 
-		result.elements[0]  =  1 / (aspect_ratio * tanHalfFov);
-		result.elements[5]  =  1 / tanHalfFov;
-		result.elements[10] = -1 * (far + near) / (far - near);
+		result.elements[0]  =  1 / (m_AspectRatio * tanHalfm_Fov);
+		result.elements[5]  =  1 / tanHalfm_Fov;
+		result.elements[10] = -1 * (m_Far + m_Near) / (m_Far - m_Near);
 		result.elements[15] =  0.0f;
 		result.elements[11] = -1.0f;
-		result.elements[14] = (-2 * far * near) / (far - near);
+		result.elements[14] = (-2 * m_Far * m_Near) / (m_Far - m_Near);
 
 		return result;
 	}
 
-	Matrix4D Camera::LookAt(Vector3D eyePos, Vector3D target, Vector3D up)
+	Matrix4D Camera::LookAt(Vector3D eyePos, Vector3D target, Vector3D m_Up)
 	{
-		Vector3D f(target - eyePos);
-		f.normalize();
+		Vector3D zAxis(target - eyePos);
+        zAxis.normalize();
 
-		Vector3D s = (f.cross(up));
-		s.normalize();
+		Vector3D xAxis = (zAxis.cross(m_Up));
+        xAxis.normalize();
 
-		Vector3D u = s.cross(f);
+		Vector3D yAxis = xAxis.cross(zAxis);
 
-		/*float ex = -s.dot(eyePos);
-		float ey = -u.dot(eyePos);
-		float ez = f.dot(eyePos);*/
+		float ex = -xAxis.dot(eyePos);
+		float ey = -yAxis.dot(eyePos);
+		float ez =  zAxis.dot(eyePos);
 
 		Matrix4D lookMat(
-			 s.x,  s.y,  s.z, -eyePos.x, //ex,
-			 u.x,  u.y,  u.z, -eyePos.y, //ey,
-			-f.x, -f.y, -f.z, -eyePos.z, //ez,
-			   0,    0,    0,  1
+                 xAxis.x,  xAxis.y,  xAxis.z, ex,
+                 yAxis.x,  yAxis.y,  yAxis.z, ey,
+			    -zAxis.x, -zAxis.y, -zAxis.z, ez,
+                       0,        0,    0,  1
 		);
 
 		//lookMat = lookMat.transpose();
@@ -111,17 +111,17 @@ namespace CG184
 	}
 
     Camera::Camera(Camera &cam) {
-        position    = cam.position;
-        front       = cam.front;
-        up          = cam.up;
+        m_Position    = cam.m_Position;
+        m_Target       = cam.m_Target;
+        m_Up          = cam.m_Up;
 
-        fov = cam.fov;
-        aspect_ratio = cam.aspect_ratio;
-        near = cam.near;
-        far = cam.far;
+        m_Fov = cam.m_Fov;
+        m_AspectRatio = cam.m_AspectRatio;
+        m_Near = cam.m_Near;
+        m_Far = cam.m_Far;
 
-        viewMatrix = cam.viewMatrix;
-        projectionMatrix = cam.projectionMatrix;
+        m_ViewMatrix = cam.m_ViewMatrix;
+        m_ProjectionMatrix = cam.m_ProjectionMatrix;
     }
 
 }

@@ -33,6 +33,7 @@ namespace CG184
         bool HasComponent(ComponentType comType);
 
         void SetPosition(float _x, float _y, float _z);
+        void SetPosition(const Vector3D& pos);
         void SetLocalScale(float _x, float _y, float _z);
         void SetLocalEulerAngle(float _x, float _y, float _z);
 		void SetRotation(float angle, Vector3D axis);

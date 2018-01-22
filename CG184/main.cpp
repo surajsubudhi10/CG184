@@ -18,22 +18,27 @@ const uint32_t SCR_HEIGHT = 600;
 using namespace CG184;
 
 void KeyBoardEvents(const WindowPtr window, Input input);
-void MouseEvents(const WindowPtr window, Input input);
+void MouseEvents(const WindowPtr window, Input input, float deltaTime);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 // stores how much we're seeing of either texture
+void ProcessMouseButtons(Input input);
+void ProcessMouseMotion( Vector2D mousePosition);
+
 float mixValue = 0.2f;
 
 // camera
-Vector3D cameraPos(0.0f, 0.0f, 3.0f);
-Vector3D cameraFront(0.0f, 0.0f, -1.0f);
+Vector3D cameraPos(3.0f, 3.0f, 3.0f);
+Vector3D cameraTarget(0.0f, 0.0f, 0.0f);
 Vector3D cameraUp(0.0f, 1.0f, 0.0f);
 
 bool firstMouse = false;
-float yaw = -90.0f;	// yaw is initialized to -90.0 degrees since a yaw of 0.0 results in a direction vector pointing to the right so we initially rotate a bit to the left.
-float pitch = 0.0f;
+float yaw   = -90.0f;	// yaw is initialized to -90.0 degrees since a yaw of 0.0 results in a direction vector pointing to the right so we initially rotate a bit to the left.
+float pitch =   0.0f;
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 float fov = 45.0f;
+
+int tracking = 0;
 
 // timing
 float deltaTime = 0.0f;	// time between current frame and last frame
@@ -74,18 +79,54 @@ int main()
 	box->AttachComponent(&boxRenderer);
 	box->SetLocalEulerAngle(0.0f, -45.0f, 0.0f);
 	box->SetPosition(0.0, 0.0, 0.0);
+    box->SetLocalScale(0.15, 0.15, 0.15);
 
 	Renderer boxRenderer1(&boxMesh, &boxMat);
 	boxRenderer1.GetMaterial().SetAmbient(Vector4D(0.3f, 0.1f, 0.1f, 1.0f));
 
 	NodePtr box1(new Node("box2"));
 	box1->AttachComponent(&boxRenderer1);
-	box1->SetLocalScale(0.5, 0.5, 0.5);
+	box1->SetLocalScale(0.1, 0.1, 0.1);
 	box1->SetPosition(2.0, 0.0, 0.0);
 
+    // #################################### ANCHOR ###############################################
+    float scale = 0.5f;
+    NodePtr xAnchor(new Node("XAxis"));
+    Renderer xRenderer(&boxMesh, &boxMat);
+    xRenderer.GetMaterial().SetAmbient(Vector4D(1.0f, 0.1f, 0.1f, 1.0f));
+    xAnchor->AttachComponent(&xRenderer);
+    xAnchor->SetLocalScale(scale, 0.02, 0.02);
+    xAnchor->SetPosition(scale / 2.0f, 0.0, 0.0);
+
+    NodePtr yAnchor(new Node("YAxis"));
+    Renderer yRenderer(&boxMesh, &boxMat);
+    yRenderer.GetMaterial().SetAmbient(Vector4D(0.1f, 1.0f, 0.1f, 1.0f));
+    yAnchor->AttachComponent(&yRenderer);
+    yAnchor->SetLocalScale(0.02, scale, 0.02);
+    yAnchor->SetPosition(0.0, scale / 2.0f, 0.0);
+
+    NodePtr zAnchor(new Node("ZAxis"));
+    Renderer zRenderer(&boxMesh, &boxMat);
+    zRenderer.GetMaterial().SetAmbient(Vector4D(0.1f, 0.1f, 1.0f, 1.0f));
+    zAnchor->AttachComponent(&zRenderer);
+    zAnchor->SetLocalScale( 0.02, 0.02, scale);
+    zAnchor->SetPosition( 0.0, 0.0, scale / 2.0f);
+
+
+    NodePtr Anchor(new Node("Anchor"));
+    Anchor->AddChild(xAnchor);
+    Anchor->AddChild(yAnchor);
+    Anchor->AddChild(zAnchor);
+    // ##############################################################################################
+
+
     Scene rootScene(cam);
-	rootScene.AddToScene(box);
+//	rootScene.AddToScene(box);
 	rootScene.AddToScene(box1);
+    rootScene.AddToScene(xAnchor);
+    rootScene.AddToScene(yAnchor);
+    rootScene.AddToScene(zAnchor);
+    rootScene.AddToScene(Anchor);
     rootScene.AddLight(pointLight);
 
 	Input input(window, &rootScene);
@@ -101,11 +142,12 @@ int main()
 		//std::cout << "FPS : " << static_cast<int>(1.0f / deltaTime) << std::endl;
 
         KeyBoardEvents(window, input);
-        MouseEvents(window, input);
+        MouseEvents(window, input, deltaTime);
         window->SetBGColor(0.0f, 0.0f, 0.0f, 1.0f);
 
         cam->SetFOV(fov);
-        cam->Set(cameraPos, cameraFront, cameraUp);
+        cam->Set(cameraPos, cameraTarget, cameraUp);
+        box1->SetPosition(cameraTarget);
 
 		rootScene.Render();
 		window->Update();
@@ -121,22 +163,24 @@ void KeyBoardEvents(const WindowPtr window, Input input)
 		window->Close();
 
     if(input.IsKeyPressed(GLFW_KEY_SPACE)){
-        cameraPos   = Vector3D(0.0f, 0.0f, 3.0f);
-        cameraFront = Vector3D(0.0f, 0.0f, -1.0f);
-        cameraUp    = Vector3D::Up;
+        cameraPos    = Vector3D(0.0f, 0.0f, 3.0f);
+        cameraTarget = Vector3D(0.0f, 0.0f, 0.0f);
+        cameraUp     = Vector3D::Up;
+
+        yaw = pitch = 0.0;
     }
 
 	auto cameraSpeed = (float)(2.5 * deltaTime);
 	if (input.IsKeyPressed(GLFW_KEY_W)) {
-        Vector3D tempVec = (Vector3D::Forward * cameraSpeed);
+        Vector3D tempVec = (cameraTarget * cameraSpeed);
 		cameraPos = cameraPos - tempVec;
 	}
 	if (input.IsKeyPressed(GLFW_KEY_S)) {
-        Vector3D tempVec = (Vector3D::Forward * cameraSpeed);
+        Vector3D tempVec = (cameraTarget * cameraSpeed);
 		cameraPos = cameraPos + tempVec;
 	}
 	if (input.IsKeyPressed(GLFW_KEY_A)){
-        Vector3D tempVec = (Vector3D::Right * cameraSpeed);
+        Vector3D tempVec = ((cameraTarget.cross(cameraUp)).norm() * cameraSpeed);
 		cameraPos = cameraPos + tempVec;
 	}
 
@@ -150,50 +194,78 @@ void KeyBoardEvents(const WindowPtr window, Input input)
     }
 
 	if (input.IsKeyPressed(GLFW_KEY_D)) {
-        Vector3D tempVec = (Vector3D::Right * cameraSpeed);
+        Vector3D tempVec = ((cameraTarget.cross(cameraUp)).norm() * cameraSpeed);
 		cameraPos = cameraPos - tempVec;
 	}
 }
 
-void MouseEvents(const WindowPtr window, Input input)
+void MouseEvents(const WindowPtr window, Input input, float deltaTime)
 {
-    firstMouse = input.IsMouseClicked(GLFW_MOUSE_BUTTON_LEFT);
+    //if (input.IsMouseButtonDown(GLFW_MOUSE_BUTTON_LEFT)) {
+        ProcessMouseButtons(input);
+        ProcessMouseMotion(input.mousePosition);
+    //}
+	if (input.IsMouseButtonDown(GLFW_MOUSE_BUTTON_RIGHT)) { input.ProcessSelection(); }
+}
 
-    if (!firstMouse)
-    {
+void ProcessMouseButtons(Input input)
+{
+    // start tracking the mouse
+    if (input.IsMouseButtonDown(GLFW_MOUSE_BUTTON_LEFT) && tracking != 1)  {
         lastX = input.mousePosition.x;
         lastY = input.mousePosition.y;
+        tracking = 1;
     }
 
-    if(input.IsMouseClicked(GLFW_MOUSE_BUTTON_LEFT)) {
-        auto xoffset = input.mousePosition.x - lastX;
-        auto yoffset = lastY - input.mousePosition.y; // reversed since y-coordinates go from bottom to top
-        lastX = (input.mousePosition.x);
-        lastY = (input.mousePosition.y);
-
-        float sensitivity = 0.1f; // change this value to your liking
-        xoffset *= sensitivity;
-        yoffset *= sensitivity;
-
-        yaw += xoffset;
-        pitch += yoffset;
-
-        // make sure that when pitch is out of bounds, screen doesn't get flipped
-        if (pitch > 89.0f)
-            pitch = 89.0f;
-        if (pitch < -89.0f)
-            pitch = -89.0f;
-
-        Vector3D front(1.0);
-        front.x = (cos(ToRadian(yaw)) * cos(ToRadian(pitch)));
-        front.y = (sin(ToRadian(pitch)));
-        front.z = (sin(ToRadian(yaw)) * cos(ToRadian(pitch)));
-        cameraFront = front.norm();
+        //stop tracking the mouse
+    else if (input.IsMouseButtonUp(GLFW_MOUSE_BUTTON_LEFT)) {
+        if (tracking == 1) {
+            yaw   -= (input.mousePosition.x - lastX);
+            pitch += (input.mousePosition.y - lastY);
+            if (pitch > 85.0f)
+                pitch = 85.0f;
+            else if (pitch < -85.0f)
+                pitch = -85.0f;
+        }
+        tracking = 0;
     }
-//    cout << cameraFront;
-
-	if (input.IsMouseClicked(GLFW_MOUSE_BUTTON_RIGHT)) { input.ProcessSelection(); }
 }
+
+void spherical2cartesian(float r, float alpha, float beta) {
+
+    cameraPos.x = cameraTarget.x + r * sin(alpha * 3.14f / 180.0f) * cos(beta * 3.14f / 180.0f);
+    cameraPos.z = cameraTarget.z + r * cos(alpha * 3.14f / 180.0f) * cos(beta * 3.14f / 180.0f);
+    cameraPos.y = cameraTarget.y + r *   			   		         sin(beta * 3.14f / 180.0f);
+
+//    cout << "CameraPos : " << cameraPos << "CameraTarget" << cameraTarget << endl;
+}
+
+// TODO Call it only when the click happen
+void ProcessMouseMotion( Vector2D mousePosition)
+{
+    if (!tracking)
+        return;
+
+    int deltaX, deltaY;
+    float alphaAux, betaAux;
+    float rAux = (cameraPos - cameraTarget).length();
+
+    deltaX = static_cast<int>(- mousePosition.x + lastX);
+    deltaY = static_cast<int>(  mousePosition.y - lastY);
+
+    alphaAux = yaw + deltaX;
+    betaAux  = pitch + deltaY;
+
+    if (betaAux > 85.0f)
+        betaAux = 85.0f;
+    else if (betaAux < -85.0f)
+        betaAux = -85.0f;
+
+    spherical2cartesian(rAux, alphaAux, betaAux);
+
+}
+
+
 
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {

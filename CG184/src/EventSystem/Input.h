@@ -16,7 +16,8 @@ namespace CG184
 		bool IsKeyPressed(int keyVal); // Temporary
 		bool KeyReleased(std::string key);
 
-		bool IsMouseClicked(int button);
+		bool IsMouseButtonDown(int button);
+		bool IsMouseButtonUp(int button);
 
 		void RenderSelection();
 		void ProcessSelection();

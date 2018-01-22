@@ -6,6 +6,7 @@ namespace CG184
     Vector2D Input::mousePosition = Vector2D();
 
     void mouse_cursor_callback(GLFWwindow* window, double xpos, double ypos);
+    void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 
 	Input::Input(WindowPtr window, Scene* scene)
 	{
@@ -31,9 +32,15 @@ namespace CG184
 		return false;
 	}
 
-	bool Input::IsMouseClicked(int button){
+	bool Input::IsMouseButtonDown(int button){
 		return (glfwGetMouseButton(m_Window->window, button) == GLFW_PRESS);
-	}
+    }
+
+    bool Input::IsMouseButtonUp(int button){
+        return (glfwGetMouseButton(m_Window->window, button) == GLFW_RELEASE);
+    }
+
+
 
 	void Input::processInput(){
 		if (glfwGetKey(m_Window->window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
@@ -106,6 +113,12 @@ namespace CG184
         glfwGetCursorPos(window, &xPos, &yPos);
 
         Input::mousePosition = Vector2D((float)xPos, (float)yPos);
+    }
+
+    void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+    {
+        if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS)
+            return;
     }
 
 }

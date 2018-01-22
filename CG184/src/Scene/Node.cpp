@@ -90,12 +90,18 @@ namespace CG184
 
     Node::~Node()
     {
-		m_ParentNode = nullptr;
+		//m_ParentNode = nullptr;
     }
 
     void Node::SetPosition(float _x, float _y, float _z) {
 		m_Transform.localPosition = Vector3D(_x, _y, _z);
 		m_Transform.isDirty = true;
+    }
+
+    void Node::SetPosition(const Vector3D& pos)
+    {
+        m_Transform.localPosition = pos;
+        m_Transform.isDirty = true;
     }
 
     void Node::SetLocalScale(float _x, float _y, float _z) {
