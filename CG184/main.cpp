@@ -82,8 +82,6 @@ int main()
     triangleMesh.SetNormals(norm);
 
 
-
-
     Box boxMesh;
 	Shader boxShaderTemp("TestShaders/multipleLights.vs", "TestShaders/multipleLights.fs");
 	Material boxMat(&boxShaderTemp);

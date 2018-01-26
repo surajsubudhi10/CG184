@@ -33,8 +33,15 @@ namespace CG184 {
         inline uint32_t		GetIndexCount() const { return m_IndexCount;}
 		inline Mesh*		GetMesh()		const { return m_Mesh; }
 
-        void SetVertexBufferData();
+        void SetVertexBufferPositionData(const int& offset, const size_t& size, const void* data) const;
+        void SetVertexBufferColorData   (const int& offset, const size_t& size, const void* data) const;
+        void SetVertexBufferNormalData  (const int& offset, const size_t& size, const void* data) const;
+        void SetVertexBufferUVData      (const int& offset, const size_t& size, const void* data) const;
 
+        void BindVertexObjects()   const;
+        void UnBindVertexObjects() const;
+        void UpdateBufferSize()    const;
+        void UpdateVertexBuffer()  const;
 
     private:
         GLuint m_VAO;

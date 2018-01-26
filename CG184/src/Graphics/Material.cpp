@@ -37,6 +37,7 @@ namespace CG184 {
     }
 
     Material::~Material() {
+        //delete m_Shader;
         m_Shader = nullptr;
     }
 

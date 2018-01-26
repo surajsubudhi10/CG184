@@ -66,7 +66,7 @@ namespace CG184
 
     void Node::AttachComponent(Component* a_Component) {
 
-		if (a_Component->GetComponentType() == ComponentType::RendererType) {
+		if (a_Component->GetComponentType() == ComponentType::RENDERER) {
 			Renderer* renderer = GetComponent<Renderer>();
 			if (renderer != nullptr) {
 				renderer = dynamic_cast<Renderer*>(a_Component);

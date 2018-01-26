@@ -7,7 +7,7 @@ namespace CG184
 
     Renderer::Renderer(Mesh *a_Mesh, Material* a_Material) : Component()
     {
-        m_Type = ComponentType ::RendererType;
+        m_Type = ComponentType ::RENDERER;
         m_MeshFilter = new MeshFilter(a_Mesh);
         m_Material = *a_Material;
     }
@@ -28,7 +28,7 @@ namespace CG184
 	void Renderer::Render()
 	{
         m_Material.GetShader()->ActivateShader();
-		glBindVertexArray(m_MeshFilter->GetVAO());
+        m_MeshFilter->BindVertexObjects();
 		m_MeshFilter->GetIBO()->Bind();
 
 		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -37,7 +37,7 @@ namespace CG184
 		glDrawElements(GL_TRIANGLES, m_MeshFilter->GetIndexCount(), GL_UNSIGNED_INT, nullptr);
 
         m_MeshFilter->GetIBO()->Unbind();
-		glBindVertexArray(0);
+        m_MeshFilter->UnBindVertexObjects();
         m_Material.GetShader()->DeactivateShader();
 	}
 
