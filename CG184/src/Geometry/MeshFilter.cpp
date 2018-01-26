@@ -8,8 +8,9 @@
 
 namespace CG184{
 
-    MeshFilter::MeshFilter(Mesh* a_Mesh) : m_Mesh(a_Mesh)
+    MeshFilter::MeshFilter(Mesh* a_Mesh)
     {
+        m_Mesh = a_Mesh;
         if(m_Mesh != nullptr) {
             uint32_t vertexNumber = 0;
             InitializeMeshData(vertexNumber);
@@ -110,5 +111,23 @@ namespace CG184{
         BindVertexObjects();
         glBufferData(GL_ARRAY_BUFFER, RENDERER_VERTEX_SIZE * m_Mesh->vertPosition.size(), nullptr, GL_DYNAMIC_DRAW);
         UnBindVertexObjects();
+    }
+
+    void MeshFilter::UpdateVertexBuffer() const {
+        if(m_Mesh->IsDirty()){
+            uint32_t numOfVert = m_Mesh->m_NumOfVert;
+            SetVertexBufferPositionData(0, numOfVert, &m_Mesh->vertPosition[0]);
+            SetVertexBufferColorData   (0, numOfVert, &m_Mesh->vertColor[0]);
+            SetVertexBufferNormalData  (0, numOfVert, &m_Mesh->vertNormal[0]);
+            SetVertexBufferUVData      (0, numOfVert, &m_Mesh->vertTexCoord[0]);
+            m_Mesh->m_IsDirty = false;
+        }
+    }
+
+    void MeshFilter::AttachMesh(Mesh* a_Mesh) {
+//        if(m_Mesh != nullptr)
+//            delete m_Mesh;
+
+        m_Mesh = a_Mesh;
     }
 }

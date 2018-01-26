@@ -190,7 +190,7 @@ namespace CG184
 
 
 	Shader::~Shader()
-	= default;
+    {}
 
 	void Shader::SetUniform1f(string name, float _v1)
     {

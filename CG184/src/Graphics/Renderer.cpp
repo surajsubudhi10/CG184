@@ -5,43 +5,75 @@
 namespace CG184 
 {
 
-    Renderer::Renderer(Mesh *a_Mesh, Material* a_Material) : Component()
+    Renderer::Renderer(Mesh *a_Mesh, Material* a_Material) : Component(), m_Mesh(*a_Mesh)
     {
         m_Type = ComponentType ::RENDERER;
-        m_MeshFilter = new MeshFilter(a_Mesh);
-        m_Material = *a_Material;
+        m_SharedMaterial = a_Material;
+        m_SharedMeshFilter = new MeshFilter(a_Mesh);
+        m_SharedMesh = make_shared<Mesh>(a_Mesh);
+        m_Mesh = *m_SharedMesh.get();
+        //m_Mesh.CopyMesh(*m_SharedMesh);
+
+
+//        if(m_SharedMeshFilter != nullptr) {
+//            m_MeshFilter.AttachMesh(*m_SharedMeshFilter->GetMesh());
+//        }
+
+        if(m_SharedMaterial != nullptr)
+            m_Material = *m_SharedMaterial;
     }
 
-	Renderer::Renderer(const Renderer& renderer) : Component()
+	Renderer::Renderer(const Renderer& renderer) : Component(), m_Mesh(renderer.m_Mesh)
 	{
 		m_Type = renderer.m_Type;
-		m_MeshFilter = new MeshFilter(*renderer.m_MeshFilter);
-		m_Material = renderer.m_Material;
+        m_SharedMaterial = renderer.m_SharedMaterial;
+        m_SharedMeshFilter = renderer.m_SharedMeshFilter;
+        m_SharedMesh = renderer.m_SharedMesh;
+        m_Mesh = renderer.m_Mesh;
+//        m_Mesh.CopyMesh(renderer.m_Mesh);
+
+//        if(m_SharedMeshFilter != nullptr)
+//            m_MeshFilter.AttachMesh(*m_SharedMeshFilter->GetMesh());
+            //m_MeshFilter = new MeshFilter(*m_SharedMesh.get());
+
+        if(m_SharedMaterial != nullptr)
+            m_Material = *m_SharedMaterial;
 	}
 
 	Renderer::~Renderer()
 	{
-        delete m_MeshFilter;
-        m_MeshFilter = nullptr;
+        delete m_SharedMeshFilter;
+        m_SharedMeshFilter = nullptr;
+
+        m_SharedMaterial = nullptr;
 	}
 
 	void Renderer::Render()
 	{
         m_Material.GetShader()->ActivateShader();
-        m_MeshFilter->BindVertexObjects();
-		m_MeshFilter->GetIBO()->Bind();
+
+        if(m_SharedMesh.get()->IsDirty()){
+            m_Mesh.CopyMesh(*m_SharedMesh.get());
+            m_SharedMeshFilter->AttachMesh(m_SharedMesh.get());
+            m_SharedMesh->MakeClean();
+        }
+        m_SharedMeshFilter->AttachMesh(&m_Mesh);
+
+        m_SharedMeshFilter->BindVertexObjects();
+        m_SharedMeshFilter->GetIBO()->Bind();
+        m_SharedMeshFilter->UpdateVertexBuffer();
 
 		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		//glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
 
-		glDrawElements(GL_TRIANGLES, m_MeshFilter->GetIndexCount(), GL_UNSIGNED_INT, nullptr);
+		glDrawElements(GL_TRIANGLES, m_SharedMeshFilter->GetIndexCount(), GL_UNSIGNED_INT, nullptr);
 
-        m_MeshFilter->GetIBO()->Unbind();
-        m_MeshFilter->UnBindVertexObjects();
+        m_SharedMeshFilter->GetIBO()->Unbind();
+        m_SharedMeshFilter->UnBindVertexObjects();
         m_Material.GetShader()->DeactivateShader();
 	}
 
-    Matrix4D Renderer::GetModelMatrix() {
+    Matrix4D Renderer::GetModelMatrix() const {
         return m_AttachedNode->GetTransformComponent().GetWorldTransformMat();
     }
 

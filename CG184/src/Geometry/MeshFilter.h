@@ -28,6 +28,8 @@ namespace CG184 {
         MeshFilter(const MeshFilter& a_MeshFilter);
         ~MeshFilter();
 
+        void AttachMesh(Mesh* a_Mesh);
+
         inline GLuint&		GetVAO() { return m_VAO;}
         inline IndexBuffer* GetIBO() { return m_IBO;}
         inline uint32_t		GetIndexCount() const { return m_IndexCount;}

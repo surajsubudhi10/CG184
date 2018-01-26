@@ -95,13 +95,13 @@ int main()
 	box->SetPosition(0.0, 0.0, 0.0);
 //    box->SetLocalScale(0.15, 0.15, 0.15);
 
-	Renderer boxRenderer1(&boxMesh, &boxMat);
-	boxRenderer1.GetMaterial().SetAmbient(Vector4D(0.3f, 0.1f, 0.1f, 1.0f));
+	Renderer boxRenderer1(&triangleMesh, &boxMat);
+	boxRenderer1.GetMaterial().SetAmbient(Vector4D(0.3f, 0.5f, 0.1f, 1.0f));
 
 	NodePtr box1(new Node("box2"));
 	box1->AttachComponent(&boxRenderer1);
 	box1->SetLocalScale(1.1, 1.1, 1.1);
-	box1->SetPosition(0.0, 0.0, 0.0);
+	box1->SetPosition(2.0, 0.0, 0.0);
 
 
 
@@ -109,42 +109,42 @@ int main()
 
     // #################################### ANCHOR ###############################################
 
-    float scale = 0.5f;
-    NodePtr xAnchor(new Node("XAxis"));
-    Renderer xRenderer(&boxMesh, &boxMat);
-    xRenderer.GetMaterial().SetAmbient(Vector4D(1.0f, 0.1f, 0.1f, 1.0f));
-    xAnchor->AttachComponent(&xRenderer);
-    xAnchor->SetLocalScale(scale, 0.02, 0.02);
-    xAnchor->SetPosition(scale / 2.0f, 0.0, 0.0);
-
-    NodePtr yAnchor(new Node("YAxis"));
-    Renderer yRenderer(&boxMesh, &boxMat);
-    yRenderer.GetMaterial().SetAmbient(Vector4D(0.1f, 1.0f, 0.1f, 1.0f));
-    yAnchor->AttachComponent(&yRenderer);
-    yAnchor->SetLocalScale(0.02, scale, 0.02);
-    yAnchor->SetPosition(0.0, scale / 2.0f, 0.0);
-
-    NodePtr zAnchor(new Node("ZAxis"));
-    Renderer zRenderer(&boxMesh, &boxMat);
-    zRenderer.GetMaterial().SetAmbient(Vector4D(0.1f, 0.1f, 1.0f, 1.0f));
-    zAnchor->AttachComponent(&zRenderer);
-    zAnchor->SetLocalScale( 0.02, 0.02, scale);
-    zAnchor->SetPosition( 0.0, 0.0, scale / 2.0f);
-
-
-    NodePtr Anchor(new Node("Anchor"));
-    Anchor->AddChild(xAnchor);
-    Anchor->AddChild(yAnchor);
-	Anchor->AddChild(zAnchor);
+//    float scale = 0.5f;
+//    NodePtr xAnchor(new Node("XAxis"));
+//    Renderer xRenderer(&boxMesh, &boxMat);
+//    xRenderer.GetMaterial().SetAmbient(Vector4D(1.0f, 0.1f, 0.1f, 1.0f));
+//    xAnchor->AttachComponent(&xRenderer);
+//    xAnchor->SetLocalScale(scale, 0.02, 0.02);
+//    xAnchor->SetPosition(scale / 2.0f, 0.0, 0.0);
+//
+//    NodePtr yAnchor(new Node("YAxis"));
+//    Renderer yRenderer(&boxMesh, &boxMat);
+//    yRenderer.GetMaterial().SetAmbient(Vector4D(0.1f, 1.0f, 0.1f, 1.0f));
+//    yAnchor->AttachComponent(&yRenderer);
+//    yAnchor->SetLocalScale(0.02, scale, 0.02);
+//    yAnchor->SetPosition(0.0, scale / 2.0f, 0.0);
+//
+//    NodePtr zAnchor(new Node("ZAxis"));
+//    Renderer zRenderer(&boxMesh, &boxMat);
+//    zRenderer.GetMaterial().SetAmbient(Vector4D(0.1f, 0.1f, 1.0f, 1.0f));
+//    zAnchor->AttachComponent(&zRenderer);
+//    zAnchor->SetLocalScale( 0.02, 0.02, scale);
+//    zAnchor->SetPosition( 0.0, 0.0, scale / 2.0f);
+//
+//
+//    NodePtr Anchor(new Node("Anchor"));
+//    Anchor->AddChild(xAnchor);
+//    Anchor->AddChild(yAnchor);
+//	Anchor->AddChild(zAnchor);
     // ##############################################################################################
 
 
     Scene rootScene(cam);
 	rootScene.AddToScene(box);
-//	rootScene.AddToScene(box1);
-    rootScene.AddToScene(xAnchor);
-    rootScene.AddToScene(yAnchor);
-    rootScene.AddToScene(zAnchor);
+	rootScene.AddToScene(box1);
+//    rootScene.AddToScene(xAnchor);
+//    rootScene.AddToScene(yAnchor);
+//    rootScene.AddToScene(zAnchor);
     //rootScene.AddToScene(Anchor);
     rootScene.AddLight(pointLight);
 
@@ -163,7 +163,7 @@ int main()
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 		angle += deltaTime * 1.0f;
-		//std::cout << "FPS : " << static_cast<int>(1.0f / deltaTime) << std::endl;
+//		std::cout << "FPS : " << static_cast<int>(1.0f / deltaTime) << std::endl;
 
         KeyBoardEvents(window, input);
         MouseEvents(window, input, deltaTime);
@@ -172,6 +172,7 @@ int main()
         cam->SetFOV(fov);
         cam->Set(cameraPos, cameraTarget, cameraUp);
 //        box1->SetPosition(cameraTarget);
+        boxRenderer.GetSharedMesh()->SetPosition(1, Vector3D(0.0f, sin(angle), 0.0f));
 
 		rootScene.Render();
 		window->Update();

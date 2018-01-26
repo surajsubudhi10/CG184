@@ -21,7 +21,11 @@ namespace CG184 {
 
     public:
         Mesh(std::vector<Vector3D> a_Pos, std::vector<uint32_t>a_Ind);
+        explicit Mesh(Mesh *pMesh);
 
+        void CopyMesh(const Mesh& pMesh);
+
+        void SetPosition(uint32_t at, const Vector3D& a_Position);
         void SetPositions(std::vector<Vector3D> a_Positions);
         void SetColors(std::vector<Vector3D> a_Colors);
         void SetColor(Vector3D a_Color);
@@ -32,10 +36,11 @@ namespace CG184 {
         bool IsDirty() const;
         bool IsStatic() const;
         void MakeStatic(bool staticMode);
+        void MakeClean(){m_IsDirty = false;}
 
         ~Mesh();
 
-        void Update();
+//        void Update();
 
         friend class MeshFilter;
 
@@ -45,6 +50,8 @@ namespace CG184 {
         virtual void InitMesh();
 
     private:
+
+//        const int m_InstanceID;
         bool m_IsDirty;
         bool m_IsStatic;
 
