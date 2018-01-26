@@ -23,8 +23,8 @@ namespace CG184
         virtual ~Node();
 
         std::shared_ptr<Node> GetChildNodeAt(uint32_t index);
-        std::shared_ptr<Node> GetParent();
-        void SetParent(std::shared_ptr<Node> parentNode);
+        Node* GetParent();
+        void SetParent(Node* parentNode);
 
 		uint32_t GetNumOfChildNode();
         void AddChild(std::shared_ptr<Node> node);
@@ -66,7 +66,7 @@ namespace CG184
 
         std::vector<std::shared_ptr<Node>> m_ChildNodes;
         std::vector<Component*> m_Components; // TODO use list instead of vector
-        std::shared_ptr<Node> m_ParentNode;
+        Node* m_ParentNode;
 
         static int uID;
     };

@@ -7,8 +7,8 @@ namespace CG184
 	class IndexBuffer
 	{
 	public:
-		IndexBuffer(GLushort* data, GLsizei count);
-		IndexBuffer(GLuint* data, GLsizei count);
+		IndexBuffer(GLushort* data, GLuint count);
+		IndexBuffer(GLuint* data, GLuint count);
 		~IndexBuffer();
 
 		void Bind() const;

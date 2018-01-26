@@ -16,41 +16,20 @@
 namespace CG184 {
 
 
-    class VertexData
-    {
-    public:
-        Vector3D position;
-        Vector3D color;
-        Vector3D normal;
-        Vector2D texCoord;
-    };
-
-
-    struct FaceData
-    {
-        uint32_t _v1;
-        uint32_t _v2;
-        uint32_t _v3;
-
-        Vector3D faceNormal;
-    };
-
-
-    class Mesh //: public Component
+    class Mesh
     {
 
-    public:
+    private:
+        std::vector<Vector3D> vertPosition;
+        std::vector<Vector3D> vertColor;
+        std::vector<Vector3D> vertNormal;
+        std::vector<Vector2D> vertTexCoord;
 
-        //TODO Add SubMesh support for Multiple materials for a Mesh (ignore now for Simplicity)
-//        std::vector<SubMesh*> m_SubMeshes;
-//        std::vector<FaceData> faces;
-
-        VertexData* vertices;
-		uint32_t m_NumOfVert;
+        uint32_t m_NumOfVert;
         std::vector<uint32_t> m_Indices;
 
+    public:
         Mesh(std::vector<Vector3D> a_Pos, std::vector<uint32_t>a_Ind);
-        Mesh(std::vector<VertexData> a_Vertices, std::vector<uint32_t>a_Ind);
 
         void SetPositions(std::vector<Vector3D> a_Positions);
         void SetColors(std::vector<Vector3D> a_Colors);
@@ -60,10 +39,11 @@ namespace CG184 {
         void SetUVs(std::vector<Vector2D> a_UV);
         ~Mesh();
 
+        friend class MeshFilter;
     protected:
         Mesh();
         void SetIndicies(std::vector<uint32_t>a_Ind);
-        virtual void InitMesh() = 0;
+        virtual void InitMesh();
 
     };
 }
