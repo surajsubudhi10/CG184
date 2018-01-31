@@ -4,23 +4,23 @@
 namespace CG184 
 {
 	
-	IndexBuffer::IndexBuffer(GLushort * data, GLsizei count)
+	IndexBuffer::IndexBuffer(GLushort * data, GLuint count)
 		: m_IndexCount(count)
 	{
 		glGenBuffers(1, &m_BufferID);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_BufferID);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_IndexCount * sizeof(GLshort), data, GL_STATIC_DRAW);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		Bind();
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_IndexCount * sizeof(GLshort), data, GL_DYNAMIC_DRAW);
+		Unbind();
 
 	}
 
-	IndexBuffer::IndexBuffer(GLuint * data, GLsizei count)
+	IndexBuffer::IndexBuffer(GLuint * data, GLuint count)
 		: m_IndexCount(count)
 	{
 		glGenBuffers(1, &m_BufferID);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_BufferID);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_IndexCount * sizeof(GLuint), data, GL_STATIC_DRAW);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		Bind();
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_IndexCount * sizeof(GLuint), data, GL_DYNAMIC_DRAW);
+		Unbind();
 
 	}
 

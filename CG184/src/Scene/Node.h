@@ -68,6 +68,7 @@ namespace CG184
         std::vector<Component*> m_Components; // TODO use list instead of vector
         Node* m_ParentNode;
 
+    public:
         static int uID;
     };
 

@@ -10,15 +10,15 @@ namespace CG184{
 
     enum ComponentType
     {
-        RendererType,
+        RENDERER,
 
         // TODO we will be adding extra components as we create derived component classes
-        CG184Type
+        OTHER
     };
 
     class Component{
     public:
-        Component() : m_IsEnable(true), m_Type(ComponentType::CG184Type)
+        Component() : m_IsEnable(true), m_Type(ComponentType::OTHER)
         {
             m_AttachedNode = nullptr;
         }

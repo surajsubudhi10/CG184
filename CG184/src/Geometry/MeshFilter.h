@@ -17,20 +17,33 @@ namespace CG184 {
 #define SHADER_COLOR_INDEX	 1
 #define SHADER_NORMAL_INDEX	 2
 #define SHADER_TEXCORD_INDEX 3
-#define RENDERER_VERTEX_SIZE	sizeof(VertexData)
+#define RENDERER_VERTEX_SIZE	((3 + 3 + 3 + 2) * sizeof(GLfloat))
 
 
     class MeshFilter
     {
     public:
         explicit MeshFilter(Mesh* a_Mesh);
-		explicit MeshFilter(const MeshFilter& a_MeshFilter);
+
+        MeshFilter(const MeshFilter& a_MeshFilter);
         ~MeshFilter();
+
+        void AttachMesh(Mesh* a_Mesh);
 
         inline GLuint&		GetVAO() { return m_VAO;}
         inline IndexBuffer* GetIBO() { return m_IBO;}
         inline uint32_t		GetIndexCount() const { return m_IndexCount;}
 		inline Mesh*		GetMesh()		const { return m_Mesh; }
+
+        void SetVertexBufferPositionData(const int& offset, const size_t& size, const void* data) const;
+        void SetVertexBufferColorData   (const int& offset, const size_t& size, const void* data) const;
+        void SetVertexBufferNormalData  (const int& offset, const size_t& size, const void* data) const;
+        void SetVertexBufferUVData      (const int& offset, const size_t& size, const void* data) const;
+
+        void BindVertexObjects()   const;
+        void UnBindVertexObjects() const;
+        void UpdateBufferSize()    const;
+        void UpdateVertexBuffer()  const;
 
     private:
         GLuint m_VAO;
@@ -38,12 +51,13 @@ namespace CG184 {
         IndexBuffer* m_IBO;
 
         GLuint* indicesData;
-        VertexData* m_Buffer;
 		uint32_t m_IndexCount;
 
         Mesh* m_Mesh;
     private:
-        void InitGLBuffers(uint32_t numOfVert, uint32_t indicesNum);
+        void InitializeMeshData(uint32_t& numOfVert);
+        void InitGLBuffers(uint32_t numOfVert);
+        //void UpdateGLBufferData();
     };
 }
 

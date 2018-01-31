@@ -38,7 +38,7 @@ namespace CG184 {
 			return;
 		}
 		glfwMakeContextCurrent(window);
-		glfwSwapInterval(1);
+		glfwSwapInterval(0);
 		glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
         // Initializing OpenGL

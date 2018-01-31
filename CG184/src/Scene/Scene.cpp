@@ -18,7 +18,7 @@ namespace CG184{
         }
 
 		for (auto &m_Node : m_RenderQueue) {
-			if (m_Node->HasComponent(ComponentType::RendererType)) {
+			if (m_Node->HasComponent(ComponentType::RENDERER)) {
 				Renderer* renderer = (m_Node->GetComponent<Renderer>());
 				if (renderer != nullptr) {
                     if(renderer->IsEnabled()) {
@@ -56,7 +56,7 @@ namespace CG184{
             TraverseAllChildNodes(*(a_Node.GetChildNodeAt(i)));
         }
 
-        if (a_Node.HasComponent(ComponentType::RendererType)) {
+        if (a_Node.HasComponent(ComponentType::RENDERER)) {
             Renderer* renderer = (a_Node.GetComponent<Renderer>());
             if(renderer != nullptr) {
                 renderer->SendViewMatrixData(m_Camera->GetViewMatrix());

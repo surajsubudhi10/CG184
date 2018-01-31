@@ -58,7 +58,7 @@ namespace CG184
 		glReadPixels((int)mousePosition.x, viewport[3] - (int)mousePosition.y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, &res);
 		switch (res[0]) {
 			case 0: 
-				printf("Nothing Picked \n"); 
+				//printf("Nothing Picked \n");
 				break;
 			default:
 				printf("Picked Object ID: %d\n", res[0]);
@@ -78,7 +78,7 @@ namespace CG184
 		}
 
 		for (auto &m_Node : m_Scene->m_RenderQueue) {
-			if (m_Node->HasComponent(ComponentType::RendererType)) {
+			if (m_Node->HasComponent(ComponentType::RENDERER)) {
 				Renderer* renderer = (m_Node->GetComponent<Renderer>());
 				if (renderer != nullptr) {
 					Renderer pickRenderer(renderer->GetMesh(), &pickerMat);
