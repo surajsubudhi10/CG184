@@ -2,16 +2,18 @@
 // Created by Suraj on 9/12/17.
 //
 
-#include "MeshFilter.h"
 #include <iostream>
 
+#include "MeshFilter.h"
 
-namespace CG184{
+
+namespace CG184
+{
 
     MeshFilter::MeshFilter(Mesh* a_Mesh)
     {
-        m_Mesh = a_Mesh;
-        if(m_Mesh != nullptr) {
+        m_MeshPtr = a_Mesh;
+        if(m_MeshPtr != nullptr) {
             uint32_t vertexNumber = 0;
             InitializeMeshData(vertexNumber);
             InitGLBuffers(vertexNumber);
@@ -19,9 +21,9 @@ namespace CG184{
             throw "(Null Exception) Mesh is a null Pointer.";
     }
 
-	MeshFilter::MeshFilter(const MeshFilter& a_MeshFilter) : m_Mesh(a_MeshFilter.m_Mesh)
+	MeshFilter::MeshFilter(const MeshFilter& a_MeshFilter) : m_MeshPtr(a_MeshFilter.m_MeshPtr)
 	{
-		if (m_Mesh != nullptr) {
+		if (m_MeshPtr != nullptr) {
             uint32_t vertexNumber = 0;
             InitializeMeshData(vertexNumber);
 			InitGLBuffers(vertexNumber);
@@ -32,11 +34,11 @@ namespace CG184{
 
     void MeshFilter::InitializeMeshData(uint32_t& numOfVert)
     {
-        numOfVert = m_Mesh->m_NumOfVert;
-        m_IndexCount = (uint32_t)m_Mesh->m_Indices.size();
-        indicesData = new GLuint[m_IndexCount];
+        numOfVert = m_MeshPtr->m_NumOfVert;
+        m_IndexCount = (uint32_t)m_MeshPtr->m_Indices.size();
+        m_IndicesDataPtr = new GLuint[m_IndexCount];
         for (uint32_t i = 0; i < m_IndexCount; i++) {
-            indicesData[i] = m_Mesh->m_Indices[i];
+            m_IndicesDataPtr[i] = m_MeshPtr->m_Indices[i];
         }
 
         glGenVertexArrays(1, &m_VAO);
@@ -60,16 +62,16 @@ namespace CG184{
         glEnableVertexAttribArray( SHADER_NORMAL_INDEX);
         glEnableVertexAttribArray(SHADER_TEXCORD_INDEX);
 
-		if (m_Mesh->IsDirty()) {
-			m_Mesh->Update();
+		if (m_MeshPtr->IsDirty()) {
+			m_MeshPtr->Update();
 		}
 
-        SetVertexBufferPositionData(0, numOfVert, &m_Mesh->vertPosition[0]);
-        SetVertexBufferColorData   (0, numOfVert, &m_Mesh->vertColor[0]);
-        SetVertexBufferNormalData  (0, numOfVert, &m_Mesh->vertNormal[0]);
-		SetVertexBufferUVData      (0, numOfVert, &m_Mesh->vertTexCoord[0]);
+        SetVertexBufferPositionData(0, numOfVert, &m_MeshPtr->m_VertPosition[0]);
+        SetVertexBufferColorData   (0, numOfVert, &m_MeshPtr->m_VertColor[0]);
+        SetVertexBufferNormalData  (0, numOfVert, &m_MeshPtr->m_VertNormal[0]);
+		SetVertexBufferUVData      (0, numOfVert, &m_MeshPtr->m_VertTexCoord[0]);
 
-        m_IBO = new IndexBuffer(indicesData, m_IndexCount);
+        m_IBOPtr = new IndexBuffer(m_IndicesDataPtr, m_IndexCount);
         UnBindVertexObjects();
     }
 
@@ -78,28 +80,28 @@ namespace CG184{
         glDeleteVertexArrays(1, &m_VAO);
         glDeleteBuffers(1, &m_VBO);
 
-        delete[] indicesData;
-        indicesData = nullptr;
+        delete[] m_IndicesDataPtr;
+        m_IndicesDataPtr = nullptr;
 
-        delete m_IBO;
-        m_IBO = nullptr;
+        delete m_IBOPtr;
+        m_IBOPtr = nullptr;
     }
 
     void MeshFilter::SetVertexBufferPositionData(const int& offset, const size_t& size, const void* data) const{
-        glBufferSubData(GL_ARRAY_BUFFER, sizeof(GLfloat) * (0 + offset) * m_Mesh->m_NumOfVert, sizeof(GLfloat) * 3 * size, data);
+        glBufferSubData(GL_ARRAY_BUFFER, sizeof(GLfloat) * (0 + offset) * m_MeshPtr->m_NumOfVert, sizeof(GLfloat) * 3 * size, data);
     }
 
     void MeshFilter::SetVertexBufferColorData(const int &offset, const size_t &size, const void *data) const {
-        glBufferSubData(GL_ARRAY_BUFFER, sizeof(GLfloat) * (3 + offset) * m_Mesh->m_NumOfVert, sizeof(GLfloat) * 3 * size, data);
+        glBufferSubData(GL_ARRAY_BUFFER, sizeof(GLfloat) * (3 + offset) * m_MeshPtr->m_NumOfVert, sizeof(GLfloat) * 3 * size, data);
     }
 
     void MeshFilter::SetVertexBufferNormalData(const int &offset, const size_t &size, const void *data) const {
-        glBufferSubData(GL_ARRAY_BUFFER, sizeof(GLfloat) * (3 + 3 + offset) * m_Mesh->m_NumOfVert, sizeof(GLfloat) * 3 * size, data);
+        glBufferSubData(GL_ARRAY_BUFFER, sizeof(GLfloat) * (3 + 3 + offset) * m_MeshPtr->m_NumOfVert, sizeof(GLfloat) * 3 * size, data);
     }
 
     void MeshFilter::SetVertexBufferUVData(const int &offset, const size_t &size, const void *data) const {
 		if(data != nullptr)
-			glBufferSubData(GL_ARRAY_BUFFER, sizeof(GLfloat) * (3 + 3 + 3 + offset) * m_Mesh->m_NumOfVert, sizeof(GLfloat) * 3 * size, data);
+			glBufferSubData(GL_ARRAY_BUFFER, sizeof(GLfloat) * (3 + 3 + 3 + offset) * m_MeshPtr->m_NumOfVert, sizeof(GLfloat) * 3 * size, data);
     }
 
     void MeshFilter::BindVertexObjects() const {
@@ -114,25 +116,24 @@ namespace CG184{
 
     void MeshFilter::UpdateBufferSize() const {
         BindVertexObjects();
-        glBufferData(GL_ARRAY_BUFFER, RENDERER_VERTEX_SIZE * m_Mesh->vertPosition.size(), nullptr, GL_DYNAMIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, RENDERER_VERTEX_SIZE * m_MeshPtr->m_VertPosition.size(), nullptr, GL_DYNAMIC_DRAW);
         UnBindVertexObjects();
     }
 
     void MeshFilter::UpdateVertexBuffer() const {
-        if(m_Mesh->IsDirty()){
-            uint32_t numOfVert = m_Mesh->m_NumOfVert;
-            SetVertexBufferPositionData(0, numOfVert, &m_Mesh->vertPosition[0]);
-            SetVertexBufferColorData   (0, numOfVert, &m_Mesh->vertColor[0]);
-            SetVertexBufferNormalData  (0, numOfVert, &m_Mesh->vertNormal[0]);
-            SetVertexBufferUVData      (0, numOfVert, &m_Mesh->vertTexCoord[0]);
-            m_Mesh->m_IsDirty = false;
+        if(m_MeshPtr->IsDirty()){
+            uint32_t numOfVert = m_MeshPtr->m_NumOfVert;
+            SetVertexBufferPositionData(0, numOfVert, &m_MeshPtr->m_VertPosition[0]);
+            SetVertexBufferColorData   (0, numOfVert, &m_MeshPtr->m_VertColor[0]);
+            SetVertexBufferNormalData  (0, numOfVert, &m_MeshPtr->m_VertNormal[0]);
+            SetVertexBufferUVData      (0, numOfVert, &m_MeshPtr->m_VertTexCoord[0]);
+            m_MeshPtr->m_IsDirty = false;
         }
     }
 
     void MeshFilter::AttachMesh(Mesh* a_Mesh) {
 //        if(m_Mesh != nullptr)
 //            delete m_Mesh;
-
-        m_Mesh = a_Mesh;
+        m_MeshPtr = a_Mesh;
     }
 }

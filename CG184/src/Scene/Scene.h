@@ -27,10 +27,10 @@ namespace CG184 {
 		friend class Input;
 
     private:
-        CameraPtr				m_Camera;
-		NodePtr					m_Anchor;
+        CameraPtr				m_CameraPtr;
+		NodePtr					m_AnchorPtr;
         std::vector<NodePtr>	m_RenderQueue;
-		std::vector<LightPtr>	m_Lights;
+		std::vector<LightPtr>	m_LightsPtr;
 
         void TraverseAllChildNodes(Node& a_Node);
 		void CreateAnchor();

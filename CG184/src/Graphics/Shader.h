@@ -13,11 +13,11 @@
 
 namespace CG184 
 {
-    using namespace std;
+    //using namespace std;
+	
 	class Uniform
 	{
     public:
-		//SHADER_TYPE Type;
 		std::string name;
 		int size;
 		uint32_t location;
@@ -26,7 +26,6 @@ namespace CG184
     class VertexAttribute
 	{
     public:
-		//SHADER_TYPE Type;
 		std::string name;
 		int size;
 		uint32_t location;
@@ -35,39 +34,36 @@ namespace CG184
 	class Shader
 	{
 	public:
-		Shader(const char* vertexPath, const char* fragmentPath);
+		Shader(const char* vertexPath, const char* fragmentPath, const char* geometryPath = nullptr);
 		Shader(const Shader& a_Shader);
 		~Shader();
 
-		void ActivateShader();
-		void DeactivateShader();
-
-		void AddTexture(const char* texturePath, TextureType texType);
+		void								ActivateShader();
+		void								DeactivateShader();
+		void								AddTexture(const char* texturePath, TextureType texType);
 
 		// TODO add More Uniform Setter functions
-        void SetUniform1f(string name, float _v1);
-		void SetUniform1i(string name, int _v1);
-        void SetUniform2f(string name, float _v1, float _v2);
-        void SetUniform3f(string name, float _v1, float _v2, float _v3);
-        void SetUniform4f(string name, float _v1, float _v2, float _v3, float _v4);
-		void SetUniform4f(string name, Vector4D _v4);
+        void								SetUniform1f(std::string name, float _v1);
+		void								SetUniform1i(std::string name, int _v1);
+        void								SetUniform2f(std::string name, float _v1, float _v2);
+        void								SetUniform3f(std::string name, float _v1, float _v2, float _v3);
+        void								SetUniform4f(std::string name, float _v1, float _v2, float _v3, float _v4);
+		void								SetUniform4f(std::string name, Vector4D _v4);
+        void								SetUniformMat2f(std::string name, float* val);
+        void								SetUniformMat3f(std::string name, float* val);
+        void								SetUniformMat4f(std::string name, float* val);
+		void								SetUniform4fArray(std::string name, uint32_t numOfElement, float* arrayList);
 
-        void SetUniformMat2f(string name, float* val);
-        void SetUniformMat3f(string name, float* val);
-        void SetUniformMat4f(string name, float* val);
-
-		void SetUniform4fArray(string name, uint32_t numOfElement, float* arrayList);
-
-		uint32_t GetShaderID() const { return shaderID; }
+		uint32_t							GetShaderID() const { return shaderID; }
 
 	private:
-		uint32_t shaderID;
-		std::vector<Uniform> m_Uniforms;
-		std::vector<VertexAttribute> m_Attributes;
+		uint32_t							shaderID;
+		std::vector<Uniform>				m_Uniforms;
+		std::vector<VertexAttribute>		m_Attributes;
 
-		Texture m_Textures[5] = {}; // TODO Fix -> Hard Coded Fixed No. of Texture Support.
+		void								CompileShader(uint32_t shader, std::string type);
 		
-		void CompileShader(uint32_t shader, std::string type);
+		Texture m_Textures[5] = {}; // TODO Fix -> Hard Coded Fixed No. of Texture Support.
 	};
 
 }

@@ -13,7 +13,7 @@ namespace CG184
         m_InstanceID(uID++),
         m_Transform(Transform())
     {
-        m_ParentNode = nullptr;
+        m_ParentNodePtr = nullptr;
     }
 
     Node::Node(Transform &a_Trans, const char* name):
@@ -21,31 +21,31 @@ namespace CG184
             m_InstanceID(uID++),
             m_Transform(a_Trans)
     {
-        m_ParentNode = nullptr;
+        m_ParentNodePtr = nullptr;
     }
 
     void Node::AddChild(std::shared_ptr<Node> a_Node)
     {
         a_Node->SetParent(this);
         a_Node->UpdateWorldModelMatrix();
-        m_ChildNodes.push_back(a_Node);
+        m_ChildNodesPtr.push_back(a_Node);
     }
 
     NodePtr Node::GetChildNodeAt(uint32_t index)
     {
-        if(index >= m_ChildNodes.size())
+        if(index >= m_ChildNodesPtr.size())
             return nullptr;
 
-        return m_ChildNodes[index];
+        return m_ChildNodesPtr[index];
     }
 
     Node* Node::GetParent()
     {
-        return m_ParentNode;
+        return m_ParentNodePtr;
     }
 
 	uint32_t Node::GetNumOfChildNode() {
-        return static_cast<uint32_t>(m_ChildNodes.size());
+        return static_cast<uint32_t>(m_ChildNodesPtr.size());
     }
 
     void Node::UpdateWorldModelMatrix() {
@@ -57,9 +57,9 @@ namespace CG184
 		if (m_Transform.isDirty)
 			m_Transform.UpdateLocalTransformMatrix();
 
-		m_Transform.worldTransformMat = m_Transform.localTransformMat;
-		if (m_ParentNode != nullptr){
-			m_Transform.worldTransformMat = m_ParentNode->GetWorldTransform().worldTransformMat * m_Transform.worldTransformMat;
+		m_Transform.m_WorldTransformMat = m_Transform.m_LocalTransformMat;
+		if (m_ParentNodePtr != nullptr){
+			m_Transform.m_WorldTransformMat = m_ParentNodePtr->GetWorldTransform().m_WorldTransformMat * m_Transform.m_WorldTransformMat;
 		}
 		return m_Transform;
 	}
@@ -73,46 +73,46 @@ namespace CG184
 			}
 		}
 
-		m_Components.push_back(a_Component);
+		m_ComponentsPtr.push_back(a_Component);
 		a_Component->SetAttachedNode(this);
     }
 
     bool Node::HasComponent(ComponentType comType) {
-        for (auto &m_Component : m_Components) {
+        for (auto &m_Component : m_ComponentsPtr) {
             return m_Component->GetComponentType() == comType;
         }
         return false;
     }
 
     void Node::SetParent(Node* parentNode) {
-        m_ParentNode = parentNode;
+        m_ParentNodePtr = parentNode;
     }
 
     Node::~Node()
     {
-		if(m_ParentNode != nullptr)
-			m_ParentNode = nullptr;
+		if(m_ParentNodePtr != nullptr)
+			m_ParentNodePtr = nullptr;
     }
 
     void Node::SetPosition(float _x, float _y, float _z) {
-		m_Transform.localPosition = Vector3D(_x, _y, _z);
+		m_Transform.m_LocalPosition = Vector3D(_x, _y, _z);
 		m_Transform.isDirty = true;
     }
 
     void Node::SetPosition(const Vector3D& pos)
     {
-        m_Transform.localPosition = pos;
+        m_Transform.m_LocalPosition = pos;
         m_Transform.isDirty = true;
     }
 
     void Node::SetLocalScale(float _x, float _y, float _z) {
-		m_Transform.localScale = Vector3D(_x, _y, _z);
+		m_Transform.m_LocalScale = Vector3D(_x, _y, _z);
 		m_Transform.isDirty = true;
     }
 
 	void Node::SetLocalEulerAngle(float _x, float _y, float _z) {
-		m_Transform.eulerAngles = Vector3D(_x, _y, _z);
-		m_Transform.rotation = ToQuaternion(m_Transform.eulerAngles);
+		m_Transform.m_EulerAngles = Vector3D(_x, _y, _z);
+		m_Transform.m_Rotation = ToQuaternion(m_Transform.m_EulerAngles);
 		m_Transform.isDirty = true;
 	}
 
@@ -120,8 +120,8 @@ namespace CG184
 	{
 		axis.normalize();
 		Quaternion quat(angle, axis);
-		m_Transform.eulerAngles = quat.ToEulerAngles();
-		m_Transform.rotation = quat;
+		m_Transform.m_EulerAngles = quat.ToEulerAngles();
+		m_Transform.m_Rotation = quat;
 		m_Transform.isDirty = true;
 	}
 
@@ -130,8 +130,8 @@ namespace CG184
             m_InstanceID(uID++),
             m_Transform(node.m_Transform)
     {
-        m_ParentNode = node.m_ParentNode;
-        m_ChildNodes = node.m_ChildNodes;
-        m_Components = node.m_Components;
+        m_ParentNodePtr = node.m_ParentNodePtr;
+        m_ChildNodesPtr = node.m_ChildNodesPtr;
+        m_ComponentsPtr = node.m_ComponentsPtr;
     }
 }

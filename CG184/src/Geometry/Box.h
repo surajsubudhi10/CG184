@@ -7,23 +7,22 @@
 
 #include "Mesh.h"
 
-namespace CG184{
+namespace CG184
+{
     class Box : public Mesh
     {
     public:
         Box();
         Box(Box& a_Box);
         Box(float width, float height, float depth);
-
         ~Box();
 
-
     private:
-        float m_Width;
-        float m_Height;
-        float m_Depth;
+        float				m_Width;
+        float				m_Height;
+        float				m_Depth;
 
-        void InitMesh() override;
+        void				InitMesh() override;
     };
 }
 

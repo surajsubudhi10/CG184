@@ -5,9 +5,8 @@
 #include "Torus.h"
 
 
-namespace CG184{
-
-
+namespace CG184
+{
     Torus::Torus() :
             Mesh(),
             m_TubeRadius(2.0f), m_TorusRadius(5.0f),
@@ -32,13 +31,11 @@ namespace CG184{
         InitMesh();
     }
 
-    Torus::~Torus() {
-
-    }
+    Torus::~Torus() 
+	{}
 
     void Torus::InitMesh()
     {
-
         // Taken Form Cell Graphics engine
         std::vector<Vector3D> positions((m_TorusSegments + 1) * (m_TubeSegments + 1));
         std::vector<Vector2D> texCoord((m_TorusSegments + 1) * (m_TubeSegments + 1));
@@ -64,8 +61,8 @@ namespace CG184{
             // the basis vectors of the ring equal the difference  vector between the minorRing
             // center and the donut's center position (which equals the origin (0, 0, 0)) and the
             // positive z-axis.
-            Vector3D u = (Vector3D(0.0f) - p[i]).norm() * m_TubeRadius; // Could be p[i] also
-            Vector3D v = Vector3D(0.0f, 0.0f, 1.0f) * m_TubeRadius;
+            Vector3D u			= (Vector3D(0.0f) - p[i]).norm() * m_TubeRadius; // Could be p[i] also
+            Vector3D v			=  Vector3D(0.0f, 0.0f, 1.0f) * m_TubeRadius;
 
             // create the vertices of each minor ring segment:
             auto a = 0.0f;
@@ -75,14 +72,13 @@ namespace CG184{
                 auto c = (float)cos(a);
                 auto s = (float)sin(a);
 
-                positions[i * (m_TubeSegments + 1) + j] = p[i] + (u * c) + (v * s);
-                texCoord[i * (m_TubeSegments + 1) + j].x = ((float)i) / ((float)m_TorusSegments) * (float)TWO_PI;
-                texCoord[i * (m_TubeSegments + 1) + j].y = ((float)j) / ((float)m_TubeSegments);
-                normals[i * (m_TubeSegments + 1) + j] = ((u * c) + (v * s)).norm();
+                positions[i * (m_TubeSegments + 1) + j]		= p[i] + (u * c) + (v * s);
+                texCoord [i * (m_TubeSegments + 1) + j].x	= ((float)i) / ((float)m_TorusSegments) * (float)TWO_PI;
+                texCoord [i * (m_TubeSegments + 1) + j].y	= ((float)j) / ((float)m_TubeSegments);
+                normals  [i * (m_TubeSegments + 1) + j]		= ((u * c) + (v * s)).norm();
                 a += step;
             }
         }
-
 
         int index = 0;
         for (uint32_t i = 0; i < m_TorusSegments; ++i)
@@ -109,6 +105,5 @@ namespace CG184{
         SetNormals(normals);
         SetUVs(texCoord);
         SetIndicies(indicies);
-
     }
 }

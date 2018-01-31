@@ -47,7 +47,7 @@ int main()
 
     WindowPtr window(new Window(SCR_WIDTH, SCR_HEIGHT, "CG184::In Development"));
 
-	glfwSetScrollCallback(window->window, scroll_callback);
+	glfwSetScrollCallback(window->m_WindowPtr, scroll_callback);
 
     // ####################################### Camera ###############################################
 
@@ -84,7 +84,8 @@ int main()
 
 
     Box boxMesh;
-	Shader boxShaderTemp("TestShaders/multipleLights.vs", "TestShaders/multipleLights.fs");
+	//Shader boxShaderTemp("TestShaders/multipleLights.vs", "TestShaders/multipleLights.fs");
+	Shader boxShaderTemp("TestShaders/solidWireframe.vs", "TestShaders/solidWireframe.fs", "TestShaders/solidWireframe.gs");
 	Material boxMat(&boxShaderTemp);
 	boxMat.SetAmbient(Vector4D(0.5f, 0.1f, 0.1f, 1.0f));
     Renderer boxRenderer(&triangleMesh, &boxMat);
@@ -99,7 +100,7 @@ int main()
 	NodePtr box1(new Node("box2"));
 	box1->AttachComponent(&boxRenderer1);
 	box1->SetLocalScale(1.1, 1.1, 1.1);
-	box1->SetPosition(2.0, 0.0, 0.0);
+	box1->SetPosition(0.0, 0.0, 0.0);
 
 
     Scene rootScene(cam);
@@ -131,7 +132,7 @@ int main()
         cam->SetFOV(fov);
         cam->Set(cameraPos, cameraTarget, cameraUp);
 //        box1->SetPosition(cameraTarget);
-        boxRenderer.GetSharedMesh()->SetPosition(1, Vector3D(0.0f, sin(angle), 0.0f));
+        //boxRenderer.GetSharedMesh()->SetPosition(1, Vector3D(0.0f, sin(angle), 0.0f));
 
 		rootScene.Render();
 		window->Update();

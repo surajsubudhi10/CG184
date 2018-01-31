@@ -7,15 +7,14 @@
 
 namespace CG184 
 {
-	enum TextureType
+	enum class TextureType
 	{
-		Diffuse = 0,
-		Specular,
-		Normal,
-		Bump,
-		Reflection
+		DIFFUSE = 0,
+		SPECULAR,
+		NORMAL,
+		BUMP,
+		REFLECTION
 	};
-
 
 	class Texture
 	{
@@ -23,11 +22,9 @@ namespace CG184
 		Texture();
 		~Texture();
 
-		void LoadTexture(const char* texturePath);
-
+		void		LoadTexture(const char* texturePath);
         friend class Shader;
 	private:
-		GLuint textureID;
+		GLuint		textureID;
 	};
-
 }

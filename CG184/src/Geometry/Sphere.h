@@ -7,7 +7,8 @@
 
 #include "Mesh.h"
 
-namespace CG184 {
+namespace CG184 
+{
     class Sphere : public Mesh
     {
     public:
@@ -16,15 +17,15 @@ namespace CG184 {
         Sphere(float rad, uint32_t xSeg, uint32_t ySeg);
         ~Sphere();
 
-        void SetRadius(float rad);
-        void SetSegments(uint32_t xSeg, uint32_t ySeg);
+        void			SetRadius(float rad);
+        void			SetSegments(uint32_t xSeg, uint32_t ySeg);
 
     private:
-        float radius;
-		uint32_t x_segments;
-		uint32_t y_segments;
+        float			m_Radius;
+		uint32_t		m_XSegments;
+		uint32_t		m_YSegments;
 
-        void InitMesh() override;
+        void			InitMesh() override;
     };
 }
 

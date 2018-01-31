@@ -4,33 +4,52 @@
 namespace CG184 
 {
     // Helper Function
-    int GetUniformLocation(const string &name, vector<Uniform> uniformList);
+    int GetUniformLocation(const std::string &name, std::vector<Uniform> uniformList);
 
-	Shader::Shader(const char* vertexPath, const char* fragmentPath)// : textured(false)
+	Shader::Shader(const char* vertexPath, const char* fragmentPath, const char* geometryPath)// : textured(false)
 	{
-
+		// 1. retrieve the vertex/fragment/geometry source code from filePath
 		std::string vertexCode;
 		std::string fragmentCode;
+		std::string geometryCode;
+
 		std::ifstream vShaderFile;
 		std::ifstream fShaderFile;
-
+		std::ifstream gShaderFile;
+		
+		// ensure ifstream objects can throw exceptions:
 		vShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
 		fShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+		gShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+		
 		try
 		{
 			// open files
 			vShaderFile.open(vertexPath);
 			fShaderFile.open(fragmentPath);
 			std::stringstream vShaderStream, fShaderStream;
+
 			// read file's buffer contents into streams
 			vShaderStream << vShaderFile.rdbuf();
 			fShaderStream << fShaderFile.rdbuf();
+			
 			// close file handlers
 			vShaderFile.close();
 			fShaderFile.close();
+			
 			// convert stream into string
 			vertexCode = vShaderStream.str();
 			fragmentCode = fShaderStream.str();
+
+			// if geometry shader path is present, also load a geometry shader
+			if (geometryPath != nullptr)
+			{
+				gShaderFile.open(geometryPath);
+				std::stringstream gShaderStream;
+				gShaderStream << gShaderFile.rdbuf();
+				gShaderFile.close();
+				geometryCode = gShaderStream.str();
+			}
 		}
 		catch (std::ifstream::failure e)
 		{
@@ -38,6 +57,7 @@ namespace CG184
 		}
 		const char* vShaderCode = vertexCode.c_str();
 		const char * fShaderCode = fragmentCode.c_str();
+		
 		// 2. compile shaders
 		uint32_t vertex, fragment;
 
@@ -53,17 +73,33 @@ namespace CG184
 		glCompileShader(fragment);
 		CompileShader(fragment, "FRAGMENT");
 
+		// if geometry shader is given, compile geometry shader
+		uint32_t geometry;
+		if (geometryPath != nullptr)
+		{
+			const char * gShaderCode = geometryCode.c_str();
+			geometry = glCreateShader(GL_GEOMETRY_SHADER);
+			glShaderSource(geometry, 1, &gShaderCode, nullptr);
+			glCompileShader(geometry);
+			CompileShader(geometry, "GEOMETRY");
+		}
+
+
 		// shader Program
 		shaderID = glCreateProgram();
 		glAttachShader(shaderID, vertex);
 		glAttachShader(shaderID, fragment);
+		if (geometryPath != nullptr)
+			glAttachShader(shaderID, geometry);
+
 		glLinkProgram(shaderID);
 		CompileShader(shaderID, "PROGRAM");
 
 		// delete the shaders as they're linked into our program now and no longer necessary
 		glDeleteShader(vertex);
 		glDeleteShader(fragment);
-
+		if (geometryPath != nullptr)
+			glDeleteShader(geometry);
 
         int nAttributes, nUniforms;
         glGetProgramiv(shaderID, GL_ACTIVE_ATTRIBUTES, &nAttributes);
@@ -134,23 +170,23 @@ namespace CG184
 		glUseProgram(shaderID);
 		switch (texType)
 		{
-			case TextureType::Diffuse:
+			case TextureType::DIFFUSE:
 				m_Textures[0] = tex;
 				glUniform1i(glGetUniformLocation(shaderID, "DiffuseMap"), 0);
 
-			case TextureType::Specular:
+			case TextureType::SPECULAR:
 				m_Textures[1] = tex;
 				glUniform1i(glGetUniformLocation(shaderID, "SpecularMap"), 1);
 
-			case TextureType::Normal:
+			case TextureType::NORMAL:
 				m_Textures[2] = tex;
 				glUniform1i(glGetUniformLocation(shaderID, "NormalMap"), 2);
 
-			case TextureType::Bump:
+			case TextureType::BUMP:
 				m_Textures[3] = tex;
 				glUniform1i(glGetUniformLocation(shaderID, "BumpMap"), 3);
 
-			case TextureType::Reflection:
+			case TextureType::REFLECTION:
 				m_Textures[4] = tex;
 				glUniform1i(glGetUniformLocation(shaderID, "ReflectionMap"), 4);
 
@@ -192,7 +228,7 @@ namespace CG184
 	Shader::~Shader()
     {}
 
-	void Shader::SetUniform1f(string name, float _v1)
+	void Shader::SetUniform1f(std::string name, float _v1)
     {
         glUseProgram(shaderID);
         auto location = GetUniformLocation(name, m_Uniforms);
@@ -201,7 +237,7 @@ namespace CG184
         glUseProgram(0);
     }
 
-	void Shader::SetUniform1i(string name, int _v1)
+	void Shader::SetUniform1i(std::string name, int _v1)
 	{
 		glUseProgram(shaderID);
 		auto location = GetUniformLocation(name, m_Uniforms);
@@ -210,7 +246,7 @@ namespace CG184
 		glUseProgram(0);
 	}
 
-    void Shader::SetUniform2f(string name, float _v1, float _v2)
+    void Shader::SetUniform2f(std::string name, float _v1, float _v2)
     {
         glUseProgram(shaderID);
         auto location = GetUniformLocation(name, m_Uniforms);
@@ -219,7 +255,7 @@ namespace CG184
         glUseProgram(0);
     }
 
-    void Shader::SetUniform3f(string name, float _v1, float _v2, float _v3)
+    void Shader::SetUniform3f(std::string name, float _v1, float _v2, float _v3)
     {
         glUseProgram(shaderID);
         auto location = GetUniformLocation(name, m_Uniforms);
@@ -228,7 +264,7 @@ namespace CG184
         glUseProgram(0);
     }
 
-    void Shader::SetUniform4f(string name, float _v1, float _v2, float _v3, float _v4)
+    void Shader::SetUniform4f(std::string name, float _v1, float _v2, float _v3, float _v4)
     {
         glUseProgram(shaderID);
         auto location = GetUniformLocation(name, m_Uniforms);
@@ -237,7 +273,7 @@ namespace CG184
         glUseProgram(0);
     }
 
-	void Shader::SetUniform4f(string name, Vector4D _vec)
+	void Shader::SetUniform4f(std::string name, Vector4D _vec)
 	{
 		glUseProgram(shaderID);
 		auto location = GetUniformLocation(name, m_Uniforms);
@@ -246,7 +282,7 @@ namespace CG184
 		glUseProgram(0);
 	}
 
-    void Shader::SetUniformMat3f(string name, float *val)
+    void Shader::SetUniformMat3f(std::string name, float *val)
     {
         glUseProgram(shaderID);
         auto location = GetUniformLocation(name, m_Uniforms);
@@ -255,7 +291,7 @@ namespace CG184
         glUseProgram(0);
     }
 
-    void Shader::SetUniformMat2f(string name, float *val)
+    void Shader::SetUniformMat2f(std::string name, float *val)
     {
         glUseProgram(shaderID);
         auto location = GetUniformLocation(name, m_Uniforms);
@@ -264,7 +300,7 @@ namespace CG184
         glUseProgram(0);
     }
 
-    void Shader::SetUniformMat4f(string name, float *val)
+    void Shader::SetUniformMat4f(std::string name, float *val)
     {
         glUseProgram(shaderID);
         auto location = GetUniformLocation(name, m_Uniforms);
@@ -273,7 +309,7 @@ namespace CG184
         glUseProgram(0);
     }
 
-    void Shader::SetUniform4fArray(string name, uint32_t numOfElement, float *arrayList) {
+    void Shader::SetUniform4fArray(std::string name, uint32_t numOfElement, float *arrayList) {
         glUseProgram(shaderID);
         auto location = GetUniformLocation(name, m_Uniforms);
 		if (location != -1)
@@ -282,7 +318,7 @@ namespace CG184
     }
 
 
-    int GetUniformLocation(const string &name, vector<Uniform> uniformList)
+    int GetUniformLocation(const std::string &name, std::vector<Uniform> uniformList)
     {
         for (auto &uniform : uniformList) {
             if(name == uniform.name)

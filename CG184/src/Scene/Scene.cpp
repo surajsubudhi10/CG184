@@ -6,9 +6,9 @@
 
 namespace CG184{
 
-    Scene::Scene(CameraPtr cam) : m_Anchor(new Node("Anchor"))
+    Scene::Scene(CameraPtr cam) : m_AnchorPtr(new Node("Anchor"))
     {
-        m_Camera = std::move(cam);
+        m_CameraPtr = std::move(cam);
 		CreateAnchor();
     }
 
@@ -25,13 +25,13 @@ namespace CG184{
                     if(renderer->IsEnabled()) {
 
 				    	// Sending Data to Associated Shader
-    					renderer->SendCameraPosData(m_Camera);
-	    				renderer->SendViewMatrixData(m_Camera->GetViewMatrix());
-		    			renderer->SendProjectionMatrixData(m_Camera->GetProjectionMatrix());
+    					renderer->SendCameraPosData(m_CameraPtr);
+	    				renderer->SendViewMatrixData(m_CameraPtr->GetViewMatrix());
+		    			renderer->SendProjectionMatrixData(m_CameraPtr->GetProjectionMatrix());
 			    		renderer->SendModelMatrixData(m_Node->GetTransformComponent().GetWorldTransformMat());
 
-                        for (unsigned int i = 0; i < m_Lights.size(); i++)
-                            renderer->SendLightData(m_Lights[i], i);
+                        for (unsigned int i = 0; i < m_LightsPtr.size(); i++)
+                            renderer->SendLightData(m_LightsPtr[i], i);
 
                         renderer->SendMaterialData();
                         renderer->Render();
@@ -45,7 +45,8 @@ namespace CG184{
     }
 
     Scene::~Scene() {
-        m_Camera = nullptr;
+        m_CameraPtr = nullptr;
+		m_AnchorPtr = nullptr;
     }
 
     void Scene::AddToScene(NodePtr node) {
@@ -76,8 +77,8 @@ namespace CG184{
 		Renderer* anchorRenderer	= new Renderer(anchorMesh, anchorMat);
 
 		anchorRenderer->SetRenderMode(RenderMode::LINES);
-		m_Anchor->AttachComponent(anchorRenderer);
-		this->AddToScene(m_Anchor);
+		m_AnchorPtr->AttachComponent(anchorRenderer);
+		this->AddToScene(m_AnchorPtr);
 	}
 
     void Scene::TraverseAllChildNodes(Node& a_Node){
@@ -88,8 +89,8 @@ namespace CG184{
         if (a_Node.HasComponent(ComponentType::RENDERER)) {
             Renderer* renderer = (a_Node.GetComponent<Renderer>());
             if(renderer != nullptr) {
-                renderer->SendViewMatrixData(m_Camera->GetViewMatrix());
-                renderer->SendProjectionMatrixData(m_Camera->GetProjectionMatrix());
+                renderer->SendViewMatrixData(m_CameraPtr->GetViewMatrix());
+                renderer->SendProjectionMatrixData(m_CameraPtr->GetProjectionMatrix());
                 renderer->Render();
             }
             else {
@@ -99,7 +100,7 @@ namespace CG184{
     }
 
     void Scene::AddLight(LightPtr light) {
-        m_Lights.push_back(light);
+        m_LightsPtr.push_back(light);
     }
 
 }

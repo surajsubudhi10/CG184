@@ -10,13 +10,13 @@ namespace CG184 {
 	void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
 	Window::Window()
-		: m_width(960), m_height(540), m_WindowTitle("Hello Window!!"), window(nullptr)
+		: m_width(960), m_height(540), m_WindowTitle("Hello Window!!"), m_WindowPtr(nullptr)
 	{
 		init();
 	}
 
 	Window::Window(int width, int height, const char* name)
-		: m_width(width), m_height(height), m_WindowTitle(name), window(nullptr)
+		: m_width(width), m_height(height), m_WindowTitle(name), m_WindowPtr(nullptr)
 	{
 		init();
 	}
@@ -30,16 +30,16 @@ namespace CG184 {
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-		window = glfwCreateWindow(m_width, m_height, m_WindowTitle, nullptr, nullptr);
-		if (window == nullptr)
+		m_WindowPtr = glfwCreateWindow(m_width, m_height, m_WindowTitle, nullptr, nullptr);
+		if (m_WindowPtr == nullptr)
 		{
 			std::cout << "Failed to create GLFW window" << std::endl;
 			glfwTerminate();
 			return;
 		}
-		glfwMakeContextCurrent(window);
-		glfwSwapInterval(0);
-		glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+		glfwMakeContextCurrent(m_WindowPtr);
+		glfwSwapInterval(1);
+		glfwSetFramebufferSizeCallback(m_WindowPtr, framebuffer_size_callback);
 
         // Initializing OpenGL
         glewExperimental = GL_TRUE;
@@ -54,7 +54,7 @@ namespace CG184 {
 
 	int Window::IfWindowClosed()
 	{
-		return glfwWindowShouldClose(window);
+		return glfwWindowShouldClose(m_WindowPtr);
 	}
 
 
@@ -62,7 +62,7 @@ namespace CG184 {
 	{
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 		// -------------------------------------------------------------------------------
-		glfwSwapBuffers(window);
+		glfwSwapBuffers(m_WindowPtr);
 		glfwPollEvents();
 	}
 
@@ -76,13 +76,13 @@ namespace CG184 {
 	{
 		// glfw: terminate, clearing all previously allocated GLFW resources.
 		// ------------------------------------------------------------------
-		glfwSetWindowShouldClose(window, true);
+		glfwSetWindowShouldClose(m_WindowPtr, true);
 	}
 
 	Window::~Window()
 	{
 		glfwTerminate();
-		window = nullptr;
+		m_WindowPtr = nullptr;
 	}
 
 

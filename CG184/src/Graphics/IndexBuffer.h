@@ -11,11 +11,11 @@ namespace CG184
 		IndexBuffer(GLuint* data, GLuint count);
 		~IndexBuffer();
 
-		void Bind() const;
-		void Unbind() const;
+		void			Bind()		const;
+		void			Unbind()	const;
 
 	private:
-		GLuint m_BufferID;
-		GLuint m_IndexCount;
+		GLuint			m_BufferID;
+		GLuint			m_IndexCount;
 	};
 }

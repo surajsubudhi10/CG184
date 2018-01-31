@@ -7,11 +7,12 @@
 
 #include <GL/glew.h>
 #include <vector>
-#include "../Graphics/IndexBuffer.h"
 
+#include "../Graphics/IndexBuffer.h"
 #include "Mesh.h"
 
-namespace CG184 {
+namespace CG184 
+{
 
 #define SHADER_VERTEX_INDEX  0
 #define SHADER_COLOR_INDEX	 1
@@ -24,40 +25,37 @@ namespace CG184 {
     {
     public:
         explicit MeshFilter(Mesh* a_Mesh);
-
         MeshFilter(const MeshFilter& a_MeshFilter);
         ~MeshFilter();
 
-        void AttachMesh(Mesh* a_Mesh);
-
         inline GLuint&		GetVAO() { return m_VAO;}
-        inline IndexBuffer* GetIBO() { return m_IBO;}
+        inline IndexBuffer* GetIBO() { return m_IBOPtr;}
         inline uint32_t		GetIndexCount() const { return m_IndexCount;}
-		inline Mesh*		GetMesh()		const { return m_Mesh; }
+		inline Mesh*		GetMesh()		const { return m_MeshPtr; }
 
-        void SetVertexBufferPositionData(const int& offset, const size_t& size, const void* data) const;
-        void SetVertexBufferColorData   (const int& offset, const size_t& size, const void* data) const;
-        void SetVertexBufferNormalData  (const int& offset, const size_t& size, const void* data) const;
-        void SetVertexBufferUVData      (const int& offset, const size_t& size, const void* data) const;
+        void				SetVertexBufferPositionData(const int& offset, const size_t& size, const void* data) const;
+        void				SetVertexBufferColorData   (const int& offset, const size_t& size, const void* data) const;
+        void				SetVertexBufferNormalData  (const int& offset, const size_t& size, const void* data) const;
+        void				SetVertexBufferUVData      (const int& offset, const size_t& size, const void* data) const;
 
-        void BindVertexObjects()   const;
-        void UnBindVertexObjects() const;
-        void UpdateBufferSize()    const;
-        void UpdateVertexBuffer()  const;
+        void				AttachMesh(Mesh* a_Mesh);
+        void				BindVertexObjects()   const;
+        void				UnBindVertexObjects() const;
+        void				UpdateBufferSize()    const;
+        void				UpdateVertexBuffer()  const;
 
     private:
-        GLuint m_VAO;
-        GLuint m_VBO;
-        IndexBuffer* m_IBO;
-
-        GLuint* indicesData;
-		uint32_t m_IndexCount;
-
-        Mesh* m_Mesh;
+        GLuint				m_VAO;
+        GLuint				m_VBO;
+		uint32_t			m_IndexCount;
+        
+        Mesh*				m_MeshPtr;
+        GLuint*				m_IndicesDataPtr;
+		IndexBuffer*		m_IBOPtr;
     private:
-        void InitializeMeshData(uint32_t& numOfVert);
-        void InitGLBuffers(uint32_t numOfVert);
-        //void UpdateGLBufferData();
+        void				InitializeMeshData(uint32_t& numOfVert);
+        void				InitGLBuffers(uint32_t numOfVert);
+        //void				UpdateGLBufferData();
     };
 }
 

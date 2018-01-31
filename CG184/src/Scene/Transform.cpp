@@ -10,11 +10,11 @@ namespace CG184
 {
 
 	Transform::Transform() :
-		position(Vector3D(0)),
-		localPosition(Vector3D(0)),
-		rotation(Quaternion()),
-		eulerAngles(Vector3D(0)),
-		localScale(Vector3D(1)),
+		m_Position(Vector3D(0)),
+		m_LocalPosition(Vector3D(0)),
+		m_Rotation(Quaternion()),
+		m_EulerAngles(Vector3D(0)),
+		m_LocalScale(Vector3D(1)),
 		isDirty(false)
     {
         UpdateLocalTransformMatrix();
@@ -23,27 +23,27 @@ namespace CG184
     Transform::~Transform() = default;
 
     Matrix4D& Transform::GetLocalTransformMat() {
-        return localTransformMat;
+        return m_LocalTransformMat;
     }
 
 	Matrix4D & Transform::GetWorldTransformMat()
 	{
-		return worldTransformMat;
+		return m_WorldTransformMat;
 	}
 
     void Transform::UpdateLocalTransformMatrix()
     {
-		localTransformMat = Matrix4D(1.0f);
+		m_LocalTransformMat = Matrix4D(1.0f);
 		
 		float angleInDeg;
 		Vector3D axis;
-		rotation.ToAxisAngle(axis, angleInDeg);
+		m_Rotation.ToAxisAngle(axis, angleInDeg);
 		angleInDeg = ToDegrees(angleInDeg);
 		if(axis.length() > 0.0f)
-			Rotate(localTransformMat, angleInDeg, axis);
+			Rotate(m_LocalTransformMat, angleInDeg, axis);
         
-		Scale(localTransformMat, localScale.x, localScale.y, localScale.z);
-        Translate(localTransformMat, localPosition.x, localPosition.y, localPosition.z);
+		Scale(m_LocalTransformMat, m_LocalScale.x, m_LocalScale.y, m_LocalScale.z);
+        Translate(m_LocalTransformMat, m_LocalPosition.x, m_LocalPosition.y, m_LocalPosition.z);
 		isDirty = false;
     }
 
@@ -97,20 +97,4 @@ namespace CG184
         mat = scaleMat.multiply(mat);
         return mat;
     }
-
-
-
-//    void Transform::Translate(Transform &trans, float _x, float _y, float _z) {
-//        Translate(trans.transformMat, _x, _y, _z);
-//    }
-//
-//    void Transform::Rotate(Transform &trans, float angleInDeg, const Vector3D &axis) {
-//        Rotate(trans.transformMat, angleInDeg, axis);
-//    }
-//
-//    void Transform::Scale(Transform &trans, float sx, float sy, float sz) {
-//        Scale(trans.transformMat, sx, sy, sz);
-//    }
-
-
 }

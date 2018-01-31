@@ -8,52 +8,52 @@
 
 namespace CG184
 {
-    Mesh::Mesh(std::vector<Vector3D> a_Pos, std::vector<uint32_t>a_Ind) : m_IsDirty(true), m_IsStatic(false)//, m_InstanceID(Node::uID++)
+    Mesh::Mesh(std::vector<Vector3D> a_Pos, std::vector<uint32_t>a_Ind) : m_IsDirty(true), m_IsStatic(false)
     {
         m_NumOfVert = (uint32_t)a_Pos.size();
         m_Indices = std::move(a_Ind);
-        vertPosition = a_Pos;
+		m_VertPosition = a_Pos;
 
         for(uint32_t i = 0; i < a_Pos.size(); i++){
-            vertColor.emplace_back(0.2f, 0.2f, 0.2f);
-            vertNormal.emplace_back(0.0f, 1.0f, 0.0f);
-            vertTexCoord.emplace_back(0.0f, 0.0f);
+			m_VertColor.emplace_back(0.2f, 0.2f, 0.2f);
+			m_VertNormal.emplace_back(0.0f, 1.0f, 0.0f);
+			m_VertTexCoord.emplace_back(0.0f, 0.0f);
         }
     }
 
-    Mesh::Mesh(Mesh *pMesh)//: m_InstanceID(Node::uID++)
+    Mesh::Mesh(Mesh *pMesh)
     {
         m_NumOfVert		= pMesh->m_NumOfVert;
         m_IsDirty		= pMesh->m_IsDirty;
         m_IsStatic		= pMesh->m_IsStatic;
 
         m_Indices		= pMesh->m_Indices;
-        vertPosition	= pMesh->vertPosition;
-        vertColor		= pMesh->vertColor;
-        vertNormal		= pMesh->vertNormal;
-        vertTexCoord	= pMesh->vertTexCoord;
+        m_VertPosition	= pMesh->m_VertPosition;
+        m_VertColor		= pMesh->m_VertColor;
+        m_VertNormal	= pMesh->m_VertNormal;
+        m_VertTexCoord	= pMesh->m_VertTexCoord;
     }
 
 
     void Mesh::SetPositions(std::vector<Vector3D> a_Positions)
     {
         m_NumOfVert		= (uint32_t)a_Positions.size();
-        vertPosition	= a_Positions;
+		m_VertPosition	= a_Positions;
         m_IsDirty		= true;
     }
 
     void Mesh::SetColors(std::vector<Vector3D> a_Colors)
     {
         assert(a_Colors.size() == m_NumOfVert);
-        vertColor = a_Colors;
-        m_IsDirty = true;
+		m_VertColor = a_Colors;
+        m_IsDirty	= true;
     }
 
     void Mesh::SetColor(Vector3D a_Color)
     {
-        vertColor.resize(m_NumOfVert);
+		m_VertColor.resize(m_NumOfVert);
         for(uint32_t i = 0; i < m_NumOfVert; i++){
-            vertColor[i] = a_Color;
+			m_VertColor[i] = a_Color;
         }
         m_IsDirty = true;
     }
@@ -66,14 +66,14 @@ namespace CG184
     void Mesh::SetNormals(std::vector<Vector3D> a_Normals)
     {
         assert(a_Normals.size() == m_NumOfVert);
-        vertNormal = a_Normals;
+		m_VertNormal = a_Normals;
         m_IsDirty = true;
     }
 
     void Mesh::SetUVs(std::vector<Vector2D> a_UV)
     {
         assert(a_UV.size() == m_NumOfVert);
-        vertTexCoord = a_UV;
+		m_VertTexCoord = a_UV;
         m_IsDirty = true;
     }
 
@@ -85,7 +85,8 @@ namespace CG184
     Mesh::Mesh() //: m_InstanceID(Node::uID++)
     {}
 
-    void Mesh::SetIndicies(std::vector<uint32_t> a_Ind) {
+    void Mesh::SetIndicies(std::vector<uint32_t> a_Ind) 
+	{
         m_Indices = std::move(a_Ind);
         m_IsDirty = true;
     }
@@ -94,44 +95,45 @@ namespace CG184
     {
     }
 
-    void Mesh::Update(){
+    void Mesh::Update()
+	{
         if(!m_IsStatic && m_IsDirty)
 		{
 			// Setting up Colors
-			if (vertColor.size() != m_NumOfVert) 
+			if (m_VertColor.size() != m_NumOfVert)
 			{
 				Vector3D lastVertColor = Vector3D(1.0f);
-				if (!vertColor.empty()) {
-					lastVertColor = vertColor.back();
+				if (!m_VertColor.empty()) {
+					lastVertColor = m_VertColor.back();
 				}
 				
-				for (uint32_t i = vertColor.size(); i < m_NumOfVert; i++){
+				for (uint32_t i = m_VertColor.size(); i < m_NumOfVert; i++){
 					SetColor(i, lastVertColor);
 				}
 			}
 
 			// Setting Up Normals
-			if (vertNormal.size() != m_NumOfVert)
+			if (m_VertNormal.size() != m_NumOfVert)
 			{
 				Vector3D lastVertNormal = Vector3D(0.0f, 1.0f, 0.0f);
-				if (!vertNormal.empty()) {
-					lastVertNormal = vertNormal.back();
+				if (!m_VertNormal.empty()) {
+					lastVertNormal = m_VertNormal.back();
 				}
 
-				for (uint32_t i = vertNormal.size(); i < m_NumOfVert; i++) {
+				for (uint32_t i = m_VertNormal.size(); i < m_NumOfVert; i++) {
 					SetNormal(i, lastVertNormal);
 				}
 			}
 
 			// Setting Up Texture Coordinate
-			if (vertTexCoord.size() != m_NumOfVert)
+			if (m_VertTexCoord.size() != m_NumOfVert)
 			{
 				Vector2D lastVertUV = Vector2D(0.0f, 0.0f);
-				if (!vertTexCoord.empty()) {
-					lastVertUV = vertTexCoord.back();
+				if (!m_VertTexCoord.empty()) {
+					lastVertUV = m_VertTexCoord.back();
 				}
 
-				for (uint32_t i = vertTexCoord.size(); i < m_NumOfVert; i++) {
+				for (uint32_t i = m_VertTexCoord.size(); i < m_NumOfVert; i++) {
 					SetUV(i, lastVertUV);
 				}
 			}
@@ -139,61 +141,64 @@ namespace CG184
         }
     }
 
-    bool Mesh::IsDirty() const {
+    bool Mesh::IsDirty() const 
+	{
         return m_IsDirty;
     }
 
-    bool Mesh::IsStatic() const {
+    bool Mesh::IsStatic() const 
+	{
         return m_IsStatic;
     }
 
-    void Mesh::MakeStatic(bool staticMode) {
+    void Mesh::MakeStatic(bool staticMode) 
+	{
         m_IsStatic = staticMode;
     }
 
-    void Mesh::SetPosition(uint32_t at, const Vector3D &a_Position) {
-        vertPosition[at] = a_Position;
+    void Mesh::SetPosition(uint32_t at, const Vector3D &a_Position) 
+	{
+		m_VertPosition[at] = a_Position;
         m_IsDirty = true;
     }
 
-	void Mesh::SetColor(uint32_t at, const Vector3D& a_Color) {
-		if (vertColor.size() < m_NumOfVert)
-			vertColor.resize(m_NumOfVert);
+	void Mesh::SetColor(uint32_t at, const Vector3D& a_Color) 
+	{
+		if (m_VertColor.size() < m_NumOfVert)
+			m_VertColor.resize(m_NumOfVert);
 
-		vertColor[at] = a_Color;
+		m_VertColor[at] = a_Color;
 		m_IsDirty = true;
 	}
 	
-	void Mesh::SetNormal(uint32_t at, const Vector3D& a_Normal) {
-		if (vertNormal.size() < m_NumOfVert)
-			vertNormal.resize(m_NumOfVert);
+	void Mesh::SetNormal(uint32_t at, const Vector3D& a_Normal) 
+	{
+		if (m_VertNormal.size() < m_NumOfVert)
+			m_VertNormal.resize(m_NumOfVert);
 
-		vertNormal[at] = a_Normal;
+		m_VertNormal[at] = a_Normal;
 		m_IsDirty = true;
 	}
 	
-	void Mesh::SetUV(uint32_t at, const Vector2D& a_TexCoord) {
-		if (vertTexCoord.size() < m_NumOfVert)
-			vertTexCoord.resize(m_NumOfVert);
+	void Mesh::SetUV(uint32_t at, const Vector2D& a_TexCoord) 
+	{
+		if (m_VertTexCoord.size() < m_NumOfVert)
+			m_VertTexCoord.resize(m_NumOfVert);
 
-		vertTexCoord[at] = a_TexCoord;
+		m_VertTexCoord[at] = a_TexCoord;
 		m_IsDirty = true;
 	}
 
-    void Mesh::CopyMesh(const Mesh& pMesh) {
-
-        //m_InstanceID = Node::uID++;
+    void Mesh::CopyMesh(const Mesh& pMesh) 
+	{
         m_NumOfVert     = pMesh.m_NumOfVert;
         m_IsDirty       = pMesh.m_IsDirty;
         m_IsStatic      = pMesh.m_IsStatic;
 
         m_Indices       = pMesh.m_Indices;
-        vertPosition    = pMesh.vertPosition;
-        vertColor       = pMesh.vertColor;
-        vertNormal      = pMesh.vertNormal;
-        vertTexCoord    = pMesh.vertTexCoord;
-
+        m_VertPosition  = pMesh.m_VertPosition;
+        m_VertColor     = pMesh.m_VertColor;
+        m_VertNormal    = pMesh.m_VertNormal;
+        m_VertTexCoord  = pMesh.m_VertTexCoord;
     }
-
-
 }

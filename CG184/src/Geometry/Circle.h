@@ -8,7 +8,8 @@
 
 #include "Mesh.h"
 
-namespace CG184 {
+namespace CG184 
+{
     class Circle : public Mesh
     {
     public:
@@ -17,18 +18,18 @@ namespace CG184 {
         Circle(float rad, uint32_t seg);
         ~Circle();
 
-        inline void SetRadius(float rad){ m_Radius = rad;}
-        inline void SetSegments(uint32_t seg){ m_EdgeSegments = seg;}
+        inline void			SetRadius(float rad){ m_Radius = rad;}
+        inline void			SetSegments(uint32_t seg){ m_EdgeSegments = seg;}
 
-        inline float GetRadius(){ return  m_Radius;}
-        inline uint32_t GetSegments() const { return m_EdgeSegments;}
+        inline float		GetRadius(){ return  m_Radius;}
+        inline uint32_t		GetSegments() const { return m_EdgeSegments;}
 
 
     private:
-        float m_Radius;
-		uint32_t m_EdgeSegments;
+        float				m_Radius;
+		uint32_t			m_EdgeSegments;
 
-        void InitMesh() override;
+        void				InitMesh() override;
     };
 }
 

@@ -22,35 +22,32 @@ namespace CG184
         Node(const Node& node);
         virtual ~Node();
 
-        std::shared_ptr<Node> GetChildNodeAt(uint32_t index);
-        Node* GetParent();
-        void SetParent(Node* parentNode);
+        void					AddChild(std::shared_ptr<Node> node);
+        void					AttachComponent(Component* a_Component);
+        bool					HasComponent(ComponentType comType);
+        void					UpdateWorldModelMatrix();
 
-		uint32_t GetNumOfChildNode();
-        void AddChild(std::shared_ptr<Node> node);
+        void					SetParent(Node* parentNode);
+        void					SetPosition(float _x, float _y, float _z);
+        void					SetPosition(const Vector3D& pos);
+        void					SetLocalScale(float _x, float _y, float _z);
+        void					SetLocalEulerAngle(float _x, float _y, float _z);
+		void					SetRotation(float angle, Vector3D axis);
+		inline void				SetName(const char* name){m_NodeName = name;}
 
-        void AttachComponent(Component* a_Component);
-        bool HasComponent(ComponentType comType);
-
-        void SetPosition(float _x, float _y, float _z);
-        void SetPosition(const Vector3D& pos);
-        void SetLocalScale(float _x, float _y, float _z);
-        void SetLocalEulerAngle(float _x, float _y, float _z);
-		void SetRotation(float angle, Vector3D axis);
-
-        void UpdateWorldModelMatrix();
-
-		inline Transform& GetTransformComponent() { return m_Transform; }
-		const Transform& GetWorldTransform();
-
-        inline int GetInstanceID(){ return m_InstanceID;}
-        inline string GetName(){ return m_NodeName;}
-        inline void SetName(const char* name){m_NodeName = name;}
+        Node*					GetParent();
+		uint32_t				GetNumOfChildNode();
+        std::shared_ptr<Node>	GetChildNodeAt(uint32_t index);
+		const Transform&		GetWorldTransform();
+		inline Transform&		GetTransformComponent() { return m_Transform; }
+        inline int				GetInstanceID(){ return m_InstanceID;}
+        inline std::string		GetName(){ return m_NodeName;}
+        
 
         template <typename T>
         T* GetComponent()
         {
-            for (auto m_Component : m_Components) {
+            for (auto m_Component : m_ComponentsPtr) {
                 if (dynamic_cast<T*>(m_Component))
                     return (T *) m_Component;
             }
@@ -58,15 +55,15 @@ namespace CG184
         }
 
     protected:
-        Transform m_Transform;
+        Transform								m_Transform;
     private:
 
-        string m_NodeName;
-        const int m_InstanceID;
+		std::string								m_NodeName;
+        const int								m_InstanceID;
 
-        std::vector<std::shared_ptr<Node>> m_ChildNodes;
-        std::vector<Component*> m_Components; // TODO use list instead of vector
-        Node* m_ParentNode;
+        std::vector<std::shared_ptr<Node>>		m_ChildNodesPtr;
+        std::vector<Component*>					m_ComponentsPtr; // TODO use list instead of vector
+        Node*									m_ParentNodePtr;
 
     public:
         static int uID;

@@ -218,5 +218,8 @@
     <None Include="TestShaders\picker.fs" />
     <None Include="TestShaders\anchor.vs" />
     <None Include="TestShaders\anchor.fs" />
+    <None Include="TestShaders\solidWireframe.gs" />
+    <None Include="TestShaders\solidWireframe.fs" />
+    <None Include="TestShaders\solidWireframe.vs" />
   </ItemGroup>
 </Project>

@@ -10,21 +10,25 @@ namespace CG184
 
 	Input::Input(WindowPtr window, Scene* scene)
 	{
-		m_Window = window;
-		m_Scene = scene;
-        glfwSetCursorPosCallback(m_Window->window, mouse_cursor_callback);
-        glfwSetInputMode(window->window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		m_Window				= window;
+		m_ScenePtr				= scene;
+		
+		m_PickerShaderPtr		= new Shader("TestShaders/picker.vs", "TestShaders/picker.fs");
+		m_PickerMaterialPtr		= new Material(m_PickerShaderPtr);
+
+        glfwSetCursorPosCallback(m_Window->m_WindowPtr, mouse_cursor_callback);
+        glfwSetInputMode(window->m_WindowPtr, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 	}
 
 	bool Input::KeyPressed(std::string key){
 		const char c = *key.c_str();
 		int keyVal = int(c);
-        return glfwGetKey(m_Window->window, keyVal) == GLFW_PRESS;
+        return glfwGetKey(m_Window->m_WindowPtr, keyVal) == GLFW_PRESS;
     }
 
 	// TODO Temp Function 
 	bool Input::IsKeyPressed(int keyVal){
-        return glfwGetKey(m_Window->window, keyVal) == GLFW_PRESS;
+        return glfwGetKey(m_Window->m_WindowPtr, keyVal) == GLFW_PRESS;
     }
 
 
@@ -33,18 +37,18 @@ namespace CG184
 	}
 
 	bool Input::IsMouseButtonDown(int button){
-		return (glfwGetMouseButton(m_Window->window, button) == GLFW_PRESS);
+		return (glfwGetMouseButton(m_Window->m_WindowPtr, button) == GLFW_PRESS);
     }
 
     bool Input::IsMouseButtonUp(int button){
-        return (glfwGetMouseButton(m_Window->window, button) == GLFW_RELEASE);
+        return (glfwGetMouseButton(m_Window->m_WindowPtr, button) == GLFW_RELEASE);
     }
 
 
 
-	void Input::processInput(){
-		if (glfwGetKey(m_Window->window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-			glfwSetWindowShouldClose(m_Window->window, true);
+	void Input::ProcessInput(){
+		if (glfwGetKey(m_Window->m_WindowPtr, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+			glfwSetWindowShouldClose(m_Window->m_WindowPtr, true);
 	}
 		
 	void Input::ProcessSelection() {
@@ -70,21 +74,20 @@ namespace CG184
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		Shader pickerShader("TestShaders/picker.vs", "TestShaders/picker.fs");
-		Material pickerMat(&pickerShader);
+		
 
-		for (auto &m_Node : m_Scene->m_RenderQueue) {
+		for (auto &m_Node : m_ScenePtr->m_RenderQueue) {
 			m_Node->UpdateWorldModelMatrix();
 		}
 
-		for (auto &m_Node : m_Scene->m_RenderQueue) {
+		for (auto &m_Node : m_ScenePtr->m_RenderQueue) {
 			if (m_Node->HasComponent(ComponentType::RENDERER)) {
-				Renderer* renderer = (m_Node->GetComponent<Renderer>());
-				if (renderer != nullptr) {
-					Renderer pickRenderer(renderer->GetMesh(), &pickerMat);
-					pickerMat.GetShader()->SetUniform1i("code", m_Node->GetInstanceID() + 1);
-					pickRenderer.SendViewMatrixData(m_Scene->m_Camera->GetViewMatrix());
-					pickRenderer.SendProjectionMatrixData(m_Scene->m_Camera->GetProjectionMatrix());
+				Renderer renderer = *(m_Node->GetComponent<Renderer>());
+				if (&renderer != nullptr) {
+					Renderer pickRenderer(renderer.GetMesh(), m_PickerMaterialPtr);
+					m_PickerMaterialPtr->GetShader()->SetUniform1i("code", m_Node->GetInstanceID() + 1);
+					pickRenderer.SendViewMatrixData(m_ScenePtr->m_CameraPtr->GetViewMatrix());
+					pickRenderer.SendProjectionMatrixData(m_ScenePtr->m_CameraPtr->GetProjectionMatrix());
 
 					Matrix4D modelMatrix = m_Node->GetTransformComponent().GetWorldTransformMat();
 					pickRenderer.GetMaterial().GetShader()->SetUniformMat4f("model", modelMatrix.elements);

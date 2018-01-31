@@ -4,19 +4,23 @@
 
 #include "Box.h"
 
-namespace CG184 {
+namespace CG184 
+{
 
-    Box::Box() : Mesh(), m_Width(1.0f), m_Height(1.0f), m_Depth(1.0f)
+    Box::Box() 
+		: Mesh(), m_Width(1.0f), m_Height(1.0f), m_Depth(1.0f)
     {
         InitMesh();
     }
 
-    Box::Box(Box &a_Box): Mesh(), m_Width(a_Box.m_Width), m_Height(a_Box.m_Height), m_Depth(a_Box.m_Depth)
+    Box::Box(Box &a_Box)
+		: Mesh(), m_Width(a_Box.m_Width), m_Height(a_Box.m_Height), m_Depth(a_Box.m_Depth)
     {
         InitMesh();
     }
 
-    Box::Box(float width, float height, float depth) : Mesh(), m_Width(width), m_Height(height), m_Depth(depth)
+    Box::Box(float width, float height, float depth) 
+		: Mesh(), m_Width(width), m_Height(height), m_Depth(depth)
     {
         InitMesh();
     }
@@ -29,8 +33,8 @@ namespace CG184 {
         float Z = m_Depth  / 2.0f;
 
         std::vector<Vector3D> vertPos {
-                Vector3D(-X, -Y, -Z), Vector3D( X, -Y, -Z), Vector3D( X,  Y, -Z),
-                Vector3D( X,  Y, -Z), Vector3D(-X,  Y, -Z), Vector3D(-X, -Y, -Z),
+                Vector3D(-X,  Y, -Z), Vector3D( X, -Y, -Z), Vector3D( X,  Y, -Z),
+                Vector3D( X, -Y, -Z), Vector3D(-X,  Y, -Z), Vector3D(-X, -Y, -Z),
 
                 Vector3D(-X, -Y,  Z), Vector3D( X, -Y,  Z), Vector3D( X,  Y,  Z),
                 Vector3D( X,  Y,  Z), Vector3D(-X,  Y,  Z), Vector3D(-X, -Y,  Z),
@@ -38,8 +42,8 @@ namespace CG184 {
                 Vector3D(-X,  Y,  Z), Vector3D(-X,  Y, -Z), Vector3D(-X, -Y, -Z),
                 Vector3D(-X, -Y, -Z), Vector3D(-X, -Y,  Z), Vector3D(-X,  Y,  Z),
 
-                Vector3D(X,  Y,  Z),  Vector3D(X,  Y, -Z),  Vector3D(X, -Y, -Z),
-                Vector3D(X, -Y, -Z),  Vector3D(X, -Y,  Z),  Vector3D(X,  Y,  Z),
+                Vector3D(X,  Y,  Z),  Vector3D(X,  Y, -Z),  Vector3D(X, -Y,   Z),
+                Vector3D(X, -Y, -Z),  Vector3D(X, -Y,  Z),  Vector3D(X,  Y,  -Z),
 
                 Vector3D(-X, -Y, -Z), Vector3D( X, -Y, -Z), Vector3D( X, -Y,  Z),
                 Vector3D( X, -Y,  Z), Vector3D(-X, -Y,  Z), Vector3D(-X, -Y, -Z),
@@ -78,12 +82,9 @@ namespace CG184 {
 		SetColor(Vector3D(0.5f, 0.5f, 0.5f));
         SetNormals(vertNorm);
         SetIndicies(vertIndices);
-		
     }
 
     Box::~Box()
     {
     }
-
-
 }

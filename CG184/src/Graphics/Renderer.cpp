@@ -7,61 +7,50 @@ namespace CG184
 
     Renderer::Renderer(Mesh *a_Mesh, Material* a_Material) : Component(), m_Mesh(*a_Mesh)
     {
-        m_Type = ComponentType ::RENDERER;
-        m_SharedMaterial = a_Material;
-        m_MeshFilter = new MeshFilter(a_Mesh);
-        m_SharedMesh = make_shared<Mesh>(a_Mesh);
-        m_Mesh = *m_SharedMesh.get();
-        //m_Mesh.CopyMesh(*m_SharedMesh);
+        m_Type					= ComponentType ::RENDERER;
+        m_SharedMaterialPtr		= a_Material;
+        m_MeshFilterPtr			= new MeshFilter(a_Mesh);
+        m_SharedMeshPtr			= std::make_shared<Mesh>(a_Mesh);
+        m_Mesh					= *m_SharedMeshPtr.get();
 
-
-//        if(m_SharedMeshFilter != nullptr) {
-//            m_MeshFilter.AttachMesh(*m_SharedMeshFilter->GetMesh());
-//        }
-
-        if(m_SharedMaterial != nullptr)
-            m_Material = *m_SharedMaterial;
+        if(m_SharedMaterialPtr != nullptr)
+            m_Material = *m_SharedMaterialPtr;
     }
 
 	Renderer::Renderer(const Renderer& renderer) : Component(), m_Mesh(renderer.m_Mesh)
 	{
-		m_Type = renderer.m_Type;
-        m_SharedMaterial = renderer.m_SharedMaterial;
-		m_MeshFilter = renderer.m_MeshFilter;
-        m_SharedMesh = renderer.m_SharedMesh;
-        m_Mesh = renderer.m_Mesh;
-//        m_Mesh.CopyMesh(renderer.m_Mesh);
+		m_Type					= renderer.m_Type;
+        m_SharedMaterialPtr		= renderer.m_SharedMaterialPtr;
+		m_MeshFilterPtr			= renderer.m_MeshFilterPtr;
+        m_SharedMeshPtr			= renderer.m_SharedMeshPtr;
+        m_Mesh					= renderer.m_Mesh;
 
-//        if(m_SharedMeshFilter != nullptr)
-//            m_MeshFilter.AttachMesh(*m_SharedMeshFilter->GetMesh());
-            //m_MeshFilter = new MeshFilter(*m_SharedMesh.get());
-
-        if(m_SharedMaterial != nullptr)
-            m_Material = *m_SharedMaterial;
+        if(m_SharedMaterialPtr != nullptr)
+            m_Material = *m_SharedMaterialPtr;
 	}
 
 	Renderer::~Renderer()
 	{
-        delete m_MeshFilter;
-		m_MeshFilter = nullptr;
-
-        m_SharedMaterial = nullptr;
+        delete m_MeshFilterPtr;
+		
+		m_MeshFilterPtr = nullptr;
+        m_SharedMaterialPtr = nullptr;
 	}
 
 	void Renderer::Render()
 	{
         m_Material.GetShader()->ActivateShader();
 
-        if(m_SharedMesh.get()->IsDirty()){
-            m_Mesh.CopyMesh(*m_SharedMesh.get());
-			m_MeshFilter->AttachMesh(m_SharedMesh.get());
-            m_SharedMesh->MakeClean();
+        if(m_SharedMeshPtr.get()->IsDirty()){
+            m_Mesh.CopyMesh(*m_SharedMeshPtr.get());
+			m_MeshFilterPtr->AttachMesh(m_SharedMeshPtr.get());
+            m_SharedMeshPtr->MakeClean();
         }
-		m_MeshFilter->AttachMesh(&m_Mesh);
-
-        m_MeshFilter->BindVertexObjects();
-        m_MeshFilter->GetIBO()->Bind();
-        m_MeshFilter->UpdateVertexBuffer();
+		
+		m_MeshFilterPtr->AttachMesh(&m_Mesh); // TODO donot attach the mesh every frame
+        m_MeshFilterPtr->BindVertexObjects();
+        m_MeshFilterPtr->GetIBO()->Bind();
+        m_MeshFilterPtr->UpdateVertexBuffer();
 
 		if(m_RenderMode == RenderMode::LINES)
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -70,15 +59,15 @@ namespace CG184
 		else
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-		glDrawElements(GL_TRIANGLES, m_MeshFilter->GetIndexCount(), GL_UNSIGNED_INT, nullptr);
+		glDrawElements(GL_TRIANGLES, m_MeshFilterPtr->GetIndexCount(), GL_UNSIGNED_INT, nullptr);
 
-        m_MeshFilter->GetIBO()->Unbind();
-        m_MeshFilter->UnBindVertexObjects();
+        m_MeshFilterPtr->GetIBO()->Unbind();
+        m_MeshFilterPtr->UnBindVertexObjects();
         m_Material.GetShader()->DeactivateShader();
 	}
 
     Matrix4D Renderer::GetModelMatrix() const {
-        return m_AttachedNode->GetTransformComponent().GetWorldTransformMat();
+        return m_AttachedNodePtr->GetTransformComponent().GetWorldTransformMat();
     }
 
     void Renderer::SendViewMatrixData(Matrix4D &viewMat) {
@@ -90,8 +79,8 @@ namespace CG184
 	}
 
 	void Renderer::SendLightData(LightPtr light, int index){
-        string lightName = "light";
-        lightName = lightName + "[" + to_string(index) + "]";
+		std::string lightName = "light";
+        lightName = lightName + "[" + std::to_string(index) + "]";
 		m_Material.GetShader()->SetUniform4f(lightName + ".ambient"    , light->GetAmbientColor());
 		m_Material.GetShader()->SetUniform4f(lightName + ".diffuse"    , light->GetDiffuseColor());
 		m_Material.GetShader()->SetUniform4f(lightName + ".specular"   , light->GetSpecularColor());
