@@ -63,39 +63,37 @@ int main()
 
     // ##############################################################################################
 
-    std::vector<Vector3D> pos{
+    std::vector<Vector3D> pos1{
             Vector3D(0, 0, 1), Vector3D(0, 1, 0), Vector3D(1, 0, 0)
     };
 
-    std::vector<Vector3D> col{
+    std::vector<Vector3D> col1{
             Vector3D(0, 0, 1), Vector3D(0, 1, 0), Vector3D(1, 0, 0)
     };
 
-    std::vector<Vector3D> norm{
+    std::vector<Vector3D> norm1{
             Vector3D(1, 1, 1).norm(), Vector3D(1, 1, 1).norm(), Vector3D(1, 1, 1).norm()
     };
 
-    std::vector<uint32_t> ind{0, 1, 2};
+    std::vector<uint32_t> ind1{0, 1, 2};
 
-    Mesh triangleMesh(pos, ind);
-    triangleMesh.SetColors(col);
-    triangleMesh.SetNormals(norm);
+    Mesh triangleMesh(pos1, ind1);
+    triangleMesh.SetColors(col1);
+    triangleMesh.SetNormals(norm1);
+
 
 
     Box boxMesh;
 	Shader boxShaderTemp("TestShaders/multipleLights.vs", "TestShaders/multipleLights.fs");
 	Material boxMat(&boxShaderTemp);
 	boxMat.SetAmbient(Vector4D(0.5f, 0.1f, 0.1f, 1.0f));
-//	boxMat.SetShininess(100.0f);
     Renderer boxRenderer(&triangleMesh, &boxMat);
 
     NodePtr box(new Node("box1"));
 	box->AttachComponent(&boxRenderer);
-//	box->SetLocalEulerAngle(0.0f, -45.0f, 0.0f);
 	box->SetPosition(0.0, 0.0, 0.0);
-//    box->SetLocalScale(0.15, 0.15, 0.15);
 
-	Renderer boxRenderer1(&triangleMesh, &boxMat);
+	Renderer boxRenderer1(&boxMesh, &boxMat);
 	boxRenderer1.GetMaterial().SetAmbient(Vector4D(0.3f, 0.5f, 0.1f, 1.0f));
 
 	NodePtr box1(new Node("box2"));
@@ -104,50 +102,9 @@ int main()
 	box1->SetPosition(2.0, 0.0, 0.0);
 
 
-
-
-
-    // #################################### ANCHOR ###############################################
-
-
-//    float scale = 0.5f;
-//    NodePtr xAnchor(new Node("XAxis"));
-//    Renderer xRenderer(&boxMesh, &boxMat);
-//    xRenderer.GetMaterial().SetAmbient(Vector4D(1.0f, 0.1f, 0.1f, 1.0f));
-//    xAnchor->AttachComponent(&xRenderer);
-//    xAnchor->SetLocalScale(scale, 0.02, 0.02);
-//    xAnchor->SetPosition(scale / 2.0f, 0.0, 0.0);
-//
-//    NodePtr yAnchor(new Node("YAxis"));
-//    Renderer yRenderer(&boxMesh, &boxMat);
-//    yRenderer.GetMaterial().SetAmbient(Vector4D(0.1f, 1.0f, 0.1f, 1.0f));
-//    yAnchor->AttachComponent(&yRenderer);
-//    yAnchor->SetLocalScale(0.02, scale, 0.02);
-//    yAnchor->SetPosition(0.0, scale / 2.0f, 0.0);
-//
-//    NodePtr zAnchor(new Node("ZAxis"));
-//    Renderer zRenderer(&boxMesh, &boxMat);
-//    zRenderer.GetMaterial().SetAmbient(Vector4D(0.1f, 0.1f, 1.0f, 1.0f));
-//    zAnchor->AttachComponent(&zRenderer);
-//    zAnchor->SetLocalScale( 0.02, 0.02, scale);
-//    zAnchor->SetPosition( 0.0, 0.0, scale / 2.0f);
-//
-//
-//    NodePtr Anchor(new Node("Anchor"));
-//    Anchor->AddChild(xAnchor);
-//    Anchor->AddChild(yAnchor);
-//	Anchor->AddChild(zAnchor);
-    // ##############################################################################################
-
-
     Scene rootScene(cam);
 	rootScene.AddToScene(box);
 	rootScene.AddToScene(box1);
-
-//    rootScene.AddToScene(xAnchor);
-//    rootScene.AddToScene(yAnchor);
-//    rootScene.AddToScene(zAnchor);
-    //rootScene.AddToScene(Anchor);
     rootScene.AddLight(pointLight);
 
 	Input input(window, &rootScene);

@@ -9,7 +9,7 @@ namespace CG184
     {
         m_Type = ComponentType ::RENDERER;
         m_SharedMaterial = a_Material;
-        m_SharedMeshFilter = new MeshFilter(a_Mesh);
+        m_MeshFilter = new MeshFilter(a_Mesh);
         m_SharedMesh = make_shared<Mesh>(a_Mesh);
         m_Mesh = *m_SharedMesh.get();
         //m_Mesh.CopyMesh(*m_SharedMesh);
@@ -27,7 +27,7 @@ namespace CG184
 	{
 		m_Type = renderer.m_Type;
         m_SharedMaterial = renderer.m_SharedMaterial;
-        m_SharedMeshFilter = renderer.m_SharedMeshFilter;
+		m_MeshFilter = renderer.m_MeshFilter;
         m_SharedMesh = renderer.m_SharedMesh;
         m_Mesh = renderer.m_Mesh;
 //        m_Mesh.CopyMesh(renderer.m_Mesh);
@@ -42,8 +42,8 @@ namespace CG184
 
 	Renderer::~Renderer()
 	{
-        delete m_SharedMeshFilter;
-        m_SharedMeshFilter = nullptr;
+        delete m_MeshFilter;
+		m_MeshFilter = nullptr;
 
         m_SharedMaterial = nullptr;
 	}
@@ -54,22 +54,26 @@ namespace CG184
 
         if(m_SharedMesh.get()->IsDirty()){
             m_Mesh.CopyMesh(*m_SharedMesh.get());
-            m_SharedMeshFilter->AttachMesh(m_SharedMesh.get());
+			m_MeshFilter->AttachMesh(m_SharedMesh.get());
             m_SharedMesh->MakeClean();
         }
-        m_SharedMeshFilter->AttachMesh(&m_Mesh);
+		m_MeshFilter->AttachMesh(&m_Mesh);
 
-        m_SharedMeshFilter->BindVertexObjects();
-        m_SharedMeshFilter->GetIBO()->Bind();
-        m_SharedMeshFilter->UpdateVertexBuffer();
+        m_MeshFilter->BindVertexObjects();
+        m_MeshFilter->GetIBO()->Bind();
+        m_MeshFilter->UpdateVertexBuffer();
 
-		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		//glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+		if(m_RenderMode == RenderMode::LINES)
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		else if ((m_RenderMode == RenderMode::POINTS))
+			glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+		else
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-		glDrawElements(GL_TRIANGLES, m_SharedMeshFilter->GetIndexCount(), GL_UNSIGNED_INT, nullptr);
+		glDrawElements(GL_TRIANGLES, m_MeshFilter->GetIndexCount(), GL_UNSIGNED_INT, nullptr);
 
-        m_SharedMeshFilter->GetIBO()->Unbind();
-        m_SharedMeshFilter->UnBindVertexObjects();
+        m_MeshFilter->GetIBO()->Unbind();
+        m_MeshFilter->UnBindVertexObjects();
         m_Material.GetShader()->DeactivateShader();
 	}
 

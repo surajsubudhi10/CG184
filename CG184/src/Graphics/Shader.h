@@ -18,18 +18,18 @@ namespace CG184
 	{
     public:
 		//SHADER_TYPE Type;
-		std::string Name;
-		int Size;
-		uint32_t Location;
+		std::string name;
+		int size;
+		uint32_t location;
 	};
 
     class VertexAttribute
 	{
     public:
 		//SHADER_TYPE Type;
-		std::string Name;
-		int Size;
-		uint32_t Location;
+		std::string name;
+		int size;
+		uint32_t location;
 	};
 
 	class Shader

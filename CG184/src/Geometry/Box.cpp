@@ -75,8 +75,10 @@ namespace CG184 {
         };
 
         SetPositions(vertPos);
+		SetColor(Vector3D(0.5f, 0.5f, 0.5f));
         SetNormals(vertNorm);
         SetIndicies(vertIndices);
+		
     }
 
     Box::~Box()

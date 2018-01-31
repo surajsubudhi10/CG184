@@ -60,10 +60,14 @@ namespace CG184{
         glEnableVertexAttribArray( SHADER_NORMAL_INDEX);
         glEnableVertexAttribArray(SHADER_TEXCORD_INDEX);
 
+		if (m_Mesh->IsDirty()) {
+			m_Mesh->Update();
+		}
+
         SetVertexBufferPositionData(0, numOfVert, &m_Mesh->vertPosition[0]);
         SetVertexBufferColorData   (0, numOfVert, &m_Mesh->vertColor[0]);
         SetVertexBufferNormalData  (0, numOfVert, &m_Mesh->vertNormal[0]);
-        SetVertexBufferUVData      (0, numOfVert, &m_Mesh->vertTexCoord[0]);
+		SetVertexBufferUVData      (0, numOfVert, &m_Mesh->vertTexCoord[0]);
 
         m_IBO = new IndexBuffer(indicesData, m_IndexCount);
         UnBindVertexObjects();
@@ -94,7 +98,8 @@ namespace CG184{
     }
 
     void MeshFilter::SetVertexBufferUVData(const int &offset, const size_t &size, const void *data) const {
-        glBufferSubData(GL_ARRAY_BUFFER, sizeof(GLfloat) * (3 + 3 + 3 + offset) * m_Mesh->m_NumOfVert, sizeof(GLfloat) * 3 * size, data);
+		if(data != nullptr)
+			glBufferSubData(GL_ARRAY_BUFFER, sizeof(GLfloat) * (3 + 3 + 3 + offset) * m_Mesh->m_NumOfVert, sizeof(GLfloat) * 3 * size, data);
     }
 
     void MeshFilter::BindVertexObjects() const {

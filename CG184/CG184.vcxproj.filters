@@ -216,5 +216,7 @@
     <None Include="TestShaders\PhongShader.fs" />
     <None Include="TestShaders\picker.vs" />
     <None Include="TestShaders\picker.fs" />
+    <None Include="TestShaders\anchor.vs" />
+    <None Include="TestShaders\anchor.fs" />
   </ItemGroup>
 </Project>

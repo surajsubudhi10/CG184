@@ -26,6 +26,10 @@ namespace CG184 {
         void CopyMesh(const Mesh& pMesh);
 
         void SetPosition(uint32_t at, const Vector3D& a_Position);
+		void SetColor(uint32_t at, const Vector3D& a_Color);
+		void SetNormal(uint32_t at, const Vector3D& a_Normal);
+		void SetUV(uint32_t at, const Vector2D& a_TexCoord);
+
         void SetPositions(std::vector<Vector3D> a_Positions);
         void SetColors(std::vector<Vector3D> a_Colors);
         void SetColor(Vector3D a_Color);
@@ -40,13 +44,13 @@ namespace CG184 {
 
         ~Mesh();
 
-//        void Update();
+        void Update();
 
         friend class MeshFilter;
 
+        void SetIndicies(std::vector<uint32_t>a_Ind);
     protected:
         Mesh();
-        void SetIndicies(std::vector<uint32_t>a_Ind);
         virtual void InitMesh();
 
     private:

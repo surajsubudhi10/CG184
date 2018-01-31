@@ -8,7 +8,7 @@
 namespace CG184{
     class Node;
 
-    enum ComponentType
+    enum class ComponentType
     {
         RENDERER,
 
@@ -25,7 +25,7 @@ namespace CG184{
         virtual ~Component(){ m_AttachedNode = nullptr;}
 
         Node* GetAttachedNode(){ return m_AttachedNode;}
-        ComponentType GetComponentType(){ return m_Type;}
+        ComponentType GetComponentType() const { return m_Type;}
 
         void SetAttachedNode(Node* a_Node){m_AttachedNode = a_Node;}
         void SetComponentType(ComponentType type){m_Type = type;}

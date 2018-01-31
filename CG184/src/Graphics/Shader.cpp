@@ -75,24 +75,24 @@ namespace CG184
         for (int i = 0; i < nAttributes; ++i)
         {
             GLenum glType;
-            glGetActiveAttrib(shaderID, i, sizeof(buffer), 0, &m_Attributes[i].Size, &glType, buffer);
-            m_Attributes[i].Name = std::string(buffer);
+            glGetActiveAttrib(shaderID, i, sizeof(buffer), 0, &m_Attributes[i].size, &glType, buffer);
+            m_Attributes[i].name = std::string(buffer);
             // TODO think of clean way to manage type conversions of OpenGL and custom type
             //m_Attributes[i].Type = SHADER_TYPE_BOOL;
 
-            m_Attributes[i].Location = glGetAttribLocation(shaderID, buffer);
+            m_Attributes[i].location = glGetAttribLocation(shaderID, buffer);
         }
 
         for (int i = 0; i < nUniforms; ++i)
         {
             GLenum glType;
-            glGetActiveUniform(shaderID, i, sizeof(buffer), 0, &m_Uniforms[i].Size, &glType, buffer);
-            m_Uniforms[i].Name = std::string(buffer);
+            glGetActiveUniform(shaderID, i, sizeof(buffer), 0, &m_Uniforms[i].size, &glType, buffer);
+            m_Uniforms[i].name = std::string(buffer);
             // TODO think of clean way to manage type conversions of OpenGL and custom type
             // TODO This method will not get the name for uniform location if its a struct or array.
             //m_Uniforms[i].Type = SHADER_TYPE_BOOL;
 
-            m_Uniforms[i].Location = glGetUniformLocation(shaderID, buffer);
+            m_Uniforms[i].location = glGetUniformLocation(shaderID, buffer);
         }
 
 	}
@@ -285,8 +285,8 @@ namespace CG184
     int GetUniformLocation(const string &name, vector<Uniform> uniformList)
     {
         for (auto &uniform : uniformList) {
-            if(name == uniform.Name)
-                return uniform.Location;
+            if(name == uniform.name)
+                return uniform.location;
         }
         return -1;
     }

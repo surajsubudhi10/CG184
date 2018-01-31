@@ -6,9 +6,10 @@
 
 namespace CG184{
 
-    Scene::Scene(CameraPtr cam)
+    Scene::Scene(CameraPtr cam) : m_Anchor(new Node("Anchor"))
     {
         m_Camera = std::move(cam);
+		CreateAnchor();
     }
 
     void Scene::Render()
@@ -50,6 +51,34 @@ namespace CG184{
     void Scene::AddToScene(NodePtr node) {
         m_RenderQueue.push_back(node);
     }
+
+	void Scene::CreateAnchor()
+	{
+		std::vector<Vector3D> pos{
+			Vector3D(0, 0, 0), Vector3D(1, 0, 0),
+			Vector3D(0, 0, 0), Vector3D(0, 1, 0),
+			Vector3D(0, 0, 0), Vector3D(0, 0, 1)
+		};
+
+		std::vector<Vector3D> col{
+			Vector3D(1, 0, 0), Vector3D(1, 0, 0),
+			Vector3D(0, 1, 0), Vector3D(0, 1, 0),
+			Vector3D(0, 0, 1), Vector3D(0, 0, 1)
+		};
+
+		std::vector<uint32_t> ind{ 0, 1, 0, 2, 3, 2, 4, 5, 4 };
+
+		Mesh*     anchorMesh		= new Mesh(pos, ind);
+		anchorMesh->SetColors(col); // Setting Same as position x->red, y->green, z->blue
+
+		Shader*   anchorShader		= new Shader("TestShaders/anchor.vs", "TestShaders/anchor.fs");
+		Material* anchorMat			= new Material(anchorShader);
+		Renderer* anchorRenderer	= new Renderer(anchorMesh, anchorMat);
+
+		anchorRenderer->SetRenderMode(RenderMode::LINES);
+		m_Anchor->AttachComponent(anchorRenderer);
+		this->AddToScene(m_Anchor);
+	}
 
     void Scene::TraverseAllChildNodes(Node& a_Node){
         for (uint32_t i = 0; i < a_Node.GetNumOfChildNode(); i++){
