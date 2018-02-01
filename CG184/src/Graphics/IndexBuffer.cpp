@@ -24,6 +24,14 @@ namespace CG184
 
 	}
 
+	void IndexBuffer::AddIndexBufferData(GLuint* data, GLuint count) 
+	{
+		m_IndexCount = count;
+		Bind();
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_IndexCount * sizeof(GLuint), data, GL_DYNAMIC_DRAW);
+		Unbind();
+	}
+
 	IndexBuffer::~IndexBuffer()
 	{
 		glDeleteBuffers(1, &m_BufferID);

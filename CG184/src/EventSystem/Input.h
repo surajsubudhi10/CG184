@@ -35,6 +35,7 @@ namespace CG184
 		Scene*			m_ScenePtr;
 		Shader*			m_PickerShaderPtr;
 		Material*		m_PickerMaterialPtr;
+		//Mesh*			m_DummyMeshPtr;
 
     };
 		

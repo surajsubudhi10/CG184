@@ -8,6 +8,16 @@
 
 namespace CG184
 {
+	Mesh::Mesh() : m_IsDirty(true), m_IsStatic(false)
+	{
+		m_NumOfVert = 0;
+		m_Indices.clear();
+		m_VertPosition.clear();
+		m_VertColor.clear();
+		m_VertNormal.clear();
+		m_VertTexCoord.clear();
+	}
+
     Mesh::Mesh(std::vector<Vector3D> a_Pos, std::vector<uint32_t>a_Ind) : m_IsDirty(true), m_IsStatic(false)
     {
         m_NumOfVert = (uint32_t)a_Pos.size();
@@ -82,8 +92,7 @@ namespace CG184
     {
     }
 
-    Mesh::Mesh() //: m_InstanceID(Node::uID++)
-    {}
+    
 
     void Mesh::SetIndicies(std::vector<uint32_t> a_Ind) 
 	{

@@ -29,6 +29,18 @@ namespace CG184
             m_Material = *m_SharedMaterialPtr;
 	}
 
+	void Renderer::SetMesh(Mesh* mesh) 
+	{
+		m_SharedMeshPtr = std::make_shared<Mesh>(mesh); 
+		m_Mesh = *mesh; 
+		if (m_MeshFilterPtr != nullptr) {
+			m_MeshFilterPtr->AttachMesh(mesh);
+		}
+
+		//m_MeshFilterPtr = new MeshFilter(mesh);
+	}
+
+
 	Renderer::~Renderer()
 	{
         delete m_MeshFilterPtr;

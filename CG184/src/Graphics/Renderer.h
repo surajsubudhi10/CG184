@@ -48,8 +48,8 @@ namespace CG184
 
 		inline void				SetRenderMode(RenderMode mode)	{ m_RenderMode = mode; }
 		inline void				SetMaterial(Material* material) { m_Material = *material; m_SharedMaterialPtr = material; }
-		inline void				SetMesh(Mesh* mesh)				{ m_SharedMeshPtr = std::make_shared<Mesh>(mesh); m_Mesh = *mesh; m_MeshFilterPtr = new MeshFilter(mesh);
-		}
+		void					SetMesh(Mesh* mesh);// { m_SharedMeshPtr = std::make_shared<Mesh>(mesh); m_Mesh = *mesh; m_MeshFilterPtr = new MeshFilter(mesh);}
+		
 
     private:
         Matrix4D				GetModelMatrix() const;

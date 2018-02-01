@@ -53,8 +53,10 @@ namespace CG184
         GLuint*				m_IndicesDataPtr;
 		IndexBuffer*		m_IBOPtr;
     private:
-        void				InitializeMeshData(uint32_t& numOfVert);
-        void				InitGLBuffers(uint32_t numOfVert);
+		void				InitIndexBuffer();
+		void				InitVertexArrayBuffer();
+        void				InitMeshData(uint32_t& numOfVert);
+        void				InitGLBuffers();
         //void				UpdateGLBufferData();
     };
 }

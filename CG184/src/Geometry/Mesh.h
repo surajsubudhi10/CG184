@@ -18,6 +18,7 @@ namespace CG184
     class Mesh
     {
     public:
+        Mesh();
         Mesh(std::vector<Vector3D> a_Pos, std::vector<uint32_t>a_Ind);
         explicit Mesh(Mesh *pMesh);
         ~Mesh();
@@ -45,7 +46,6 @@ namespace CG184
 
         friend class MeshFilter;
     protected:
-        Mesh();
         virtual void				InitMesh();
 
     private:

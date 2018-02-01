@@ -13,7 +13,7 @@ namespace CG184
 
 		void			Bind()		const;
 		void			Unbind()	const;
-
+		void			AddIndexBufferData(GLuint* data, GLuint count);
 	private:
 		GLuint			m_BufferID;
 		GLuint			m_IndexCount;
