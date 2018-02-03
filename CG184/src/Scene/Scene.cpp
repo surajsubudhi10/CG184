@@ -55,13 +55,15 @@ namespace CG184{
 
 	void Scene::CreateAnchor()
 	{
-		std::vector<Vector3D> pos{
+		std::vector<Vector3D> pos
+        {
 			Vector3D(0, 0, 0), Vector3D(1, 0, 0),
 			Vector3D(0, 0, 0), Vector3D(0, 1, 0),
 			Vector3D(0, 0, 0), Vector3D(0, 0, 1)
 		};
 
-		std::vector<Vector3D> col{
+		std::vector<Vector3D> col
+        {
 			Vector3D(1, 0, 0), Vector3D(1, 0, 0),
 			Vector3D(0, 1, 0), Vector3D(0, 1, 0),
 			Vector3D(0, 0, 1), Vector3D(0, 0, 1)
@@ -69,12 +71,12 @@ namespace CG184{
 
 		std::vector<uint32_t> ind{ 0, 1, 0, 2, 3, 2, 4, 5, 4 };
 
-		Mesh*     anchorMesh		= new Mesh(pos, ind);
+		Mesh*   anchorMesh		= new Mesh(pos, ind);
 		anchorMesh->SetColors(col); // Setting Same as position x->red, y->green, z->blue
 
-		Shader*   anchorShader		= new Shader("TestShaders/anchor.vs", "TestShaders/anchor.fs");
-		Material* anchorMat			= new Material(anchorShader);
-		Renderer* anchorRenderer	= new Renderer(anchorMesh, anchorMat);
+		auto*   anchorShader		= new Shader("TestShaders/anchor.vs", "TestShaders/anchor.fs");
+		auto*   anchorMat			= new Material(anchorShader);
+		auto*   anchorRenderer	    = new Renderer(anchorMesh, anchorMat);
 
 		anchorRenderer->SetRenderMode(RenderMode::LINES);
 		m_AnchorPtr->AttachComponent(anchorRenderer);

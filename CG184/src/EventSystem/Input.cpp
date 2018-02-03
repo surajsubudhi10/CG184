@@ -15,7 +15,6 @@ namespace CG184
 		
 		m_PickerShaderPtr		= new Shader("TestShaders/picker.vs", "TestShaders/picker.fs");
 		m_PickerMaterialPtr		= new Material(m_PickerShaderPtr);
-		//m_DummyMeshPtr			= new Mesh();
 
         glfwSetCursorPosCallback(m_Window->m_WindowPtr, mouse_cursor_callback);
         glfwSetInputMode(window->m_WindowPtr, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
@@ -46,14 +45,14 @@ namespace CG184
     }
 
 
-
-	void Input::ProcessInput(){
+	void Input::ProcessInput()
+    {
 		if (glfwGetKey(m_Window->m_WindowPtr, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 			glfwSetWindowShouldClose(m_Window->m_WindowPtr, true);
 	}
 		
-	void Input::ProcessSelection() {
-
+	void Input::ProcessSelection()
+    {
 		unsigned char res[4];
 		GLint viewport[4];
 
@@ -63,7 +62,7 @@ namespace CG184
 		glReadPixels((int)mousePosition.x, viewport[3] - (int)mousePosition.y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, &res);
 		switch (res[0]) {
 			case 0: 
-				//printf("Nothing Picked \n");
+//				printf("Nothing Picked \n");
 				break;
 			default:
 				printf("Picked Object ID: %d\n", res[0]);
@@ -75,26 +74,28 @@ namespace CG184
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		
-
 		for (auto &m_Node : m_ScenePtr->m_RenderQueue) {
 			m_Node->UpdateWorldModelMatrix();
 		}
 
-		Renderer pickRenderer(new Mesh(), m_PickerMaterialPtr);
-		for (auto &m_Node : m_ScenePtr->m_RenderQueue) {
-			if (m_Node->HasComponent(ComponentType::RENDERER)) {
+//		Renderer pickRenderer(new Mesh(), m_PickerMaterialPtr);
+		for (auto &m_Node : m_ScenePtr->m_RenderQueue)
+        {
+			if (m_Node->HasComponent(ComponentType::RENDERER))
+            {
 				Renderer* renderer = (m_Node->GetComponent<Renderer>());
-				if (&renderer != nullptr) {
+				if (&renderer != nullptr)
+                {
 
-					pickRenderer.SetMesh((*renderer).GetMesh());
-					/*m_PickerMaterialPtr->GetShader()->SetUniform1i("code", m_Node->GetInstanceID() + 1);
+					//pickRenderer.SetMesh((*renderer).GetMesh());
+                    Renderer pickRenderer(renderer->GetMesh(), m_PickerMaterialPtr);
+					m_PickerMaterialPtr->GetShader()->SetUniform1i("code", m_Node->GetInstanceID() + 1);
 					pickRenderer.SendViewMatrixData(m_ScenePtr->m_CameraPtr->GetViewMatrix());
 					pickRenderer.SendProjectionMatrixData(m_ScenePtr->m_CameraPtr->GetProjectionMatrix());
 
 					Matrix4D modelMatrix = m_Node->GetTransformComponent().GetWorldTransformMat();
 					pickRenderer.GetMaterial().GetShader()->SetUniformMat4f("model", modelMatrix.elements);
-					pickRenderer.Render();*/
+					pickRenderer.Render();
 				}
 				else {
 					throw "(Null Exception) Renderer Null";

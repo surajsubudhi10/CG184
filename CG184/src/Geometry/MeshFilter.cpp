@@ -145,39 +145,31 @@ namespace CG184
         }
     }
 
-    void MeshFilter::AttachMesh(Mesh* a_Mesh) {
-		if (m_MeshPtr != nullptr) 
+    void MeshFilter::AttachMesh(Mesh* a_Mesh)
+    {
+		if (m_MeshPtr != nullptr)
 		{
-			if (m_MeshPtr->m_NumOfVert != a_Mesh->m_NumOfVert) 
-			{
-				m_MeshPtr->m_NumOfVert = a_Mesh->m_NumOfVert;
-				m_MeshPtr->m_VertPosition.clear();
-				m_MeshPtr->m_VertColor.clear();
-				m_MeshPtr->m_VertNormal.clear();
-				m_MeshPtr->m_VertTexCoord.clear();
-				m_MeshPtr->m_Indices.clear();
+            if(m_MeshPtr->IsDirty())
+            {
+			    if (m_MeshPtr->m_NumOfVert != a_Mesh->m_NumOfVert)
+                {
+                    m_MeshPtr->m_NumOfVert = a_Mesh->m_NumOfVert;
+                    InitGLBuffers();
 
-				m_IndexCount = (uint32_t)a_Mesh->m_Indices.size();
-				if (m_IndicesDataPtr != nullptr)
-					delete[] m_IndicesDataPtr;
+                    m_IndexCount = (uint32_t) a_Mesh->m_Indices.size();
+                    delete[] m_IndicesDataPtr;
+                    m_IndicesDataPtr = new GLuint[m_IndexCount];
+                    for (uint32_t i = 0; i < m_IndexCount; i++) {
+                        m_IndicesDataPtr[i] = a_Mesh->m_Indices[i];
+                    }
 
-				m_IndicesDataPtr = new GLuint[m_IndexCount];
-				for (uint32_t i = 0; i < m_IndexCount; i++) {
-					m_IndicesDataPtr[i] = a_Mesh->m_Indices[i];
-				}
-
+                    m_IBOPtr->AddIndexBufferData(m_IndicesDataPtr, m_IndexCount);
+                }
 
 			}
-			else
-			{
-				
-			}
+
 		}
 		
-		m_MeshPtr->m_VertPosition	= a_Mesh->m_VertPosition;
-		m_MeshPtr->m_VertColor		= a_Mesh->m_VertColor;
-		m_MeshPtr->m_VertNormal		= a_Mesh->m_VertNormal;
-		m_MeshPtr->m_VertTexCoord	= a_Mesh->m_VertTexCoord;
-		m_MeshPtr->m_Indices		= a_Mesh->m_Indices;
+        m_MeshPtr = a_Mesh;
     }
 }

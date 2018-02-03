@@ -132,7 +132,7 @@ int main()
         cam->SetFOV(fov);
         cam->Set(cameraPos, cameraTarget, cameraUp);
 //        box1->SetPosition(cameraTarget);
-        //boxRenderer.GetSharedMesh()->SetPosition(1, Vector3D(0.0f, sin(angle), 0.0f));
+        boxRenderer.GetMesh()->SetPosition(1, Vector3D(0.0f, (float)sin(angle), 0.0f));
 
 		rootScene.Render();
 		window->Update();

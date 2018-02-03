@@ -13,7 +13,7 @@ namespace CG184 {
 		m_Shininess(0.0)
     {
         // TODO Create default shader (Phong, Blin, etc)
-        m_ShaderPtr = new Shader("TestShaders/BoxSolid.vs", "TestShaders/BoxSolid.fs");
+        //m_ShaderPtr = new Shader("TestShaders/BoxSolid.vs", "TestShaders/BoxSolid.fs");
     }
 
 	Material::Material(const Material& mat):
