@@ -62,7 +62,7 @@ namespace CG184
 		glReadPixels((int)mousePosition.x, viewport[3] - (int)mousePosition.y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, &res);
 		switch (res[0]) {
 			case 0: 
-//				printf("Nothing Picked \n");
+				//printf("Nothing Picked \n");
 				break;
 			default:
 				printf("Picked Object ID: %d\n", res[0]);
@@ -86,8 +86,6 @@ namespace CG184
 				Renderer* renderer = (m_Node->GetComponent<Renderer>());
 				if (&renderer != nullptr)
                 {
-
-					//pickRenderer.SetMesh((*renderer).GetMesh());
                     Renderer pickRenderer(renderer->GetMesh(), m_PickerMaterialPtr);
 					m_PickerMaterialPtr->GetShader()->SetUniform1i("code", m_Node->GetInstanceID() + 1);
 					pickRenderer.SendViewMatrixData(m_ScenePtr->m_CameraPtr->GetViewMatrix());
@@ -99,7 +97,6 @@ namespace CG184
 				}
 				else {
 					throw "(Null Exception) Renderer Null";
-					exit(1);
 				}
 			}
 		}
@@ -110,7 +107,10 @@ namespace CG184
 
 	Input::~Input()
 	{
-	}
+//        delete m_PickerMaterialPtr;
+//        delete m_PickerShaderPtr;
+//        delete m_ScenePtr;
+    }
 
 
     void mouse_cursor_callback(GLFWwindow* window, double xpos, double ypos)

@@ -51,6 +51,9 @@ find_package(OpenGL REQUIRED)
 include_directories( ${OPENGL_INCLUDE_DIR})
 find_package(GLEW REQUIRED)
 
+configure_file (${PROJECT_SOURCE_DIR}/CG184/Resources/objects/rock/rock.obj       Resources/objects/rock/rock.obj     COPYONLY)
+configure_file (${PROJECT_SOURCE_DIR}/CG184/Resources/objects/cyborg/cyborg.obj   Resources/objects/cyborg/cyborg.obj COPYONLY)
+
 configure_file (${PROJECT_SOURCE_DIR}/CG184/Resources/textures/container.jpg  Resources/textures/container.jpg COPYONLY)
 configure_file (${PROJECT_SOURCE_DIR}/CG184/Resources/textures/container2.png Resources/textures/container2.png COPYONLY)
 configure_file (${PROJECT_SOURCE_DIR}/CG184/Resources/textures/container2_specular.png Resources/textures/container2_specular.png COPYONLY)

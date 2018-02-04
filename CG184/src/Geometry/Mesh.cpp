@@ -8,6 +8,8 @@
 
 namespace CG184
 {
+ 
+    
 	Mesh::Mesh() : m_IsDirty(true), m_IsStatic(false)
 	{
 		m_NumOfVert = 0;
@@ -209,5 +211,98 @@ namespace CG184
         m_VertColor     = pMesh.m_VertColor;
         m_VertNormal    = pMesh.m_VertNormal;
         m_VertTexCoord  = pMesh.m_VertTexCoord;
+    }
+
+    void Mesh::LoadModel(const std::string &modelPath)
+    {
+        Assimp::Importer importer;
+        const aiScene* scene = importer.ReadFile(modelPath,
+                                                 aiProcess_Triangulate | aiProcess_FlipUVs |
+                                                 aiProcess_GenNormals | aiProcess_OptimizeMeshes |
+                                                         aiProcess_JoinIdenticalVertices);
+        
+        if(!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) // if is Not Zero
+        {
+            std::cout << "ERROR::ASSIMP:: " << importer.GetErrorString() << std::endl;
+            return;
+        }
+    
+        // retrieve the directory path of the filepath
+        std:: string directory = modelPath.substr(0, modelPath.find_last_of('/'));
+    
+        // process ASSIMP's root node recursively
+        ProcessNode(scene->mRootNode, scene);
+        
+        m_NumOfVert = static_cast<uint32_t >(m_VertPosition.size());
+        std::cout << "Num of Vertices : " << m_NumOfVert << std::endl;
+    }
+    
+    // processes a node in a recursive fashion. Processes each individual mesh located at the node and repeats this process on its children nodes (if any).
+    void Mesh::ProcessNode(aiNode *node, const aiScene *scene)
+    {
+        // process each mesh located at the current node
+        for(unsigned int i = 0; i < node->mNumMeshes; i++)
+        {
+            // the node object only contains indices to index the actual objects in the scene.
+            // the scene contains all the data, node is just to keep stuff organized (like relations between nodes).
+            aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
+            ProcessMesh(mesh, scene);
+        }
+        // after we've processed all of the meshes (if any) we then recursively process each of the children nodes
+        for(unsigned int i = 0; i < node->mNumChildren; i++)
+        {
+            ProcessNode(node->mChildren[i], scene);
+        }
+        
+    }
+    
+    void Mesh::ProcessMesh(aiMesh *mesh, const aiScene *scene)
+    {
+        // data to fill
+        
+        // Walk through each of the mesh's vertices
+        for(unsigned int i = 0; i < mesh->mNumVertices; i++)
+        {
+            //Vertex vertex;
+            Vector3D tempVec; // we declare a placeholder vector since assimp uses its own vector class that doesn't directly convert to glm's vec3 class so we transfer the data to this placeholder glm::vec3 first.
+            // positions
+            tempVec.x = mesh->mVertices[i].x;
+            tempVec.y = mesh->mVertices[i].y;
+            tempVec.z = mesh->mVertices[i].z;
+            m_VertPosition.push_back(tempVec);
+            
+            // vertex Color
+            m_VertColor.emplace_back(0.5f, 0.5f, 0.5f);
+            
+            // normals
+            tempVec.x = mesh->mNormals[i].x;
+            tempVec.y = mesh->mNormals[i].y;
+            tempVec.z = mesh->mNormals[i].z;
+            m_VertNormal.push_back(tempVec);
+            
+            // texture coordinates
+            if(mesh->mTextureCoords[0]) // does the mesh contain texture coordinates?
+            {
+                Vector2D vec;
+                // a vertex can contain up to 8 different texture coordinates. We thus make the assumption that we won't
+                // use models where a vertex can have multiple texture coordinates so we always take the first set (0).
+                vec.x = mesh->mTextureCoords[0][i].x;
+                vec.y = mesh->mTextureCoords[0][i].y;
+                m_VertTexCoord.push_back(vec);
+            }
+            else
+                m_VertTexCoord.emplace_back(0.0f, 0.0f);
+            
+            
+        }
+        // now wak through each of the mesh's faces (a face is a mesh its triangle) and retrieve the corresponding vertex indices.
+        for(uint32_t i = 0; i < mesh->mNumFaces; i++)
+        {
+            aiFace face = mesh->mFaces[i];
+            // retrieve all indices of the face and store them in the indices vector
+            for(uint32_t j = 0; j < face.mNumIndices; j++)
+                m_Indices.push_back(face.mIndices[j]);
+        }
+        
     }
 }

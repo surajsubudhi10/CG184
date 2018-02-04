@@ -6,7 +6,12 @@
 #define CGENGINE_MESH_H
 
 #include <vector>
+#include <string>
+
 #include <GL/glew.h>
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
 
 #include "../Maths/Vector3D.h"
 #include "../Maths/Vector2D.h"
@@ -43,6 +48,7 @@ namespace CG184
         
 		void						Update();
         void						SetIndicies(std::vector<uint32_t>a_Ind);
+        void                        LoadModel(const std::string &modelPath);
 
         friend class MeshFilter;
     protected:
@@ -59,6 +65,9 @@ namespace CG184
         std::vector<Vector3D>		m_VertNormal;
         std::vector<Vector2D>		m_VertTexCoord;
         std::vector<uint32_t>		m_Indices;
+    
+        void                        ProcessNode(aiNode *node, const aiScene *scene);
+        void                        ProcessMesh(aiMesh *mesh, const aiScene *scene);
     };
 }
 

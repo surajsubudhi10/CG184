@@ -46,7 +46,6 @@ int main()
 {
 
     WindowPtr window(new Window(SCR_WIDTH, SCR_HEIGHT, "CG184::In Development"));
-
 	glfwSetScrollCallback(window->m_WindowPtr, scroll_callback);
 
     // ####################################### Camera ###############################################
@@ -82,13 +81,16 @@ int main()
     triangleMesh.SetNormals(norm1);
 
 
+    Mesh rockMesh;
+    rockMesh.LoadModel("Resources/objects/rock/rock.obj");
+    
 
     Box boxMesh;
 	//Shader boxShaderTemp("TestShaders/multipleLights.vs", "TestShaders/multipleLights.fs");
 	Shader boxShaderTemp("TestShaders/solidWireframe.vs", "TestShaders/solidWireframe.fs", "TestShaders/solidWireframe.gs");
 	Material boxMat(&boxShaderTemp);
 	boxMat.SetAmbient(Vector4D(0.5f, 0.1f, 0.1f, 1.0f));
-    Renderer boxRenderer(&triangleMesh, &boxMat);
+    Renderer boxRenderer(&rockMesh, &boxMat);
 
     NodePtr box(new Node("box1"));
 	box->AttachComponent(&boxRenderer);
@@ -105,7 +107,7 @@ int main()
 
     Scene rootScene(cam);
 	rootScene.AddToScene(box);
-	rootScene.AddToScene(box1);
+	//rootScene.AddToScene(box1);
     rootScene.AddLight(pointLight);
 
 	Input input(window, &rootScene);
@@ -132,7 +134,7 @@ int main()
         cam->SetFOV(fov);
         cam->Set(cameraPos, cameraTarget, cameraUp);
 //        box1->SetPosition(cameraTarget);
-        boxRenderer.GetMesh()->SetPosition(1, Vector3D(0.0f, (float)sin(angle), 0.0f));
+        //boxRenderer.GetMesh()->SetPosition(1, Vector3D(0.0f, (float)sin(angle), 0.0f));
 
 		rootScene.Render();
 		window->Update();
@@ -199,7 +201,7 @@ void MouseEvents(const WindowPtr window, Input input, float deltaTime)
 		ProcessMouseButtons(input);
 		ProcessMouseMotion(input.mousePosition);
 	}else if (input.IsMouseButtonDown(GLFW_MOUSE_BUTTON_LEFT)) {
-		input.ProcessSelection(); 
+		input.ProcessSelection();
 	}
 }
 
@@ -226,12 +228,11 @@ void ProcessMouseButtons(Input input)
     }
 }
 
-void spherical2cartesian(float r, float alpha, float beta) {
-
+void spherical2cartesian(float r, float alpha, float beta)
+{
     cameraPos.x = cameraTarget.x + r * sin(alpha * 3.14f / 180.0f) * cos(beta * 3.14f / 180.0f);
     cameraPos.z = cameraTarget.z + r * cos(alpha * 3.14f / 180.0f) * cos(beta * 3.14f / 180.0f);
     cameraPos.y = cameraTarget.y + r *   			   		         sin(beta * 3.14f / 180.0f);
-
 //    cout << "CameraPos : " << cameraPos << "CameraTarget" << cameraTarget << endl;
 }
 

@@ -98,6 +98,9 @@ namespace CG184
 
         delete m_IBOPtr;
         m_IBOPtr = nullptr;
+        
+        //delete m_MeshPtr;
+        //m_MeshPtr = nullptr;
     }
 
     void MeshFilter::SetVertexBufferPositionData(const int& offset, const size_t& size, const void* data) const{
