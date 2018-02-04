@@ -17,10 +17,10 @@ const uint32_t SCR_WIDTH = 800;
 const uint32_t SCR_HEIGHT = 600;
 using namespace CG184;
 
-void KeyBoardEvents(const WindowPtr window, Input input);
-void MouseEvents(const WindowPtr window, Input input, float deltaTime);
+void KeyBoardEvents(const WindowPtr window, Input& input);
+void MouseEvents(const WindowPtr window, Input& input, float deltaTime);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
-void ProcessMouseButtons(Input input);
+void ProcessMouseButtons(Input& input);
 void ProcessMouseMotion( Vector2D mousePosition);
 
 // Camera Data
@@ -82,7 +82,7 @@ int main()
 
 
     Mesh rockMesh;
-    rockMesh.LoadModel("Resources/objects/rock/rock.obj");
+    rockMesh.LoadModel("Resources/objects/cyborg/cyborg.obj");
     
 
     Box boxMesh;
@@ -144,7 +144,7 @@ int main()
 }
 
 
-void KeyBoardEvents(const WindowPtr window, Input input)
+void KeyBoardEvents(const WindowPtr window, Input& input)
 {
 	if (input.IsKeyPressed(GLFW_KEY_ESCAPE))
 		window->Close();
@@ -195,7 +195,7 @@ void KeyBoardEvents(const WindowPtr window, Input input)
 	}
 }
 
-void MouseEvents(const WindowPtr window, Input input, float deltaTime)
+void MouseEvents(const WindowPtr window, Input& input, float deltaTime)
 {
 	if (input.IsKeyPressed(GLFW_KEY_LEFT_ALT)) {
 		ProcessMouseButtons(input);
@@ -205,7 +205,7 @@ void MouseEvents(const WindowPtr window, Input input, float deltaTime)
 	}
 }
 
-void ProcessMouseButtons(Input input)
+void ProcessMouseButtons(Input& input)
 {
     // start tracking the mouse
     if (input.IsMouseButtonDown(GLFW_MOUSE_BUTTON_LEFT) && IsMouseMouseTracking != 1)  {

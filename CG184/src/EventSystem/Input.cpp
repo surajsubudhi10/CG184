@@ -107,9 +107,8 @@ namespace CG184
 
 	Input::~Input()
 	{
-//        delete m_PickerMaterialPtr;
-//        delete m_PickerShaderPtr;
-//        delete m_ScenePtr;
+        delete m_PickerMaterialPtr;
+        delete m_PickerShaderPtr;
     }
 
 

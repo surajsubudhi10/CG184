@@ -77,12 +77,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)external-dependencies\GLFW\include;$(SolutionDir)external-dependencies\GLEW\include;$(SolutionDir)external-dependencies\Extras</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)external-dependencies\GLFW\include;$(SolutionDir)external-dependencies\GLEW\include;$(SolutionDir)external-dependencies\Extras;$(SolutionDir)external-dependencies\Assimp</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>GLEW_STATIC;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)external-dependencies\GLFW\lib-vc2015;$(SolutionDir)external-dependencies\GLEW\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;glew32s.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)external-dependencies\GLFW\lib-vc2015;$(SolutionDir)external-dependencies\GLEW\lib;$(SolutionDir)external-dependencies\Assimp\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;assimp.lib;glew32s.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

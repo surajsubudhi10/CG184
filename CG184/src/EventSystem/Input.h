@@ -27,7 +27,7 @@ namespace CG184
 
 		~Input();
 
-        Vector2D static mousePosition;
+        static Vector2D mousePosition;
 	private:
 		void			ProcessInput();
 		
@@ -35,8 +35,5 @@ namespace CG184
 		Scene*			m_ScenePtr;
 		Shader*			m_PickerShaderPtr;
 		Material*		m_PickerMaterialPtr;
-		//Mesh*			m_DummyMeshPtr;
-
     };
-		
 }
