@@ -9,19 +9,19 @@
 namespace CG184 
 {
     Circle::Circle() 
-		: Mesh(), m_Radius(2.0f), m_EdgeSegments(10)
+        : Mesh(), m_Radius(2.0f), m_EdgeSegments(10)
     {
         InitMesh();
     }
 
     Circle::Circle(Circle &cir)  
-		: Mesh(), m_Radius(cir.m_Radius), m_EdgeSegments(cir.m_EdgeSegments)
+        : Mesh(), m_Radius(cir.m_Radius), m_EdgeSegments(cir.m_EdgeSegments)
     {
         InitMesh();
     }
 
     Circle::Circle(float rad, uint32_t seg)
-		: Mesh(), m_Radius(rad), m_EdgeSegments(seg)
+        : Mesh(), m_Radius(rad), m_EdgeSegments(seg)
     {
         InitMesh();
     }
@@ -52,13 +52,13 @@ namespace CG184
         for(uint32_t i = 1; i <= m_EdgeSegments; i++)
         {
             if(i == m_EdgeSegments) 
-			{
+            {
                 indicies.push_back(0);
                 indicies.push_back(i);
                 indicies.push_back(1);
             }
             else
-			{
+            {
                 indicies.push_back(0);
                 indicies.push_back(i);
                 indicies.push_back(i + 1);
@@ -72,4 +72,4 @@ namespace CG184
 
 
     Circle::~Circle() {}
-}
+}   // End of CG184

@@ -5,7 +5,8 @@
 #ifndef CGENGINE_COMPONET_H
 #define CGENGINE_COMPONET_H
 
-namespace CG184{
+namespace CG184
+{
     class Node;
 
     enum class ComponentType
@@ -39,7 +40,7 @@ namespace CG184{
         ComponentType			m_Type;
 
     };
-}
+}   // End of CG184
 
 
 #endif //CGENGINE_COMPONET_H

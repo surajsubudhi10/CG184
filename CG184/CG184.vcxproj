@@ -127,6 +127,7 @@
     <ClCompile Include="src\EventSystem\Input.cpp" />
     <ClCompile Include="src\Geometry\Box.cpp" />
     <ClCompile Include="src\Geometry\Circle.cpp" />
+    <ClCompile Include="src\Geometry\HalfEdgeElement.cpp" />
     <ClCompile Include="src\Geometry\Mesh.cpp" />
     <ClCompile Include="src\Geometry\MeshFilter.cpp" />
     <ClCompile Include="src\Geometry\Plane.cpp" />
@@ -157,6 +158,7 @@
     <ClInclude Include="src\Geometry\Box.h" />
     <ClInclude Include="src\Geometry\Circle.h" />
     <ClInclude Include="src\Geometry\Geometry.h" />
+    <ClInclude Include="src\Geometry\HalfEdgeElement.h" />
     <ClInclude Include="src\Geometry\Mesh.h" />
     <ClInclude Include="src\Geometry\MeshFilter.h" />
     <ClInclude Include="src\Geometry\Plane.h" />

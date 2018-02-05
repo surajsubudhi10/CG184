@@ -11,9 +11,8 @@
 #include "../Lights/Light.h"
 
 
-namespace CG184 {
-
-
+namespace CG184 
+{
     class Scene
     {
     public:
@@ -24,18 +23,18 @@ namespace CG184 {
         void AddToScene(NodePtr node);
         void AddLight(LightPtr light);
 
-		friend class Input;
+        friend class Input;
 
     private:
         CameraPtr				m_CameraPtr;
-		NodePtr					m_AnchorPtr;
+        NodePtr					m_AnchorPtr;
         std::vector<NodePtr>	m_RenderQueue;
-		std::vector<LightPtr>	m_LightsPtr;
+        std::vector<LightPtr>	m_LightsPtr;
 
         void TraverseAllChildNodes(Node& a_Node);
-		void CreateAnchor();
+        void CreateAnchor();
     };
-}
+}   // End of CG184
 
 
 #endif //CGENGINE_SCENE_H

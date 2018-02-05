@@ -32,7 +32,7 @@ namespace CG184
     }
 
     Torus::~Torus() 
-	{}
+    {}
 
     void Torus::InitMesh()
     {
@@ -106,4 +106,4 @@ namespace CG184
         SetUVs(texCoord);
         SetIndicies(indicies);
     }
-}
+}   // End of CG184

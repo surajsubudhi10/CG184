@@ -29,9 +29,9 @@ namespace CG184
         ~Mesh();
 
         void						SetPosition (uint32_t at, const Vector3D& a_Position);
-		void						SetColor	(uint32_t at, const Vector3D& a_Color);
-		void						SetNormal   (uint32_t at, const Vector3D& a_Normal);
-		void						SetUV		(uint32_t at, const Vector2D& a_TexCoord);
+        void						SetColor	(uint32_t at, const Vector3D& a_Color);
+        void						SetNormal   (uint32_t at, const Vector3D& a_Normal);
+        void						SetUV		(uint32_t at, const Vector2D& a_TexCoord);
 
         void						SetPositions(std::vector<Vector3D> a_Positions);
         void						SetColors(std::vector<Vector3D> a_Colors);
@@ -46,7 +46,7 @@ namespace CG184
         void						MakeStatic(bool staticMode);
         void						MakeClean(){m_IsDirty = false;}
         
-		void						Update();
+        void						Update();
         void						SetIndicies(std::vector<uint32_t>a_Ind);
         void                        LoadModel(const std::string &modelPath);
 
@@ -56,7 +56,7 @@ namespace CG184
 
     private:
 
-		bool						m_IsDirty;
+        bool						m_IsDirty;
         bool						m_IsStatic;
         uint32_t					m_NumOfVert;
 
@@ -69,7 +69,7 @@ namespace CG184
         void                        ProcessNode(aiNode *node, const aiScene *scene);
         void                        ProcessMesh(aiMesh *mesh, const aiScene *scene);
     };
-}
+}   // End of CG184
 
 
 #endif //CGENGINE_MESH_H

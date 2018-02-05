@@ -9,13 +9,13 @@
 namespace CG184
 {
 
-	Transform::Transform() :
-		m_Position(Vector3D(0)),
-		m_LocalPosition(Vector3D(0)),
-		m_Rotation(Quaternion()),
-		m_EulerAngles(Vector3D(0)),
-		m_LocalScale(Vector3D(1)),
-		isDirty(false)
+    Transform::Transform() :
+        m_Position(Vector3D(0)),
+        m_LocalPosition(Vector3D(0)),
+        m_Rotation(Quaternion()),
+        m_EulerAngles(Vector3D(0)),
+        m_LocalScale(Vector3D(1)),
+        isDirty(false)
     {
         UpdateLocalTransformMatrix();
     }
@@ -26,25 +26,25 @@ namespace CG184
         return m_LocalTransformMat;
     }
 
-	Matrix4D & Transform::GetWorldTransformMat()
-	{
-		return m_WorldTransformMat;
-	}
+    Matrix4D & Transform::GetWorldTransformMat()
+    {
+        return m_WorldTransformMat;
+    }
 
     void Transform::UpdateLocalTransformMatrix()
     {
-		m_LocalTransformMat = Matrix4D(1.0f);
-		
-		float angleInDeg;
-		Vector3D axis;
-		m_Rotation.ToAxisAngle(axis, angleInDeg);
-		angleInDeg = ToDegrees(angleInDeg);
-		if(axis.length() > 0.0f)
-			Rotate(m_LocalTransformMat, angleInDeg, axis);
+        m_LocalTransformMat = Matrix4D(1.0f);
         
-		Scale(m_LocalTransformMat, m_LocalScale.x, m_LocalScale.y, m_LocalScale.z);
+        float angleInDeg;
+        Vector3D axis;
+        m_Rotation.ToAxisAngle(axis, angleInDeg);
+        angleInDeg = ToDegrees(angleInDeg);
+        if(axis.length() > 0.0f)
+            Rotate(m_LocalTransformMat, angleInDeg, axis);
+        
+        Scale(m_LocalTransformMat, m_LocalScale.x, m_LocalScale.y, m_LocalScale.z);
         Translate(m_LocalTransformMat, m_LocalPosition.x, m_LocalPosition.y, m_LocalPosition.z);
-		isDirty = false;
+        isDirty = false;
     }
 
     Matrix4D Transform::Translate(Matrix4D& mat, float _x, float _y, float _z)
@@ -97,4 +97,4 @@ namespace CG184
         mat = scaleMat.multiply(mat);
         return mat;
     }
-}
+}   // End of CG184

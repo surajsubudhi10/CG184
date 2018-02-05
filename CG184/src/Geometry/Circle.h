@@ -27,11 +27,11 @@ namespace CG184
 
     private:
         float				m_Radius;
-		uint32_t			m_EdgeSegments;
+        uint32_t			m_EdgeSegments;
 
         void				InitMesh() override;
     };
-}
+}   // End of CG184
 
 
 #endif //CGENGINE_CIRCLE_H

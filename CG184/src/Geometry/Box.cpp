@@ -8,19 +8,19 @@ namespace CG184
 {
 
     Box::Box() 
-		: Mesh(), m_Width(1.0f), m_Height(1.0f), m_Depth(1.0f)
+        : Mesh(), m_Width(1.0f), m_Height(1.0f), m_Depth(1.0f)
     {
         InitMesh();
     }
 
     Box::Box(Box &a_Box)
-		: Mesh(), m_Width(a_Box.m_Width), m_Height(a_Box.m_Height), m_Depth(a_Box.m_Depth)
+        : Mesh(), m_Width(a_Box.m_Width), m_Height(a_Box.m_Height), m_Depth(a_Box.m_Depth)
     {
         InitMesh();
     }
 
     Box::Box(float width, float height, float depth) 
-		: Mesh(), m_Width(width), m_Height(height), m_Depth(depth)
+        : Mesh(), m_Width(width), m_Height(height), m_Depth(depth)
     {
         InitMesh();
     }
@@ -79,7 +79,7 @@ namespace CG184
         };
 
         SetPositions(vertPos);
-		SetColor(Vector3D(0.5f, 0.5f, 0.5f));
+        SetColor(Vector3D(0.5f, 0.5f, 0.5f));
         SetNormals(vertNorm);
         SetIndicies(vertIndices);
     }
@@ -87,4 +87,4 @@ namespace CG184
     Box::~Box()
     {
     }
-}
+}   // End of CG184

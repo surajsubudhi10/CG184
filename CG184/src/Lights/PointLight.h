@@ -7,7 +7,8 @@
 
 #include "Light.h"
 
-namespace CG184 {
+namespace CG184 
+{
     class PointLight : public Light
     {
     public:
@@ -19,7 +20,7 @@ namespace CG184 {
 
     private:
     };
-}
+}   // End of CG184
 
 
 #endif //CGENGINE_POINTLIGHT_H

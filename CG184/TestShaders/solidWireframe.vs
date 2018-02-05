@@ -6,10 +6,10 @@ layout (location = 3) in vec2 aTexCoord;
 
 //out vec4 vertCol;
 out VS_OUT {
-	vec4 pos;
-	vec3 col;
+    vec4 pos;
+    vec3 col;
     vec3 normal;
-	vec2 texCoord;
+    vec2 texCoord;
 } vs_out;
 
 
@@ -19,12 +19,12 @@ uniform mat4 projection;
 
 void main()
 {
-	mat3 normalMatrix = mat3(transpose(inverse(view * model)));
+    mat3 normalMatrix = mat3(transpose(inverse(view * model)));
     
-	vs_out.normal		= vec3(projection * vec4(normalMatrix * aNormal, 0.0));
-	vs_out.col			= aColor;
+    vs_out.normal		= vec3(projection * vec4(normalMatrix * aNormal, 0.0));
+    vs_out.col			= aColor;
     vs_out.pos			= projection * view * model * vec4(aPos, 1.0);
-	vs_out.texCoord		= vec2(0.0, 0.0); 
+    vs_out.texCoord		= vec2(0.0, 0.0); 
 
-	gl_Position = vs_out.pos;
+    gl_Position = vs_out.pos;
 }

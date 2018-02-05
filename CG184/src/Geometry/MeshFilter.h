@@ -31,7 +31,7 @@ namespace CG184
         inline GLuint&		GetVAO() { return m_VAO;}
         inline IndexBuffer* GetIBO() { return m_IBOPtr;}
         inline uint32_t		GetIndexCount() const { return m_IndexCount;}
-		inline Mesh*		GetMesh()		const { return m_MeshPtr; }
+        inline Mesh*		GetMesh()		const { return m_MeshPtr; }
 
         void				SetVertexBufferPositionData(const int& offset, const size_t& size, const void* data) const;
         void				SetVertexBufferColorData   (const int& offset, const size_t& size, const void* data) const;
@@ -47,18 +47,18 @@ namespace CG184
     private:
         GLuint				m_VAO;
         GLuint				m_VBO;
-		uint32_t			m_IndexCount;
+        uint32_t			m_IndexCount;
         
         Mesh*				m_MeshPtr;
         GLuint*				m_IndicesDataPtr;
-		IndexBuffer*		m_IBOPtr;
+        IndexBuffer*		m_IBOPtr;
     private:
-		void				InitIndexBuffer();
-		void				InitVertexArrayBuffer();
+        void				InitIndexBuffer();
+        void				InitVertexArrayBuffer();
         void				InitMeshData(uint32_t& numOfVert);
         void				InitGLBuffers();
         //void				UpdateGLBufferData();
     };
-}
+}   // End of CG184
 
 #endif //CGENGINE_MESHFILTER_H

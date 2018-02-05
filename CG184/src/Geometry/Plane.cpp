@@ -33,7 +33,7 @@ namespace CG184{
         std::vector<Vector3D> normals;
         std::vector<uint32_t> indicies;
 
-		uint32_t numOfVert = (m_XSegments + 1) * (m_YSegments + 1);
+        uint32_t numOfVert = (m_XSegments + 1) * (m_YSegments + 1);
 
 
         float dX = 1.0f / m_XSegments;
@@ -50,7 +50,7 @@ namespace CG184{
         }
 
         int maxIndex = -1;
-		uint32_t index = 0;
+        uint32_t index = 0;
         while(maxIndex != numOfVert - 1)
         {
             if(index % (m_XSegments + 1) != m_XSegments) {
@@ -72,4 +72,4 @@ namespace CG184{
         SetNormals(normals);
         SetIndicies(indicies);
     }
-}
+}   // End of CG184

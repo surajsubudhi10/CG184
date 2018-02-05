@@ -24,7 +24,7 @@ namespace CG184
 
         void				InitMesh() override;
     };
-}
+}   // End of CG184
 
 
 #endif //CGENGINE_BOX_H

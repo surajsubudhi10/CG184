@@ -15,28 +15,28 @@ namespace CG184 {
         ~Transform();
 
         Matrix4D& GetLocalTransformMat();
-		Matrix4D& GetWorldTransformMat();
+        Matrix4D& GetWorldTransformMat();
 
         Matrix4D Translate(Matrix4D& mat, float _x, float _y, float _z);
         Matrix4D Rotate(Matrix4D& mat, float angleInDeg, const Vector3D& axis);
         Matrix4D Scale(Matrix4D& mat, float sx, float sy, float sz);
 
-		bool isDirty;
+        bool isDirty;
 
     private:
         Vector3D			m_Position;
-		Quaternion			m_Rotation;
+        Quaternion			m_Rotation;
         Vector3D			m_LocalPosition;
         Vector3D			m_EulerAngles;
         Vector3D			m_LocalScale;
         
-		Matrix4D			m_LocalTransformMat;
-		Matrix4D			m_WorldTransformMat;
+        Matrix4D			m_LocalTransformMat;
+        Matrix4D			m_WorldTransformMat;
 
         void UpdateLocalTransformMatrix();
         friend class Node;
     };
-}
+}   // End of CG184
 
 
 #endif //CGENGINE_TRANSFORM_H

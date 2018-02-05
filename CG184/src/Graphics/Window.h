@@ -8,32 +8,34 @@
 #include <iostream>
 #include <memory>
 
-namespace CG184 {
+namespace CG184 
+{
 
-	class Window {
+    class Window 
+    {
 
-	public:
-		Window();
-		Window(int width, int height, const char* name);
+    public:
+        Window();
+        Window(int width, int height, const char* name);
 
-		//void			ProcessInput();
-		int				IfWindowClosed();
-		void			Update();
-		void			Close();
-		void			SetBGColor(float _r, float _g, float _b, float _a);
-		
-		~Window();
+        //void			ProcessInput();
+        int				IfWindowClosed();
+        void			Update();
+        void			Close();
+        void			SetBGColor(float _r, float _g, float _b, float _a);
+        
+        ~Window();
 
-	private:
-		void init();
+    private:
+        void init();
 
-	public:
-		int				m_width;
-		int				m_height;
-		const char*		m_WindowTitle;
-		GLFWwindow*		m_WindowPtr;
-	};
+    public:
+        int				m_width;
+        int				m_height;
+        const char*		m_WindowTitle;
+        GLFWwindow*		m_WindowPtr;
+    };
 
     typedef std::shared_ptr<Window> WindowPtr;
-}
+}   // End of CG184
 

@@ -46,13 +46,13 @@ int main()
 {
 
     WindowPtr window(new Window(SCR_WIDTH, SCR_HEIGHT, "CG184::In Development"));
-	glfwSetScrollCallback(window->m_WindowPtr, scroll_callback);
+    glfwSetScrollCallback(window->m_WindowPtr, scroll_callback);
 
     // ####################################### Camera ###############################################
 
     CameraPtr cam(new Camera());
     cam->SetAspectRatio((float)SCR_WIDTH / (float)SCR_HEIGHT);
-	cam->SetFOV(fov);
+    cam->SetFOV(fov);
 
     // ####################################### Lights ###############################################
 
@@ -86,45 +86,45 @@ int main()
     
 
     Box boxMesh;
-	//Shader boxShaderTemp("TestShaders/multipleLights.vs", "TestShaders/multipleLights.fs");
-	Shader boxShaderTemp("TestShaders/solidWireframe.vs", "TestShaders/solidWireframe.fs", "TestShaders/solidWireframe.gs");
-	Material boxMat(&boxShaderTemp);
-	boxMat.SetAmbient(Vector4D(0.5f, 0.1f, 0.1f, 1.0f));
+    //Shader boxShaderTemp("TestShaders/multipleLights.vs", "TestShaders/multipleLights.fs");
+    Shader boxShaderTemp("TestShaders/solidWireframe.vs", "TestShaders/solidWireframe.fs", "TestShaders/solidWireframe.gs");
+    Material boxMat(&boxShaderTemp);
+    boxMat.SetAmbient(Vector4D(0.5f, 0.1f, 0.1f, 1.0f));
     Renderer boxRenderer(&rockMesh, &boxMat);
 
     NodePtr box(new Node("box1"));
-	box->AttachComponent(&boxRenderer);
-	box->SetPosition(0.0, 0.0, 0.0);
+    box->AttachComponent(&boxRenderer);
+    box->SetPosition(0.0, 0.0, 0.0);
 
-	Renderer boxRenderer1(&boxMesh, &boxMat);
-	boxRenderer1.GetMaterial().SetAmbient(Vector4D(0.3f, 0.5f, 0.1f, 1.0f));
+    Renderer boxRenderer1(&boxMesh, &boxMat);
+    boxRenderer1.GetMaterial().SetAmbient(Vector4D(0.3f, 0.5f, 0.1f, 1.0f));
 
-	NodePtr box1(new Node("box2"));
-	box1->AttachComponent(&boxRenderer1);
-	box1->SetLocalScale(1.1, 1.1, 1.1);
-	box1->SetPosition(0.0, 0.0, 0.0);
+    NodePtr box1(new Node("box2"));
+    box1->AttachComponent(&boxRenderer1);
+    box1->SetLocalScale(1.1, 1.1, 1.1);
+    box1->SetPosition(0.0, 0.0, 0.0);
 
 
     Scene rootScene(cam);
-	rootScene.AddToScene(box);
-	//rootScene.AddToScene(box1);
+    rootScene.AddToScene(box);
+    //rootScene.AddToScene(box1);
     rootScene.AddLight(pointLight);
 
-	Input input(window, &rootScene);
+    Input input(window, &rootScene);
 
-	Vector3D radialVec = (cameraPos - cameraTarget).norm();
-	yaw   = ToDegrees(atan2f(radialVec.x, radialVec.z));
-	pitch = ToDegrees(atan2f(radialVec.y, sqrtf(powf(radialVec.x, 2) + powf(radialVec.z, 2))));
+    Vector3D radialVec = (cameraPos - cameraTarget).norm();
+    yaw   = ToDegrees(atan2f(radialVec.x, radialVec.z));
+    pitch = ToDegrees(atan2f(radialVec.y, sqrtf(powf(radialVec.x, 2) + powf(radialVec.z, 2))));
 
 
-	float angle = 0;
+    float angle = 0;
     while (!window->IfWindowClosed())
-	{
+    {
         // time handle
         auto currentFrame = (float)glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
-		angle += deltaTime * 1.0f;
+        angle += deltaTime * 1.0f;
 //		std::cout << "FPS : " << static_cast<int>(1.0f / deltaTime) << std::endl;
 
         KeyBoardEvents(window, input);
@@ -136,18 +136,18 @@ int main()
 //        box1->SetPosition(cameraTarget);
         //boxRenderer.GetMesh()->SetPosition(1, Vector3D(0.0f, (float)sin(angle), 0.0f));
 
-		rootScene.Render();
-		window->Update();
-	}
+        rootScene.Render();
+        window->Update();
+    }
 
-	return 0;
+    return 0;
 }
 
 
 void KeyBoardEvents(const WindowPtr window, Input& input)
 {
-	if (input.IsKeyPressed(GLFW_KEY_ESCAPE))
-		window->Close();
+    if (input.IsKeyPressed(GLFW_KEY_ESCAPE))
+        window->Close();
 
     if(input.IsKeyPressed(GLFW_KEY_SPACE)){
         cameraPos    = Vector3D(0.0f, 0.0f, 3.0f);
@@ -157,52 +157,52 @@ void KeyBoardEvents(const WindowPtr window, Input& input)
         yaw = pitch = 0.0;
     }
 
-	if (input.IsMouseButtonDown(GLFW_MOUSE_BUTTON_RIGHT)) {
-		auto cameraSpeed = (float)(2.5 * deltaTime);
-		Vector3D tempVec = cameraTarget - cameraPos;
-		if (input.IsKeyPressed(GLFW_KEY_W)) {
-			tempVec = (tempVec * cameraSpeed);
-			cameraPos = cameraPos + tempVec;
-			cameraTarget = cameraTarget + tempVec;
-		}
-		if (input.IsKeyPressed(GLFW_KEY_S)) {
-			tempVec = (tempVec * cameraSpeed);
-			cameraPos = cameraPos - tempVec;
-			cameraTarget = cameraTarget - tempVec;
-		}
-		if (input.IsKeyPressed(GLFW_KEY_A)) {
-			tempVec = ((tempVec.cross(cameraUp)).norm() * cameraSpeed);
-			cameraPos = cameraPos + tempVec;
-			cameraTarget = cameraTarget + tempVec;
-		}
+    if (input.IsMouseButtonDown(GLFW_MOUSE_BUTTON_RIGHT)) {
+        auto cameraSpeed = (float)(2.5 * deltaTime);
+        Vector3D tempVec = cameraTarget - cameraPos;
+        if (input.IsKeyPressed(GLFW_KEY_W)) {
+            tempVec = (tempVec * cameraSpeed);
+            cameraPos = cameraPos + tempVec;
+            cameraTarget = cameraTarget + tempVec;
+        }
+        if (input.IsKeyPressed(GLFW_KEY_S)) {
+            tempVec = (tempVec * cameraSpeed);
+            cameraPos = cameraPos - tempVec;
+            cameraTarget = cameraTarget - tempVec;
+        }
+        if (input.IsKeyPressed(GLFW_KEY_A)) {
+            tempVec = ((tempVec.cross(cameraUp)).norm() * cameraSpeed);
+            cameraPos = cameraPos + tempVec;
+            cameraTarget = cameraTarget + tempVec;
+        }
 
-		if (input.IsKeyPressed(GLFW_KEY_E)) {
-			tempVec = (Vector3D::Up * cameraSpeed);
-			cameraPos = cameraPos - tempVec;
-			cameraTarget = cameraTarget - tempVec;
-		}
-		if (input.IsKeyPressed(GLFW_KEY_Q)) {
-			tempVec = (Vector3D::Up * cameraSpeed);
-			cameraPos = cameraPos + tempVec;
-			cameraTarget = cameraTarget + tempVec;
-		}
+        if (input.IsKeyPressed(GLFW_KEY_E)) {
+            tempVec = (Vector3D::Up * cameraSpeed);
+            cameraPos = cameraPos - tempVec;
+            cameraTarget = cameraTarget - tempVec;
+        }
+        if (input.IsKeyPressed(GLFW_KEY_Q)) {
+            tempVec = (Vector3D::Up * cameraSpeed);
+            cameraPos = cameraPos + tempVec;
+            cameraTarget = cameraTarget + tempVec;
+        }
 
-		if (input.IsKeyPressed(GLFW_KEY_D)) {
-			tempVec = ((tempVec.cross(cameraUp)).norm() * cameraSpeed);
-			cameraPos = cameraPos - tempVec;
-			cameraTarget = cameraTarget - tempVec;
-		}
-	}
+        if (input.IsKeyPressed(GLFW_KEY_D)) {
+            tempVec = ((tempVec.cross(cameraUp)).norm() * cameraSpeed);
+            cameraPos = cameraPos - tempVec;
+            cameraTarget = cameraTarget - tempVec;
+        }
+    }
 }
 
 void MouseEvents(const WindowPtr window, Input& input, float deltaTime)
 {
-	if (input.IsKeyPressed(GLFW_KEY_LEFT_ALT)) {
-		ProcessMouseButtons(input);
-		ProcessMouseMotion(input.mousePosition);
-	}else if (input.IsMouseButtonDown(GLFW_MOUSE_BUTTON_LEFT)) {
-		input.ProcessSelection();
-	}
+    if (input.IsKeyPressed(GLFW_KEY_LEFT_ALT)) {
+        ProcessMouseButtons(input);
+        ProcessMouseMotion(input.mousePosition);
+    }else if (input.IsMouseButtonDown(GLFW_MOUSE_BUTTON_LEFT)) {
+        input.ProcessSelection();
+    }
 }
 
 void ProcessMouseButtons(Input& input)
@@ -262,12 +262,12 @@ void ProcessMouseMotion( Vector2D mousePosition)
 
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
-	Vector3D forwardDir = (cameraPos - cameraTarget);
-	float r = forwardDir.length();
-	forwardDir.normalize();
-	r -= yoffset * 0.1f;
-	if (r < 0.1f)
-		r = 0.1f;
+    Vector3D forwardDir = (cameraPos - cameraTarget);
+    float r = forwardDir.length();
+    forwardDir.normalize();
+    r -= yoffset * 0.1f;
+    if (r < 0.1f)
+        r = 0.1f;
 
-	cameraPos = cameraTarget + (forwardDir * r);
+    cameraPos = cameraTarget + (forwardDir * r);
 }

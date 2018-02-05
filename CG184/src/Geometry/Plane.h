@@ -18,12 +18,12 @@ namespace CG184 {
         ~Plane();
 
     private:
-		uint32_t		m_XSegments;
-		uint32_t		m_YSegments;
+        uint32_t		m_XSegments;
+        uint32_t		m_YSegments;
 
         void			InitMesh() override;
     };
-}
+}   // End of CG184
 
 
 #endif //CGENGINE_PLANE_H

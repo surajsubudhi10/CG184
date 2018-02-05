@@ -33,7 +33,7 @@ namespace CG184
         uint32_t			m_TubeSegments;
         uint32_t			m_TorusSegments;
     };
-}
+}   // End of CG184
 
 
 #endif //CGENGINE_TORUS_H

@@ -13,28 +13,28 @@ namespace CG184
     MeshFilter::MeshFilter(Mesh* a_Mesh)
     {
         m_MeshPtr = a_Mesh;
-		InitVertexArrayBuffer();
+        InitVertexArrayBuffer();
         if(m_MeshPtr != nullptr) {
             uint32_t vertexNumber = 0;
             InitMeshData(vertexNumber);
             InitGLBuffers();
-			InitIndexBuffer();
+            InitIndexBuffer();
         } else
             throw "(Null Exception) Mesh is a null Pointer.";
     }
 
-	MeshFilter::MeshFilter(const MeshFilter& a_MeshFilter) : m_MeshPtr(a_MeshFilter.m_MeshPtr)
-	{
-		InitVertexArrayBuffer();
-		if (m_MeshPtr != nullptr) {
+    MeshFilter::MeshFilter(const MeshFilter& a_MeshFilter) : m_MeshPtr(a_MeshFilter.m_MeshPtr)
+    {
+        InitVertexArrayBuffer();
+        if (m_MeshPtr != nullptr) {
             uint32_t vertexNumber = 0;
             InitMeshData(vertexNumber);
-			InitGLBuffers();
-			InitIndexBuffer();
-		}
-		else
-			throw "(Null Exception) Mesh is a null Pointer.";
-	}
+            InitGLBuffers();
+            InitIndexBuffer();
+        }
+        else
+            throw "(Null Exception) Mesh is a null Pointer.";
+    }
 
     void MeshFilter::InitMeshData(uint32_t& numOfVert)
     {
@@ -51,7 +51,7 @@ namespace CG184
     {
         UpdateBufferSize();
         BindVertexObjects();
-		uint32_t numOfVert = m_MeshPtr->m_NumOfVert;
+        uint32_t numOfVert = m_MeshPtr->m_NumOfVert;
 
         glVertexAttribPointer( SHADER_VERTEX_INDEX, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
         glVertexAttribPointer(  SHADER_COLOR_INDEX, 3, GL_FLOAT, GL_FALSE, 0, (void*)(numOfVert * 3 * sizeof(float)));
@@ -63,30 +63,30 @@ namespace CG184
         glEnableVertexAttribArray( SHADER_NORMAL_INDEX);
         glEnableVertexAttribArray(SHADER_TEXCORD_INDEX);
 
-		if (m_MeshPtr->IsDirty()) {
-			m_MeshPtr->Update();
-		}
-		
-		if (numOfVert > 0) {
-			SetVertexBufferPositionData	(0, numOfVert, &m_MeshPtr->m_VertPosition[0]);
-			SetVertexBufferColorData	(0, numOfVert, &m_MeshPtr->m_VertColor[0]);
-			SetVertexBufferNormalData	(0, numOfVert, &m_MeshPtr->m_VertNormal[0]);
-			SetVertexBufferUVData		(0, numOfVert, &m_MeshPtr->m_VertTexCoord[0]);
-		}
+        if (m_MeshPtr->IsDirty()) {
+            m_MeshPtr->Update();
+        }
+        
+        if (numOfVert > 0) {
+            SetVertexBufferPositionData	(0, numOfVert, &m_MeshPtr->m_VertPosition[0]);
+            SetVertexBufferColorData	(0, numOfVert, &m_MeshPtr->m_VertColor[0]);
+            SetVertexBufferNormalData	(0, numOfVert, &m_MeshPtr->m_VertNormal[0]);
+            SetVertexBufferUVData		(0, numOfVert, &m_MeshPtr->m_VertTexCoord[0]);
+        }
     }
 
-	void MeshFilter::InitVertexArrayBuffer()
-	{
-		glGenVertexArrays(1, &m_VAO);
-		glGenBuffers(1, &m_VBO);
-	}
+    void MeshFilter::InitVertexArrayBuffer()
+    {
+        glGenVertexArrays(1, &m_VAO);
+        glGenBuffers(1, &m_VBO);
+    }
 
-	void MeshFilter::InitIndexBuffer()
-	{
-		BindVertexObjects();
-		m_IBOPtr = new IndexBuffer(m_IndicesDataPtr, m_IndexCount);
-		UnBindVertexObjects();
-	}
+    void MeshFilter::InitIndexBuffer()
+    {
+        BindVertexObjects();
+        m_IBOPtr = new IndexBuffer(m_IndicesDataPtr, m_IndexCount);
+        UnBindVertexObjects();
+    }
 
     MeshFilter::~MeshFilter()
     {
@@ -98,9 +98,6 @@ namespace CG184
 
         delete m_IBOPtr;
         m_IBOPtr = nullptr;
-        
-        //delete m_MeshPtr;
-        //m_MeshPtr = nullptr;
     }
 
     void MeshFilter::SetVertexBufferPositionData(const int& offset, const size_t& size, const void* data) const{
@@ -116,7 +113,7 @@ namespace CG184
     }
 
     void MeshFilter::SetVertexBufferUVData(const int &offset, const size_t &size, const void *data) const {
-		glBufferSubData(GL_ARRAY_BUFFER, sizeof(GLfloat) * (3 + 3 + 3 + offset) * m_MeshPtr->m_NumOfVert, sizeof(GLfloat) * 3 * size, data);
+        glBufferSubData(GL_ARRAY_BUFFER, sizeof(GLfloat) * (3 + 3 + 3 + offset) * m_MeshPtr->m_NumOfVert, sizeof(GLfloat) * 3 * size, data);
     }
 
     void MeshFilter::BindVertexObjects() const {
@@ -138,23 +135,23 @@ namespace CG184
     void MeshFilter::UpdateVertexBuffer() const {
         if(m_MeshPtr->IsDirty()){
             uint32_t numOfVert = m_MeshPtr->m_NumOfVert;
-			if (numOfVert > 0) {
-				SetVertexBufferPositionData	(0, numOfVert, &m_MeshPtr->m_VertPosition[0]);
-				SetVertexBufferColorData	(0, numOfVert, &m_MeshPtr->m_VertColor[0]);
-				SetVertexBufferNormalData	(0, numOfVert, &m_MeshPtr->m_VertNormal[0]);
-				SetVertexBufferUVData		(0, numOfVert, &m_MeshPtr->m_VertTexCoord[0]);
-			}
+            if (numOfVert > 0) {
+                SetVertexBufferPositionData	(0, numOfVert, &m_MeshPtr->m_VertPosition[0]);
+                SetVertexBufferColorData	(0, numOfVert, &m_MeshPtr->m_VertColor[0]);
+                SetVertexBufferNormalData	(0, numOfVert, &m_MeshPtr->m_VertNormal[0]);
+                SetVertexBufferUVData		(0, numOfVert, &m_MeshPtr->m_VertTexCoord[0]);
+            }
             m_MeshPtr->m_IsDirty = false;
         }
     }
 
     void MeshFilter::AttachMesh(Mesh* a_Mesh)
     {
-		if (m_MeshPtr != nullptr)
-		{
+        if (m_MeshPtr != nullptr)
+        {
             if(m_MeshPtr->IsDirty())
             {
-			    if (m_MeshPtr->m_NumOfVert != a_Mesh->m_NumOfVert)
+                if (m_MeshPtr->m_NumOfVert != a_Mesh->m_NumOfVert)
                 {
                     m_MeshPtr->m_NumOfVert = a_Mesh->m_NumOfVert;
                     InitGLBuffers();
@@ -169,10 +166,10 @@ namespace CG184
                     m_IBOPtr->AddIndexBufferData(m_IndicesDataPtr, m_IndexCount);
                 }
 
-			}
+            }
 
-		}
-		
+        }
+        
         m_MeshPtr = a_Mesh;
     }
-}
+}   // End of CG184

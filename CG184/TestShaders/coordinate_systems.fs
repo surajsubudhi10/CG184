@@ -13,17 +13,17 @@ uniform sampler2D SpecularMap;
 
 void main()
 {
-	// linearly interpolate between both textures
-	vec4 texColor;
-	if(textured)
-	{
-		texColor = mix(texture(DiffuseMap, TexCoord), texture(SpecularMap, TexCoord), mixValue) * vec4(ourColor, 1.0);
-	}
-	else
-	{
-		texColor = vec4(ourColor, 1.0);
-	}
+    // linearly interpolate between both textures
+    vec4 texColor;
+    if(textured)
+    {
+        texColor = mix(texture(DiffuseMap, TexCoord), texture(SpecularMap, TexCoord), mixValue) * vec4(ourColor, 1.0);
+    }
+    else
+    {
+        texColor = vec4(ourColor, 1.0);
+    }
 
-	FragColor = texColor;
-	//FragColor = texture(texture1, TexCoord);
+    FragColor = texColor;
+    //FragColor = texture(texture1, TexCoord);
 }

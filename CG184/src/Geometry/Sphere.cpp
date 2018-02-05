@@ -16,29 +16,29 @@ namespace CG184
 
     Sphere::Sphere(Sphere &a_Sphere) :
             Mesh(), m_Radius(a_Sphere.m_Radius),
-			m_XSegments(a_Sphere.m_XSegments),
-			m_YSegments(a_Sphere.m_YSegments)
+            m_XSegments(a_Sphere.m_XSegments),
+            m_YSegments(a_Sphere.m_YSegments)
     {
         InitMesh();
     }
 
     Sphere::Sphere(float rad, uint32_t xSeg, uint32_t ySeg):
             Mesh(), m_Radius(rad),
-			m_XSegments(xSeg),
-			m_YSegments(ySeg)
+            m_XSegments(xSeg),
+            m_YSegments(ySeg)
     {
         InitMesh();
     }
 
     void Sphere::SetRadius(float rad)
     {
-		m_Radius = rad;
+        m_Radius = rad;
     }
 
     void Sphere::SetSegments(uint32_t xSeg, uint32_t ySeg)
     {
-		m_XSegments = xSeg;
-		m_YSegments = ySeg;
+        m_XSegments = xSeg;
+        m_YSegments = ySeg;
     }
 
     Sphere::~Sphere()
@@ -75,7 +75,7 @@ namespace CG184
                 indicies.push_back((y + 1) * (m_XSegments + 1) + x);
                 indicies.push_back(y       * (m_XSegments + 1) + x);
                 indicies.push_back(y       * (m_XSegments + 1) + x + 1);
-											  
+                                              
                 indicies.push_back((y + 1) * (m_XSegments + 1) + x);
                 indicies.push_back(y       * (m_XSegments + 1) + x + 1);
                 indicies.push_back((y + 1) * (m_XSegments + 1) + x + 1);
@@ -87,4 +87,4 @@ namespace CG184
         SetUVs(texCoord);
         SetIndicies(indicies);
     }
-}
+}   // End of CG184

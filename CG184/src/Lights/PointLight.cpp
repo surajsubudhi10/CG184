@@ -27,4 +27,4 @@ namespace CG184
         m_DiffuseColor		= pointLight.m_DiffuseColor;
         m_SpecularColor		= pointLight.m_SpecularColor;
     }
-}
+}   // End of CG184

@@ -32,14 +32,14 @@ namespace CG184
         void					SetPosition(const Vector3D& pos);
         void					SetLocalScale(float _x, float _y, float _z);
         void					SetLocalEulerAngle(float _x, float _y, float _z);
-		void					SetRotation(float angle, Vector3D axis);
-		inline void				SetName(const char* name){m_NodeName = name;}
+        void					SetRotation(float angle, Vector3D axis);
+        inline void				SetName(const char* name){m_NodeName = name;}
 
         Node*					GetParent();
-		uint32_t				GetNumOfChildNode();
+        uint32_t				GetNumOfChildNode();
         std::shared_ptr<Node>	GetChildNodeAt(uint32_t index);
-		const Transform&		GetWorldTransform();
-		inline Transform&		GetTransformComponent() { return m_Transform; }
+        const Transform&		GetWorldTransform();
+        inline Transform&		GetTransformComponent() { return m_Transform; }
         inline int				GetInstanceID(){ return m_InstanceID;}
         inline std::string		GetName(){ return m_NodeName;}
         
@@ -58,7 +58,7 @@ namespace CG184
         Transform								m_Transform;
     private:
 
-		std::string								m_NodeName;
+        std::string								m_NodeName;
         const int								m_InstanceID;
 
         std::vector<std::shared_ptr<Node>>		m_ChildNodesPtr;
@@ -71,7 +71,7 @@ namespace CG184
 
     typedef std::shared_ptr<Node> NodePtr;
 
-}
+}   // End of CG184
 
 
 #endif //CGENGINE_NODE_H

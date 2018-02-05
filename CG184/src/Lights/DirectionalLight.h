@@ -7,7 +7,8 @@
 
 #include "Light.h"
 
-namespace CG184 {
+namespace CG184 
+{
     class DirectionalLight : public Light
     {
     public:
@@ -22,7 +23,7 @@ namespace CG184 {
     private:
         Vector3D				m_Direction;
     };
-}
+}   // End of CG184
 
 
 #endif //CGENGINE_DIRECTIONALLIGHT_H

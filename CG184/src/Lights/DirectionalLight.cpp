@@ -37,4 +37,4 @@ namespace CG184
     }
 
     DirectionalLight::~DirectionalLight() = default;
-}
+}   // End of CG184

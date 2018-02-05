@@ -7,8 +7,8 @@ struct Material {
     vec4 ambient;
     vec4 diffuse;
     vec4 specular;
-	vec4 emission;
-	float shininess;
+    vec4 emission;
+    float shininess;
 };
 
 struct Light {
@@ -17,7 +17,7 @@ struct Light {
     vec4 ambient;
     vec4 diffuse;
     vec4 specular;
-	vec3 attenuation;
+    vec3 attenuation;
 };
 
 
@@ -30,17 +30,17 @@ uniform Light light[NR_POINT_LIGHTS];
 
 vec4 product(vec4 a, vec4 b)
 {
-	return vec4(a.x * b.x, a.y * b.y, a.z * b.z, a.w * b.w);
+    return vec4(a.x * b.x, a.y * b.y, a.z * b.z, a.w * b.w);
 }
 
 vec4 max_to_one(vec4 col)
 {
-	float max_val = max(col.x, max(col.y, col.z));
-	if(max_val > 1.0){
-		return vec4(col.x / max_val, col.y / max_val, col.z / max_val, 1.0);
-	}else{
-		return col;
-	}
+    float max_val = max(col.x, max(col.y, col.z));
+    if(max_val > 1.0){
+        return vec4(col.x / max_val, col.y / max_val, col.z / max_val, 1.0);
+    }else{
+        return col;
+    }
 }
 
 vec4 CalculatePointLight(Light _light, vec3 _normal, vec3 _fragPos, vec3 _viewPos);
@@ -71,8 +71,8 @@ vec4 CalculatePointLight(Light _light, vec3 _normal, vec3 _fragPos, vec3 _viewPo
     float intensity = GetIntensity(_light.attenuation, dis);
     vec3 lightDir   = normalize(_light.position.xyz - _fragPos);
     if (_light.position.w == 0){
-    	lightDir = _light.position.xyz;
-    	intensity = 1.0;
+        lightDir = _light.position.xyz;
+        intensity = 1.0;
     }
 
     float Kd     = max(dot(norm, lightDir), 0.0);

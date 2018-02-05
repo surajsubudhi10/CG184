@@ -9,14 +9,15 @@
 #include "../Maths/Vector3D.h"
 #include "../Maths/Maths.h"
 
-namespace CG184 {
+namespace CG184 
+{
 
-	enum LightType
-	{
-		Point,
-		SpotLight,
-		DirectionalLight,
-	};
+    enum LightType
+    {
+        Point,
+        SpotLight,
+        DirectionalLight,
+    };
 
     class Light {
 
@@ -28,16 +29,16 @@ namespace CG184 {
         virtual ~Light();
 
     public:
-		inline Color				GetPosition()		{ return m_Position; }
-		inline Color				GetDiffuseColor()	{ return m_DiffuseColor;  }
-		inline Color				GetSpecularColor()	{ return m_SpecularColor; }
-		inline Color				GetAmbientColor()	{ return m_AmbientColor; }
-		inline Vector3D				GetAttenuation ()	{ return m_Attenuation;  }
+        inline Color				GetPosition()		{ return m_Position; }
+        inline Color				GetDiffuseColor()	{ return m_DiffuseColor;  }
+        inline Color				GetSpecularColor()	{ return m_SpecularColor; }
+        inline Color				GetAmbientColor()	{ return m_AmbientColor; }
+        inline Vector3D				GetAttenuation ()	{ return m_Attenuation;  }
 
-		inline void					SetPosition(const Vector4D& pos)	{ m_Position = pos; }
-		inline void					SetDiffuseColor (const Color& col)	{ m_DiffuseColor  = col; }
-		inline void					SetSpecularColor(const Color& col)	{ m_SpecularColor = col; }
-		inline void					SetAmbientColor (const Color& col)	{ m_AmbientColor  = col; }
+        inline void					SetPosition(const Vector4D& pos)	{ m_Position = pos; }
+        inline void					SetDiffuseColor (const Color& col)	{ m_DiffuseColor  = col; }
+        inline void					SetSpecularColor(const Color& col)	{ m_SpecularColor = col; }
+        inline void					SetAmbientColor (const Color& col)	{ m_AmbientColor  = col; }
 
     protected:
         Color						m_AmbientColor;
@@ -45,13 +46,13 @@ namespace CG184 {
         Color						m_SpecularColor;
 
         Vector4D					m_Position;
-		Vector3D					m_Attenuation;
+        Vector3D					m_Attenuation;
 
-		LightType					m_Type;
+        LightType					m_Type;
     };
 
     typedef std::shared_ptr<Light> LightPtr;
-}
+}   // End of CG184
 
 
 #endif //CGENGINE_LIGHT_H
