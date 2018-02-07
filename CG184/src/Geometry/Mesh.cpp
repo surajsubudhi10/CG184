@@ -27,10 +27,12 @@ namespace CG184
         m_VertPosition = a_Pos;
 
         for(uint32_t i = 0; i < a_Pos.size(); i++){
-            m_VertColor.emplace_back(0.2f, 0.2f, 0.2f);
+            m_VertColor.emplace_back(0.5f, 0.5f, 0.5f);
             m_VertNormal.emplace_back(0.0f, 1.0f, 0.0f);
             m_VertTexCoord.emplace_back(0.0f, 0.0f);
         }
+
+        BuildHalfEdgeMesh();
     }
 
     Mesh::Mesh(Mesh *pMesh)
@@ -44,6 +46,8 @@ namespace CG184
         m_VertColor		= pMesh->m_VertColor;
         m_VertNormal	= pMesh->m_VertNormal;
         m_VertTexCoord	= pMesh->m_VertTexCoord;
+
+        BuildHalfEdgeMesh();
     }
 
 
@@ -213,13 +217,32 @@ namespace CG184
         m_VertTexCoord  = pMesh.m_VertTexCoord;
     }
 
+    void Mesh::BuildHalfEdgeMesh()
+    {
+        vector<vector<size_t>> indexVec;
+        for (uint32_t i = 0; i < m_Indices.size() / 3; i++)
+        {
+            vector<size_t> tempVec;
+            tempVec.push_back(m_Indices[(i * 3) + 0]);
+            tempVec.push_back(m_Indices[(i * 3) + 1]);
+            tempVec.push_back(m_Indices[(i * 3) + 2]);
+
+            indexVec.push_back(tempVec);
+        }
+
+        mesh.build(indexVec, m_VertPosition);
+    }
+
     void Mesh::LoadModel(const std::string &modelPath)
     {
         Assimp::Importer importer;
         const aiScene* scene = importer.ReadFile(modelPath,
-                                                 aiProcess_Triangulate | aiProcess_FlipUVs |
-                                                 aiProcess_GenNormals | aiProcess_OptimizeMeshes |
-                                                         aiProcess_JoinIdenticalVertices);
+                                                    aiProcess_Triangulate | 
+                                                    aiProcess_OptimizeMeshes |
+                                                    aiProcess_JoinIdenticalVertices |
+                                                    aiProcess_RemoveComponent);
+
+        //scene = importer.ApplyPostProcessing(aiProcess_RemoveComponent);
         
         if(!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) // if is Not Zero
         {
@@ -235,8 +258,10 @@ namespace CG184
         
         m_NumOfVert = static_cast<uint32_t >(m_VertPosition.size());
         std::cout << "Num of Vertices : " << m_NumOfVert << std::endl;
+
+        BuildHalfEdgeMesh();
     }
-    
+
     // processes a node in a recursive fashion. Processes each individual mesh located at the node and repeats this process on its children nodes (if any).
     void Mesh::ProcessNode(aiNode *node, const aiScene *scene)
     {
@@ -275,11 +300,18 @@ namespace CG184
             m_VertColor.emplace_back(0.5f, 0.5f, 0.5f);
             
             // normals
-            tempVec.x = mesh->mNormals[i].x;
-            tempVec.y = mesh->mNormals[i].y;
-            tempVec.z = mesh->mNormals[i].z;
-            m_VertNormal.push_back(tempVec);
-            
+            if (mesh->mNormals) // does the mesh contain Normal
+            {
+                tempVec.x = mesh->mNormals[i].x;
+                tempVec.y = mesh->mNormals[i].y;
+                tempVec.z = mesh->mNormals[i].z;
+                m_VertNormal.push_back(tempVec);
+            }
+            else 
+            {
+                m_VertNormal.emplace_back(0.0f, 0.0f, 0.0f);
+            }
+
             // texture coordinates
             if(mesh->mTextureCoords[0]) // does the mesh contain texture coordinates?
             {

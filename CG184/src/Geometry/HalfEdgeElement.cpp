@@ -32,31 +32,30 @@ namespace CG184
         return halfedge()->face()->isBoundary();
     }
 
-    void HalfEdgeMesh::build(const vector< vector<Index> >& polygons,
-        const vector<Vector3D>& vertexPositions)
-        // This method initializes the halfedge data structure from a raw list of polygons,
-        // where each input polygon is specified as a list of vertex indices.  The input
-        // must describe a manifold, oriented surface, where the orientation of a polygon
-        // is determined by the order of vertices in the list.  Polygons must have at least
-        // three vertices.  Note that there are no special conditions on the vertex indices,
-        // i.e., they do not have to start at 0 or 1, nor does the collection of indices have
-        // to be contiguous.  Overall, this initializer is designed to be robust but perhaps
-        // not incredibly fast (though of course this does not affect the performance of the
-        // resulting data structure).  One could also implement faster initializers that
-        // handle important special cases (e.g., all triangles, or data that is known to be
-        // manifold).
-        //
-        // Since there are no strong conditions on the indices of polygons, we assume that
-        // the list of vertex positions is given in lexicographic order (i.e., that the
-        // lowest index appearing in any polygon corresponds to the first entry of the list
-        // of positions and so on).
+    // This method initializes the halfedge data structure from a raw list of polygons,
+    // where each input polygon is specified as a list of vertex indices.  The input
+    // must describe a manifold, oriented surface, where the orientation of a polygon
+    // is determined by the order of vertices in the list.  Polygons must have at least
+    // three vertices.  Note that there are no special conditions on the vertex indices,
+    // i.e., they do not have to start at 0 or 1, nor does the collection of indices have
+    // to be contiguous.  Overall, this initializer is designed to be robust but perhaps
+    // not incredibly fast (though of course this does not affect the performance of the
+    // resulting data structure).  One could also implement faster initializers that
+    // handle important special cases (e.g., all triangles, or data that is known to be
+    // manifold).
+    //
+    // Since there are no strong conditions on the indices of polygons, we assume that
+    // the list of vertex positions is given in lexicographic order (i.e., that the
+    // lowest index appearing in any polygon corresponds to the first entry of the list
+    // of positions and so on).
+    void HalfEdgeMesh::build(const vector< vector<Index> >& polygons, const vector<Vector3D>& vertexPositions)
     {
         // define some types, to improve readability
-        typedef vector<Index> IndexList;
-        typedef IndexList::const_iterator IndexListCIter;
-        typedef vector<IndexList> PolygonList;
-        typedef PolygonList::const_iterator PolygonListCIter;
-        typedef pair<Index, Index> IndexPair; // ordered pair of vertex indices, corresponding to an edge of an oriented polygon
+        typedef vector<Index>					IndexList;
+        typedef IndexList::const_iterator		IndexListCIter;
+        typedef vector<IndexList>				PolygonList;
+        typedef PolygonList::const_iterator		PolygonListCIter;
+        typedef pair<Index, Index>				IndexPair; // ordered pair of vertex indices, corresponding to an edge of an oriented polygon
 
         // Clear any existing elements.
         halfedges.clear();
@@ -146,22 +145,21 @@ namespace CG184
         Size nFaces = polygons.size();
         faces.resize(nFaces); // allocate storage for faces in our new mesh
 
-                              // We will store a map from ordered pairs of vertex indices to
-                              // the corresponding halfedge object in our new (halfedge) mesh;
-                              // this map gets constructed during the next loop over polygons.
+        // We will store a map from ordered pairs of vertex indices to
+        // the corresponding halfedge object in our new (halfedge) mesh;
+        // this map gets constructed during the next loop over polygons.
         map<IndexPair, HalfEdgeIter> pairToHalfEdge;
 
         // Next, we actually build the halfedge connectivity by again looping over polygons
         PolygonListCIter p;
         FaceIter f;
-        for (p = polygons.begin(), f = faces.begin();
-            p != polygons.end();
-            p++, f++)
+        
+        for (p = polygons.begin(), f = faces.begin(); p != polygons.end(); p++, f++)
         {
             vector<HalfEdgeIter> faceHalfEdges; // cyclically ordered list of the half edges of this face
             Size degree = p->size(); // number of vertices in this polygon
 
-                                     // loop over the halfedges of this face (equivalently, the ordered pairs of consecutive vertices)
+            // loop over the halfedges of this face (equivalently, the ordered pairs of consecutive vertices)
             for (Index i = 0; i < degree; i++)
             {
                 Index a = (*p)[i]; // current index
@@ -226,6 +224,8 @@ namespace CG184
                     hab->twin() = halfedges.end();
                 }
 
+                //f->id = faceIndex;
+
             } // end loop over the current polygon's halfedges
 
               // Now that all the halfedges of this face have been allocated,
@@ -273,8 +273,8 @@ namespace CG184
                 FaceIter b = newBoundary();
                 vector<HalfEdgeIter> boundaryHalfEdges; // keep a list of halfedges along the boundary, so we can link them together
 
-                                                        // We now need to walk around the boundary, creating new
-                                                        // halfedges and edges along the boundary loop as we go.
+                // We now need to walk around the boundary, creating new
+                // halfedges and edges along the boundary loop as we go.
                 HalfEdgeIter i = h;
                 do
                 {
@@ -333,6 +333,14 @@ namespace CG184
             v->halfedge() = v->halfedge()->twin()->next();
         }
 
+        // Assigning id to each faces which are not boundry faces
+        Index faceIndex = 0;
+        for (FaceIter f = facesBegin(); f != facesEnd(); f++, faceIndex++) 
+        {
+            if(!f->isBoundary())
+                f->id = faceIndex;
+        }
+
         // Finally, we check that all vertices are manifold.
         for (VertexIter v = vertices.begin(); v != vertices.end(); v++)
         {
@@ -385,10 +393,27 @@ namespace CG184
 
             // set the position of this vertex to the corresponding position in the input
             v->position = vertexPositions[i];
+            v->id       = e->first;
+
             i++;
         }
 
     } // end HalfEdgeMesh::build()
+
+    void HalfEdgeMesh::GetIndexArray(vector<uint32_t>& indices)
+    {
+        for (FaceCIter f = facesBegin(); f != facesEnd(); f++)
+        {
+            VertexCIter v0 = f->halfedge()->vertex();
+            VertexCIter v1 = f->halfedge()->next()->vertex();
+            VertexCIter v2 = f->halfedge()->next()->next()->vertex();
+
+            indices.push_back(v0->id);
+            indices.push_back(v1->id);
+            indices.push_back(v2->id);
+        }
+    }
+
 
     const HalfEdgeMesh& HalfEdgeMesh :: operator=(const HalfEdgeMesh& mesh)
         // The assignment operator does a "deep" copy of the halfedge mesh data structure; in
@@ -431,10 +456,10 @@ namespace CG184
             he->edge() = edgeOldToNew[he->edge()];
             he->face() = faceOldToNew[he->face()];
         }
-        for (VertexIter v = verticesBegin(); v != verticesEnd(); v++) v->halfedge() = halfedgeOldToNew[v->halfedge()];
-        for (EdgeIter e = edgesBegin(); e != edgesEnd(); e++) e->halfedge() = halfedgeOldToNew[e->halfedge()];
-        for (FaceIter f = facesBegin(); f != facesEnd(); f++) f->halfedge() = halfedgeOldToNew[f->halfedge()];
-        for (FaceIter b = boundariesBegin(); b != boundariesEnd(); b++) b->halfedge() = halfedgeOldToNew[b->halfedge()];
+        for (VertexIter v   = verticesBegin();   v != verticesEnd();    v++) v->halfedge() = halfedgeOldToNew[v->halfedge()];
+        for (EdgeIter   e   = edgesBegin();      e != edgesEnd();       e++) e->halfedge() = halfedgeOldToNew[e->halfedge()];
+        for (FaceIter   f   = facesBegin();      f != facesEnd();       f++) f->halfedge() = halfedgeOldToNew[f->halfedge()];
+        for (FaceIter   b   = boundariesBegin(); b != boundariesEnd();  b++) b->halfedge() = halfedgeOldToNew[b->halfedge()];
 
         // Return a reference to the new mesh.
         return *this;

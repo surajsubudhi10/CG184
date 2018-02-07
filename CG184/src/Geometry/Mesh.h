@@ -16,10 +16,12 @@
 #include "../Maths/Vector3D.h"
 #include "../Maths/Vector2D.h"
 #include "../Scene/Componet.h"
+#include "HalfEdgeElement.h"
 
 
 namespace CG184 
 {
+
     class Mesh
     {
     public:
@@ -49,6 +51,7 @@ namespace CG184
         void						Update();
         void						SetIndicies(std::vector<uint32_t>a_Ind);
         void                        LoadModel(const std::string &modelPath);
+        void                        BuildHalfEdgeMesh();
 
         friend class MeshFilter;
     protected:
@@ -65,7 +68,8 @@ namespace CG184
         std::vector<Vector3D>		m_VertNormal;
         std::vector<Vector2D>		m_VertTexCoord;
         std::vector<uint32_t>		m_Indices;
-    
+        HalfEdgeMesh                mesh;
+
         void                        ProcessNode(aiNode *node, const aiScene *scene);
         void                        ProcessMesh(aiMesh *mesh, const aiScene *scene);
     };

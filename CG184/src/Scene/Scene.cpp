@@ -15,6 +15,9 @@ namespace CG184
 
     void Scene::Render()
     {
+        // Rendering the anchor every frame
+        CreateAnchor();
+
         for (auto &m_Node : m_RenderQueue) {
             m_Node->UpdateWorldModelMatrix();
         }
@@ -56,32 +59,35 @@ namespace CG184
 
     void Scene::CreateAnchor()
     {
-        std::vector<Vector3D> pos
-        {
-            Vector3D(0, 0, 0), Vector3D(1, 0, 0),
-            Vector3D(0, 0, 0), Vector3D(0, 1, 0),
-            Vector3D(0, 0, 0), Vector3D(0, 0, 1)
-        };
+        Matrix4D mat;
+        glMatrixMode(GL_PROJECTION_MATRIX);
+        glLoadIdentity();
+        
+        // Multipling the projection Matrix
+        mat = m_CameraPtr->GetProjectionMatrix();
+        glMultMatrixf(&mat.elements[0]);
 
-        std::vector<Vector3D> col
-        {
-            Vector3D(1, 0, 0), Vector3D(1, 0, 0),
-            Vector3D(0, 1, 0), Vector3D(0, 1, 0),
-            Vector3D(0, 0, 1), Vector3D(0, 0, 1)
-        };
+        // Multipling the model * view(here identity) Matrix
+        glMatrixMode(GL_MODELVIEW_MATRIX);
+        mat = m_CameraPtr->GetViewMatrix();
+        glMultMatrixf(&mat.elements[0]);
+        
+        glBegin(GL_LINES);
+            // X-Axis
+            glColor3f(1.f, 0.f, 0.f);
+            glVertex3f(0.0f, 0.0f, 0.0f);
+            glVertex3f(1.0f, 0.0f, 0.0f);
 
-        std::vector<uint32_t> ind{ 0, 1, 0, 2, 3, 2, 4, 5, 4 };
+            // Y-Axis
+            glColor3f(0.f, 1.f, 0.f);
+            glVertex3f(0.0f, 0.0f, 0.0f);
+            glVertex3f(0.0f, 1.0f, 0.0f);
 
-        Mesh*   anchorMesh		= new Mesh(pos, ind);
-        anchorMesh->SetColors(col); // Setting Same as position x->red, y->green, z->blue
-
-        auto*   anchorShader		= new Shader("TestShaders/anchor.vs", "TestShaders/anchor.fs");
-        auto*   anchorMat			= new Material(anchorShader);
-        auto*   anchorRenderer	    = new Renderer(anchorMesh, anchorMat);
-
-        anchorRenderer->SetRenderMode(RenderMode::LINES);
-        m_AnchorPtr->AttachComponent(anchorRenderer);
-        this->AddToScene(m_AnchorPtr);
+            // Z-Axis
+            glColor3f(0.f, 0.f, 1.f);
+            glVertex3f(0.0f, 0.0f, 0.0f);
+            glVertex3f(0.0f, 0.0f, 1.0f);
+        glEnd();
     }
 
     void Scene::TraverseAllChildNodes(Node& a_Node){

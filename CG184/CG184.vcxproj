@@ -82,7 +82,7 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)external-dependencies\GLFW\lib-vc2015;$(SolutionDir)external-dependencies\GLEW\lib;$(SolutionDir)external-dependencies\Assimp\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;assimp.lib;glew32s.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;assimp.lib;glew32s.lib;opengl32.lib;glu32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

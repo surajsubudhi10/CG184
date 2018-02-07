@@ -17,7 +17,7 @@ namespace CG184
         if(m_MeshPtr != nullptr) {
             uint32_t vertexNumber = 0;
             InitMeshData(vertexNumber);
-            InitGLBuffers();
+            InitGLBuffers(vertexNumber);
             InitIndexBuffer();
         } else
             throw "(Null Exception) Mesh is a null Pointer.";
@@ -29,7 +29,7 @@ namespace CG184
         if (m_MeshPtr != nullptr) {
             uint32_t vertexNumber = 0;
             InitMeshData(vertexNumber);
-            InitGLBuffers();
+            InitGLBuffers(vertexNumber);
             InitIndexBuffer();
         }
         else
@@ -38,20 +38,27 @@ namespace CG184
 
     void MeshFilter::InitMeshData(uint32_t& numOfVert)
     {
-        numOfVert = m_MeshPtr->m_NumOfVert;
-        m_IndexCount = (uint32_t)m_MeshPtr->m_Indices.size();
+        //numOfVert = m_MeshPtr->m_NumOfVert;
+        numOfVert = m_MeshPtr->mesh.nVertices();
+        std::vector<uint32_t> updatedIndices;
+        m_MeshPtr->mesh.GetIndexArray(updatedIndices);
+        
+        m_IndexCount = (uint32_t)updatedIndices.size();
+        //m_IndexCount = (uint32_t)m_MeshPtr->m_Indices.size();
         m_IndicesDataPtr = new GLuint[m_IndexCount];
+
         for (uint32_t i = 0; i < m_IndexCount; i++) {
-            m_IndicesDataPtr[i] = m_MeshPtr->m_Indices[i];
+            m_IndicesDataPtr[i] = updatedIndices[i];
+            //m_IndicesDataPtr[i] = m_MeshPtr->m_Indices[i];
         }
     }
 
 
-    void MeshFilter::InitGLBuffers()
+    void MeshFilter::InitGLBuffers(uint32_t& numOfVert)
     {
         UpdateBufferSize();
         BindVertexObjects();
-        uint32_t numOfVert = m_MeshPtr->m_NumOfVert;
+        //uint32_t numOfVert = m_MeshPtr->m_NumOfVert;
 
         glVertexAttribPointer( SHADER_VERTEX_INDEX, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
         glVertexAttribPointer(  SHADER_COLOR_INDEX, 3, GL_FLOAT, GL_FALSE, 0, (void*)(numOfVert * 3 * sizeof(float)));
@@ -153,16 +160,31 @@ namespace CG184
             {
                 if (m_MeshPtr->m_NumOfVert != a_Mesh->m_NumOfVert)
                 {
-                    m_MeshPtr->m_NumOfVert = a_Mesh->m_NumOfVert;
-                    InitGLBuffers();
+                    //m_MeshPtr->m_NumOfVert = a_Mesh->m_NumOfVert;
 
-                    m_IndexCount = (uint32_t) a_Mesh->m_Indices.size();
+                    /*m_IndexCount = (uint32_t) a_Mesh->m_Indices.size();
                     delete[] m_IndicesDataPtr;
+                    
                     m_IndicesDataPtr = new GLuint[m_IndexCount];
                     for (uint32_t i = 0; i < m_IndexCount; i++) {
                         m_IndicesDataPtr[i] = a_Mesh->m_Indices[i];
                     }
+*/
 
+                    uint32_t numOfVert = a_Mesh->mesh.nVertices();
+                    m_MeshPtr->m_NumOfVert = numOfVert;
+
+                    std::vector<uint32_t> updatedIndices;
+                    a_Mesh->mesh.GetIndexArray(updatedIndices);
+
+                    m_IndexCount = (uint32_t)updatedIndices.size();
+                    m_IndicesDataPtr = new GLuint[m_IndexCount];
+
+                    for (uint32_t i = 0; i < m_IndexCount; i++) {
+                        m_IndicesDataPtr[i] = updatedIndices[i];
+                    }
+
+                    InitGLBuffers(numOfVert);
                     m_IBOPtr->AddIndexBufferData(m_IndicesDataPtr, m_IndexCount);
                 }
 

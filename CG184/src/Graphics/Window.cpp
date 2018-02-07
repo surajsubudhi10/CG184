@@ -27,9 +27,9 @@ namespace CG184
         // glfw: initialize and configure
         // ------------------------------
         glfwInit();
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+        /*glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);*/
 
         m_WindowPtr = glfwCreateWindow(m_width, m_height, m_WindowTitle, nullptr, nullptr);
         if (m_WindowPtr == nullptr)

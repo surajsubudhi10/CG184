@@ -8,6 +8,7 @@ namespace CG184
     class Vector3D
     {
     public:
+
         Vector3D();
         Vector3D(float _x, float _y, float _Z);
 

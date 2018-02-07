@@ -42,6 +42,11 @@ float lastFrame = 0.0f;
 
 Vector3D lightPos(1.2f, 1.0f, 1.0f);
 
+
+GLFWwindow* initWindow(const int resX, const int resY);
+void display(GLFWwindow* window);
+
+
 int main()
 {
 
@@ -76,16 +81,16 @@ int main()
 
     std::vector<uint32_t> ind1{0, 1, 2};
 
-    Mesh triangleMesh(pos1, ind1);
+    /*Mesh triangleMesh(pos1, ind1);
     triangleMesh.SetColors(col1);
     triangleMesh.SetNormals(norm1);
-
+*/
 
     Mesh rockMesh;
-    rockMesh.LoadModel("Resources/objects/cyborg/cyborg.obj");
+    rockMesh.LoadModel("Resources/objects/rock/cubeNoNormal.dae");
     
 
-    Box boxMesh;
+    //Box boxMesh;
     //Shader boxShaderTemp("TestShaders/multipleLights.vs", "TestShaders/multipleLights.fs");
     Shader boxShaderTemp("TestShaders/solidWireframe.vs", "TestShaders/solidWireframe.fs", "TestShaders/solidWireframe.gs");
     Material boxMat(&boxShaderTemp);
@@ -94,15 +99,16 @@ int main()
 
     NodePtr box(new Node("box1"));
     box->AttachComponent(&boxRenderer);
-    box->SetPosition(0.0, 0.0, 0.0);
+    box->SetPosition(2.0, 0.0, 0.0);
+    box->SetLocalScale(0.25f, 0.25f, 0.25f);
 
-    Renderer boxRenderer1(&boxMesh, &boxMat);
-    boxRenderer1.GetMaterial().SetAmbient(Vector4D(0.3f, 0.5f, 0.1f, 1.0f));
+    //Renderer boxRenderer1(&boxMesh, &boxMat);
+    //boxRenderer1.GetMaterial().SetAmbient(Vector4D(0.3f, 0.5f, 0.1f, 1.0f));
 
-    NodePtr box1(new Node("box2"));
+    /*NodePtr box1(new Node("box2"));
     box1->AttachComponent(&boxRenderer1);
     box1->SetLocalScale(1.1, 1.1, 1.1);
-    box1->SetPosition(0.0, 0.0, 0.0);
+    box1->SetPosition(0.0, 0.0, 0.0);*/
 
 
     Scene rootScene(cam);
@@ -116,6 +122,8 @@ int main()
     yaw   = ToDegrees(atan2f(radialVec.x, radialVec.z));
     pitch = ToDegrees(atan2f(radialVec.y, sqrtf(powf(radialVec.x, 2) + powf(radialVec.z, 2))));
 
+
+    
 
     float angle = 0;
     while (!window->IfWindowClosed())
@@ -136,9 +144,62 @@ int main()
 //        box1->SetPosition(cameraTarget);
         //boxRenderer.GetMesh()->SetPosition(1, Vector3D(0.0f, (float)sin(angle), 0.0f));
 
+
+        
+
+
         rootScene.Render();
         window->Update();
     }
+
+
+    //GLFWwindow* window1 = initWindow(1024, 620);
+    //if (NULL != window1)
+    //{
+        //while (!glfwWindowShouldClose(window1))
+        //{
+            // Scale to window size
+            //GLint windowWidth, windowHeight;
+            //glfwGetWindowSize(window, &windowWidth, &windowHeight);
+            //glViewport(0, 0, windowWidth, windowHeight);
+
+            //// Draw stuff
+            //glClearColor(0.0, 0.0, 0.0, 1.0);
+            //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+            //glMatrixMode(GL_PROJECTION_MATRIX);
+            //glLoadIdentity();
+            //int ratio = (double)windowWidth / (double)windowHeight;
+            //gluPerspective(60, (double)windowWidth / (double)windowHeight, 0.1, 100);
+            ////glOrtho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
+
+            //glMatrixMode(GL_MODELVIEW_MATRIX);
+            //glTranslatef(0, 0, -5);
+
+            ////drawCube();
+
+            //glRotatef((float)glfwGetTime() * 50.f, 0.f, 0.f, 1.f);
+            //glBegin(GL_TRIANGLES);
+            //glColor3f(1.f, 0.f, 0.f);
+            //glVertex3f(-0.6f, -0.4f, 0.f);
+            //glColor3f(0.f, 1.f, 0.f);
+            //glVertex3f(0.6f, -0.4f, 0.f);
+            //glColor3f(0.f, 0.f, 1.f);
+            //glVertex3f(0.f, 0.6f, 0.f);
+            //glEnd();
+
+
+            //// Update Screen
+            //glfwSwapBuffers(window1);
+
+            //// Check for any input, or window movement
+            //glfwPollEvents();
+        //}
+    //}
+    //glfwDestroyWindow(window1);
+    //glfwTerminate();
+
+
 
     return 0;
 }
@@ -270,4 +331,84 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
         r = 0.1f;
 
     cameraPos = cameraTarget + (forwardDir * r);
+}
+
+
+
+
+void display(GLFWwindow* window)
+{
+    while (!glfwWindowShouldClose(window))
+    {
+        // Scale to window size
+        GLint windowWidth, windowHeight;
+        glfwGetWindowSize(window, &windowWidth, &windowHeight);
+        glViewport(0, 0, windowWidth, windowHeight);
+
+        // Draw stuff
+        glClearColor(0.0, 0.0, 0.0, 1.0);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        glMatrixMode(GL_PROJECTION_MATRIX);
+        glLoadIdentity();
+        int ratio = (double)windowWidth / (double)windowHeight;
+        gluPerspective(60, (double)windowWidth / (double)windowHeight, 0.1, 100);
+        //glOrtho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
+
+        glMatrixMode(GL_MODELVIEW_MATRIX);
+        glTranslatef(0, 0, -5);
+
+        //drawCube();
+
+        glRotatef((float)glfwGetTime() * 50.f, 0.f, 0.f, 1.f);
+        glBegin(GL_TRIANGLES);
+        glColor3f(1.f, 0.f, 0.f);
+        glVertex3f(-0.6f, -0.4f, 0.f);
+        glColor3f(0.f, 1.f, 0.f);
+        glVertex3f(0.6f, -0.4f, 0.f);
+        glColor3f(0.f, 0.f, 1.f);
+        glVertex3f(0.f, 0.6f, 0.f);
+        glEnd();
+
+
+        // Update Screen
+        glfwSwapBuffers(window);
+
+        // Check for any input, or window movement
+        glfwPollEvents();
+    }
+}
+
+
+GLFWwindow* initWindow(const int resX, const int resY)
+{
+    if (!glfwInit())
+    {
+        fprintf(stderr, "Failed to initialize GLFW\n");
+        return NULL;
+    }
+    glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
+
+                                     // Open a window and create its OpenGL context
+    GLFWwindow* window = glfwCreateWindow(resX, resY, "TEST", NULL, NULL);
+
+    if (window == NULL)
+    {
+        fprintf(stderr, "Failed to open GLFW window.\n");
+        glfwTerminate();
+        return NULL;
+    }
+
+    glfwMakeContextCurrent(window);
+    //glfwSetKeyCallback(window, controls);
+
+    // Get info of GPU and supported OpenGL version
+    printf("Renderer: %s\n", glGetString(GL_RENDERER));
+    printf("OpenGL version supported %s\n", glGetString(GL_VERSION));
+
+    //glEnable(GL_DEPTH_TEST); // Depth Testing
+    //glDepthFunc(GL_LEQUAL);
+    //glDisable(GL_CULL_FACE);
+    //glCullFace(GL_BACK);
+    return window;
 }

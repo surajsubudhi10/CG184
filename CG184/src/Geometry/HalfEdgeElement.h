@@ -276,6 +276,7 @@ namespace CG184
         */
         Vector3D normal() const;
 
+        Index id;
         Matrix4D quadric;
 
     protected:
@@ -299,6 +300,7 @@ namespace CG184
         */
         HalfEdgeCIter halfedge(void) const { return _halfedge; }
 
+        Index id;
         Vector3D position; ///< location in 3-space
 
         Vector3D newPosition; ///< For Loop subdivision, this will be the updated position of the vertex
@@ -435,6 +437,8 @@ namespace CG184
         */
         void build(const vector< vector<Index> >& polygons, const vector<Vector3D>& vertexPositions);
 
+        void GetIndexArray(vector<uint32_t>& indices);
+
         // These methods return the total number of elements of each type.
         Size nHalfEdges(void)   const { return  halfedges.size(); } ///< get the number of halfedges
         Size nVertices(void)    const { return   vertices.size(); } ///< get the number of vertices
@@ -554,6 +558,7 @@ namespace CG184
                     << elementAddress(he) << endl;
             }
         }
+    
     protected:
 
         /**

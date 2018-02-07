@@ -56,7 +56,7 @@ namespace CG184
         void				InitIndexBuffer();
         void				InitVertexArrayBuffer();
         void				InitMeshData(uint32_t& numOfVert);
-        void				InitGLBuffers();
+        void				InitGLBuffers(uint32_t& numOfVert);
         //void				UpdateGLBufferData();
     };
 }   // End of CG184
