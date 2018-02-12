@@ -1,5 +1,5 @@
 #include <cassert>
-#include "Shader.h"
+#include <Graphics/Shader.h>
 
 namespace CG184 
 {

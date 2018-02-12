@@ -1,102 +1,184 @@
-cmake_minimum_required(VERSION 3.7)
-project(CGEngine)
+cmake_minimum_required(VERSION 2.6)
+project(CG184)
 
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake_modules")
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
+message(STATUS "CG184_SOURCE_DIR : " ${CG184_SOURCE_DIR})
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic -std=c++11")
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_DEBUG} -g")
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_RELEASE} -O2")
+#-------------------------------------------------------------------------------
+# CMake modules
+#-------------------------------------------------------------------------------
+list(APPEND CMAKE_MODULE_PATH "${CG184_SOURCE_DIR}/cmake/modules/")
 
-file(GLOB_RECURSE RESOURCES    CG184/Resources/textures/*.jpg          CG184/Resources/textures/*.png)
-
-file(GLOB_RECURSE CAMERA        CG184/src/Camera/*.cpp          CG184/src/Camera/*.h)
-file(GLOB_RECURSE INPUT         CG184/src/EventSystem/*.cpp     CG184/src/EventSystem/*.h)
-file(GLOB_RECURSE GRAPHICS      CG184/src/Graphics/*.cpp        CG184/src/Graphics/*.h)
-file(GLOB_RECURSE MATHS         CG184/src/Maths/*.cpp           CG184/src/Maths/*.h)
-file(GLOB_RECURSE GEOMETRYS     CG184/src/Geometry/*.cpp        CG184/src/Geometry/*.h)
-file(GLOB_RECURSE SCENE         CG184/src/Scene/*.cpp           CG184/src/Scene/*.h)
-file(GLOB_RECURSE LIGHTS        CG184/src/Lights/*.cpp          CG184/src/Lights/*.h)
+#-------------------------------------------------------------------------------
+# CG184 paths
+#-------------------------------------------------------------------------------
+set(CG184_INCLUDE_DIRS "${CG184_SOURCE_DIR}/CG184/include")
 
 
+##################
+# Build on Linux #
+##################
+set(LINUX UNIX AND NOT APPLE)
+if(UNIX)
 
-include_directories(${PROJECT_SOURCE_DIR}/external-dependencies/Extras)
+    # GCC configuration
+    if(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
 
-include_directories(${PROJECT_SOURCE_DIR}/external-dependencies/GLFW/GLFW/include)
-link_directories(${PROJECT_SOURCE_DIR}/external-dependencies/GLFW/GLFW/lib-mingw)
+        set(GCC_CXX_FLAGS "-std=gnu++11 -m64")
 
-include_directories(${PROJECT_SOURCE_DIR}/external-dependencies/GLEW/GLEW/include)
-link_directories(${PROJECT_SOURCE_DIR}/external-dependencies/GLEW/GLEW/lib)
+        message(STATUS "0")
+        # X11 Dependencies
+        set(GCC_CXX_FLAGS "${GCC_CXX_FLAGS} -lXi")
+        set(GCC_CXX_FLAGS "${GCC_CXX_FLAGS} -lXxf86vm")
+        set(GCC_CXX_FLAGS "${GCC_CXX_FLAGS} -lXinerama")
+        set(GCC_CXX_FLAGS "${GCC_CXX_FLAGS} -lXcursor")
+        set(GCC_CXX_FLAGS "${GCC_CXX_FLAGS} -lXfixes")
+        set(GCC_CXX_FLAGS "${GCC_CXX_FLAGS} -lXrandr")
+        set(GCC_CXX_FLAGS "${GCC_CXX_FLAGS} -lXext")
+        set(GCC_CXX_FLAGS "${GCC_CXX_FLAGS} -lXrender")
+        set(GCC_CXX_FLAGS "${GCC_CXX_FLAGS} -lX11")
+        set(GCC_CXX_FLAGS "${GCC_CXX_FLAGS} -lpthread")
+        set(GCC_CXX_FLAGS "${GCC_CXX_FLAGS} -lxcb")
+        set(GCC_CXX_FLAGS "${GCC_CXX_FLAGS} -lXau")
 
-if (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-    list(APPEND CMAKE_PREFIX_PATH "${PROJECT_SOURCE_DIR}/external-dependencies/GLFW/GLFW/")
-    list(APPEND CMAKE_PREFIX_PATH "${PROJECT_SOURCE_DIR}/external-dependencies/GLEW/GLEW/")
-elseif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-#    find_package(glfw3 3.2 REQUIRED)
-#    include_directories(${GLFW_INCLUDE_DIRS})
+        # Debug configuration
+        if(BUILD_DEBUG)
+            set(CMAKE_BUILD_TYPE Debug)
+        else(BUILD_DEBUG)
+            set(GCC_CXX_FLAGS "${GCC_CXX_FLAGS} -O3")
+            set(GCC_CXX_FLAGS "${GCC_CXX_FLAGS} -fopenmp")
+        endif(BUILD_DEBUG)
+
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_CXX_FLAGS}")
+
+    endif()
+
+    # Clang configuration (experimental)
+    if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+
+        set(CLANG_CXX_FLAGS "-std=c++11 -m64")
+
+        if(BUILD_DEBUG)
+            set(CMAKE_BUILD_TYPE Debug)
+        else(BUILD_DEBUG)
+            set(CLANG_CXX_FLAGS "${CLANG_CXX_FLAGS} -O3")
+            set(CLANG_CXX_FLAGS "${CLANG_CXX_FLAGS} -funroll-loops")
+            set(CLANG_CXX_FLAGS "${CLANG_CXX_FLAGS} -Wno-narrowing")
+            set(CLANG_CXX_FLAGS "${CLANG_CXX_FLAGS} -Wno-deprecated-register")
+        endif(BUILD_DEBUG)
+
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CLANG_CXX_FLAGS}")
+
+    endif()
+
+endif(UNIX)
+
+####################
+# Build on Windows #
+####################
+if(WIN32)
+
+    if(MSVC)
+
+        set(MSVC_CXX_FLAGS "-std=gnu++11")
+        set(CMAKE_BUILD_TYPE Debug)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${MSVC_CXX_FLAGS}")
+
+    endif(MSVC)
+
+    if(MINGW)
+
+        set(MSVC_CXX_FLAGS "-std=gnu++11")
+        set(CMAKE_BUILD_TYPE Debug)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${MSVC_CXX_FLAGS}")
+
+    endif(MINGW)
+
+endif(WIN32)
+
+#-------------------------------------------------------------------------------
+# Find dependencies
+#-------------------------------------------------------------------------------
+
+# Required packages
+find_package(OpenGL REQUIRED)
+
+# Use pkg-config for GLEW & GLFW if available
+find_package(PkgConfig QUIET)
+
+# GLEW
+if(PKGCONFIG_FOUND)
+    pkg_search_module(GLEW QUIET glew32)
+else(PKGCONFIG_FOUND)
+    find_package(GLEW QUIET)
 endif()
 
+if(NOT GLEW_FOUND)
+    include_directories("${CG184_SOURCE_DIR}/deps/glew/include")
+    set(GLEW_LIBRARY_DIRS "${CG184_SOURCE_DIR}/deps/glew/lib")
+endif()
 
-# find the required packages
-find_package(GLM REQUIRED)
-message(STATUS "GLM included at ${GLM_INCLUDE_DIR}")
-find_package(GLFW3 REQUIRED)
-message(STATUS "Found GLFW3 in ${GLFW3_INCLUDE_DIR}")
-find_package(ASSIMP REQUIRED)
+message(STATUS "GLEW_LIBRARIES : " ${GLEW_LIBRARIES})
+
+# GLFW
+if(PKGCONFIG_FOUND)
+    pkg_search_module(GLFW QUIET glfw3)
+else(PKGCONFIG_FOUND)
+    find_package(GLFW QUIET)
+endif()
+if(NOT GLFW_FOUND)
+    add_subdirectory("${CG184_SOURCE_DIR}/deps/glfw")
+	include_directories("${CG184_SOURCE_DIR}/deps/glfw/include")
+    set_property( TARGET glfw APPEND_STRING PROPERTY COMPILE_FLAGS -w )
+endif()
+
+# ASSIMP
+find_package(ASSIMP QUIET)
+if(NOT ASSIMP_FOUND)
+    include_directories("${CG184_SOURCE_DIR}/deps/Assimp/include")
+    set(ASSIMP_LIBRARY_DIRS "${CG184_SOURCE_DIR}/deps/Assimp/lib")
+endif()
 message(STATUS "Found ASSIMP in ${ASSIMP_INCLUDE_DIR}")
 
+# stb_image
+include_directories("${CG184_SOURCE_DIR}/deps/Extras")
 
-find_package(OpenGL REQUIRED)
-include_directories( ${OPENGL_INCLUDE_DIR})
-find_package(GLEW REQUIRED)
+#-------------------------------------------------------------------------------
+# Set include directories
+#-------------------------------------------------------------------------------
+include_directories(
+        ${CG184_INCLUDE_DIRS}
+        ${GLEW_INCLUDE_DIRS}
+        ${GLFW_INCLUDE_DIRS}
+)
 
-configure_file (${PROJECT_SOURCE_DIR}/CG184/Resources/objects/rock/rock.obj       Resources/objects/rock/rock.obj     COPYONLY)
-configure_file (${PROJECT_SOURCE_DIR}/CG184/Resources/objects/cyborg/cyborg.obj   Resources/objects/cyborg/cyborg.obj COPYONLY)
+#-------------------------------------------------------------------------------
+# Set link directories
+#-------------------------------------------------------------------------------
+link_directories(
+        ${GLEW_LIBRARY_DIRS}
+        ${GLFW_LIBRARY_DIRS}
+		${ASSIMP_LIBRARY_DIRS}
+)
 
-configure_file (${PROJECT_SOURCE_DIR}/CG184/Resources/textures/container.jpg  Resources/textures/container.jpg COPYONLY)
-configure_file (${PROJECT_SOURCE_DIR}/CG184/Resources/textures/container2.png Resources/textures/container2.png COPYONLY)
-configure_file (${PROJECT_SOURCE_DIR}/CG184/Resources/textures/container2_specular.png Resources/textures/container2_specular.png COPYONLY)
+#-------------------------------------------------------------------------------
+# Set Resources directories
+#-------------------------------------------------------------------------------
+set(RESOURCES_DIR "${CG184_SOURCE_DIR}/Resources")
+set(SHADER_DIR "${CG184_SOURCE_DIR}/TestShaders")
 
-configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/BoxSolid.vs         TestShaders/BoxSolid.vs         COPYONLY)
-configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/BoxSolid.fs         TestShaders/BoxSolid.fs         COPYONLY)
-configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/LightCube.vs        TestShaders/LightCube.vs        COPYONLY)
-configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/LightCube.fs        TestShaders/LightCube.fs        COPYONLY)
-configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/PhongShader.fs      TestShaders/PhongShader.fs      COPYONLY)
-configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/PhongShader.vs      TestShaders/PhongShader.vs      COPYONLY)
-configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/multipleLights.vs   TestShaders/multipleLights.vs   COPYONLY)
-configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/multipleLights.fs   TestShaders/multipleLights.fs   COPYONLY)
-configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/texture.vs          TestShaders/texture.vs          COPYONLY)
-configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/texture.fs          TestShaders/texture.fs          COPYONLY)
-configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/TextureSetup.vs     TestShaders/TextureSetup.vs     COPYONLY)
-configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/TextureSetup.fs     TestShaders/TextureSetup.fs     COPYONLY)
-configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/picker.vs           TestShaders/picker.vs           COPYONLY)
-configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/picker.fs           TestShaders/picker.fs           COPYONLY)
-configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/anchor.vs           TestShaders/anchor.vs           COPYONLY)
-configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/anchor.fs           TestShaders/anchor.fs           COPYONLY)
-configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/solidWireframe.vs   TestShaders/solidWireframe.vs   COPYONLY)
-configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/solidWireframe.fs   TestShaders/solidWireframe.fs   COPYONLY)
-configure_file (${PROJECT_SOURCE_DIR}/CG184/TestShaders/solidWireframe.gs   TestShaders/solidWireframe.gs   COPYONLY)
+set(RESOURCE_FILE ${RESOURCES_DIR}/objects/rock/cubeEdit.obj)
 
-#configure_file (${PROJECT_SOURCE_DIR}/src/Shaders/basic.fs basic.fs COPYONLY)
-#configure_file (${PROJECT_SOURCE_DIR}/src/Shaders/myText.txt myText.txt COPYONLY)
+#-------------------------------------------------------------------------------
+# Add subdirectories
+#-------------------------------------------------------------------------------
+
+# HelloGL library source directory
+add_subdirectory("CG184")
 
 
-message(STATUS ${PROJECT_SOURCE_DIR})
-#message(STATUS ${GLEW_LIBRARY})
+#-------------------------------------------------------------------------------
+# Packing
+#-------------------------------------------------------------------------------
 
-#message(STATUS ${CMAKE_SYSTEM_NAME} )
-
-if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-    set(SOURCE_FILES CG184/main.cpp ${GRAPHICS} ${MATHS} ${INPUT} ${CAMERA} ${RESOURCES} ${GEOMETRYS} ${SCENE} ${LIGHTS})
-elseif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-    set(SOURCE_FILES CG184/main.cpp ${GRAPHICS} ${MATHS} ${INPUT} ${CAMERA} ${RESOURCES} ${GEOMETRYS} ${SCENE} ${LIGHTS})
-endif()
-
-add_executable(CGEngine ${SOURCE_FILES})
-
-if (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-    target_link_libraries(CGEngine glfw3 glew32 ${OPENGL_LIBRARY} assimp)
-elseif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-    target_link_libraries(CGEngine ${OPENGL_LIBRARY} ${GLEW_LIBRARY} glfw assimp)
-endif()
+# Install settings
+set(CMAKE_INSTALL_PREFIX "${CG184_SOURCE_DIR}")

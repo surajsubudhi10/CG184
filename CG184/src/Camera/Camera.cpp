@@ -1,7 +1,7 @@
-#include "Camera.h"
 #include <math.h>
 
-#include "../Maths/Maths.h"
+#include <Camera/Camera.h>
+#include <Maths/Maths.h>
 
 namespace CG184 
 {

@@ -3,8 +3,8 @@
 //
 
 #include <cmath>
-#include "Transform.h"
-#include "../Maths/Maths.h"
+#include <Scene/Transform.h>
+#include <Maths/Maths.h>
 
 namespace CG184
 {

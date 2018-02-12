@@ -3,8 +3,8 @@
 //
 
 #include <cassert>
-#include "Mesh.h"
-#include "../Scene/Node.h"
+#include <Geometry/Mesh.h>
+#include <Scene/Node.h>
 
 namespace CG184
 {

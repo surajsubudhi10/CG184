@@ -3,8 +3,8 @@
 //
 
 #include <cmath>
-#include "Circle.h"
-#include "../Maths/Maths.h"
+#include <Geometry/Circle.h>
+#include <Maths/Maths.h>
 
 namespace CG184 
 {

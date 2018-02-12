@@ -1,6 +1,5 @@
-#include "Quaternions.h"
-
-#include "Constants.h"
+#include <Maths/Quaternions.h>
+#include <Maths/Constants.h>
 
 namespace CG184 
 {
@@ -20,10 +19,10 @@ namespace CG184
     Quaternion::Quaternion(const float angleInRadians, const Vector3D& axis)
     {
         const float halfAngle = 0.5f * angleInRadians;
-        w = cos(halfAngle);
-        x = axis.x * sin(halfAngle);
-        y = axis.y * sin(halfAngle);
-        z = axis.z * sin(halfAngle);
+        w = cosf(halfAngle);
+        x = axis.x * sinf(halfAngle);
+        y = axis.y * sinf(halfAngle);
+        z = axis.z * sinf(halfAngle);
     }
 
     Quaternion Quaternion::add(const    Quaternion& quat) const 
@@ -85,7 +84,7 @@ namespace CG184
 
     float Quaternion::length() const
     {
-        return sqrt(squaredLength());
+        return sqrtf(squaredLength());
     }
 
     bool  Quaternion::isEqual(const Quaternion& quat) const 
@@ -101,8 +100,8 @@ namespace CG184
 
     void Quaternion::ToAxisAngle(Vector3D& axis, float& angle)
     {
-        angle = 2.0f * acos(w);
-        const float length = sqrt(1.0f - w*w);
+        angle = 2.0f * acosf(w);
+        const float length = sqrtf(1.0f - w*w);
         axis = Vector3D();
         if(length != 0)
             axis = Vector3D(x, y, z) / length;

@@ -2,4 +2,4 @@
 // Created by Suraj Subudhi.
 //
 
-#include "SpotLight.h"
+#include <Lights/SpotLight.h>

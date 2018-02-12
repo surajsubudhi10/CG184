@@ -2,7 +2,7 @@
 // Created by suraj on 12/8/17.
 //
 
-#include "Torus.h"
+#include <Geometry/Torus.h>
 
 
 namespace CG184

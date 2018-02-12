@@ -4,8 +4,8 @@
 
 #include <cmath>
 
-#include "Sphere.h"
-#include "../Maths/Maths.h"
+#include <Geometry/Sphere.h>
+#include <Maths/Maths.h>
 
 namespace CG184 
 {

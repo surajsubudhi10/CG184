@@ -1,6 +1,6 @@
 #include <algorithm>
-#include "Renderer.h"
-#include "../Scene/Node.h"
+#include <Graphics/Renderer.h>
+#include <Scene/Node.h>
 
 namespace CG184 
 {

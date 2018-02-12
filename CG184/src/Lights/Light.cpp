@@ -2,7 +2,7 @@
 // Created by suraj on 12/5/17.
 //
 
-#include "Light.h"
+#include <Lights/Light.h>
 
 
 namespace CG184

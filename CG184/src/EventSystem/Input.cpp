@@ -1,5 +1,5 @@
-#include "../Scene/Scene.h"
-#include "Input.h"
+#include <Scene/Scene.h>
+#include <EventSystem/Input.h>
 
 namespace CG184 
 {
@@ -13,7 +13,7 @@ namespace CG184
         m_Window				= window;
         m_ScenePtr				= scene;
         
-        m_PickerShaderPtr		= new Shader("TestShaders/picker.vs", "TestShaders/picker.fs");
+        m_PickerShaderPtr		= new Shader("../../../CG184/TestShaders/picker.vs", "../../../CG184/TestShaders/picker.fs");
         m_PickerMaterialPtr		= new Material(m_PickerShaderPtr);
 
         glfwSetCursorPosCallback(m_Window->m_WindowPtr, mouse_cursor_callback);

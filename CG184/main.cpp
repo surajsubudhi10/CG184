@@ -1,15 +1,16 @@
 #include <GL/glew.h>
+#include "GLFW/glfw3.h"
 #include <iostream>
 
-#include "src/Graphics/Window.h"
-#include "src/Graphics/Shader.h"
+#include <Graphics/Window.h>
+#include <Graphics/Shader.h>
 
-#include "src/EventSystem/Input.h"
-#include "src/Camera/Camera.h"
+#include <EventSystem/Input.h>
+#include <Camera/Camera.h>
 
-#include "src/Scene/Nodes.h"
-#include "src/Geometry/Geometry.h"
-#include "src/Lights/Lights.h"
+#include <Scene/Nodes.h>
+#include <Geometry/Geometry.h>
+#include <Lights/Lights.h>
 
 
 // settings
@@ -87,12 +88,12 @@ int main()
 */
 
     Mesh rockMesh;
-    rockMesh.LoadModel("Resources/objects/rock/cubeNoNormal.dae");
+    rockMesh.LoadModel("../../../CG184/Resources/objects/rock/cubeEdit.obj");
     
 
     //Box boxMesh;
     //Shader boxShaderTemp("TestShaders/multipleLights.vs", "TestShaders/multipleLights.fs");
-    Shader boxShaderTemp("TestShaders/solidWireframe.vs", "TestShaders/solidWireframe.fs", "TestShaders/solidWireframe.gs");
+    Shader boxShaderTemp("../../../CG184/TestShaders/solidWireframe.vs", "../../../CG184/TestShaders/solidWireframe.fs", "../../../CG184/TestShaders/solidWireframe.gs");
     Material boxMat(&boxShaderTemp);
     boxMat.SetAmbient(Vector4D(0.5f, 0.1f, 0.1f, 1.0f));
     Renderer boxRenderer(&rockMesh, &boxMat);

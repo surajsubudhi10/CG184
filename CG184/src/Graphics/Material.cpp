@@ -2,7 +2,7 @@
 // Created by suraj on 12/2/17.
 //
 
-#include "Material.h"
+#include <Graphics/Material.h>
 
 namespace CG184 {
     Material::Material():

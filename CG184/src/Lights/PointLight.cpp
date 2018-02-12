@@ -2,7 +2,7 @@
 // Created by Suraj Subudhi.
 //
 
-#include "PointLight.h"
+#include <Lights/PointLight.h>
 
 
 namespace CG184

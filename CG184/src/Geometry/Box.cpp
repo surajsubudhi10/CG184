@@ -2,7 +2,7 @@
 // Created by suraj on 12/6/17.
 //
 
-#include "Box.h"
+#include <Geometry/Box.h>
 
 namespace CG184 
 {

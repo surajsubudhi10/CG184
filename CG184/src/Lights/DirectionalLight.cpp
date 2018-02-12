@@ -2,7 +2,7 @@
 // Created by Suraj Subudhi.
 //
 
-#include "DirectionalLight.h"
+#include <Lights/DirectionalLight.h>
 
 namespace CG184
 {

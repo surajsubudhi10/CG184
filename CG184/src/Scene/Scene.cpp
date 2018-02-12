@@ -2,7 +2,7 @@
 // Created by suraj on 12/4/17.
 //
 
-#include "Scene.h"
+#include <Scene/Scene.h>
 
 namespace CG184
 {
