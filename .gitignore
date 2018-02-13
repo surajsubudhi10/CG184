@@ -1,7 +1,5 @@
-bin
-.vs
 .idea
-CG184.VC.db
-CG184.VC.VC.opendb
-/external-dependencies/Extras/glm
-/cmake-build-debug
+build
+cmake-build-debug
+test-build
+.vs
