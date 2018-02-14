@@ -8,7 +8,8 @@ namespace CG184
 {
     int Node::uID = 0;
 
-    Node::Node(const char* name):
+    Node::Node(const char* name) :
+        isPickable(true),
         m_NodeName(name),
         m_InstanceID(uID++),
         m_Transform(Transform())
@@ -16,7 +17,8 @@ namespace CG184
         m_ParentNodePtr = nullptr;
     }
 
-    Node::Node(Transform &a_Trans, const char* name):
+    Node::Node(Transform &a_Trans, const char* name) :
+            isPickable(true),
             m_NodeName(name),
             m_InstanceID(uID++),
             m_Transform(a_Trans)

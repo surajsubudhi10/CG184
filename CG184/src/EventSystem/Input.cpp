@@ -13,7 +13,7 @@ namespace CG184
         m_Window				= window;
         m_ScenePtr				= scene;
         
-        m_PickerShaderPtr		= new Shader("../../../CG184/TestShaders/picker.vs", "../../../CG184/TestShaders/picker.fs");
+        m_PickerShaderPtr		= new Shader("../../CG184/TestShaders/picker.vs", "../../CG184/TestShaders/picker.fs");
         m_PickerMaterialPtr		= new Material(m_PickerShaderPtr);
 
         glfwSetCursorPosCallback(m_Window->m_WindowPtr, mouse_cursor_callback);
@@ -109,6 +109,85 @@ namespace CG184
     {
         delete m_PickerMaterialPtr;
         delete m_PickerShaderPtr;
+    }
+
+    void Input::GetHoveredObject(const Vector2D &p, bool getElement, bool transformed)
+    {
+
+        /** Set the background color to the maximum possible value---this value should
+         be far beyond the maximum pick index, since we have at most 2^(8+8+8) = 16,777,216 distinct IDs */
+        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+
+        /** Clear any color values currently in the color buffer---we do not want to
+         use these for picking, since they represent, e.g., shading colors rather than pick IDs.
+         Also clear the depth buffer so that we can use it to determine the closest object under the cursor.*/
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        /// We want to draw the pick IDs as raw color values; shading functionality
+        /// like lighting and blending shouldn't interfere.
+        glPushAttrib(GL_ALL_ATTRIB_BITS);
+        glDisable(GL_LIGHTING);
+        glDisable(GL_BLEND);
+
+        // Keep track of the number of picking IDs used so far
+        int pickID = 0;
+
+        for (const auto &node : m_ScenePtr->m_RenderQueue)
+        {
+            if(node->HasComponent(ComponentType::RENDERER))
+            {
+                Renderer& nodeRenderer = *node->GetComponent<Renderer>();
+                if(&nodeRenderer != nullptr)
+                {
+                    Mesh& mesh = *nodeRenderer.GetMesh();
+                    if (node->isPickable) {
+                        // The implementation of draw_pick MUST increment the
+                        // pickID for each new pickable element it draws.
+                        mesh.draw_pick(pickID, transformed);
+                    }
+                }
+            }
+        }
+
+        unsigned char color[4];
+        glReadPixels(p.x, p.y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, color);
+
+        int ID = RGBToIndex(color[0], color[1], color[2]);
+
+        // By default, set hovered object to "none"
+        hovered.clear();
+
+        // Determine which element generated this pick ID
+        int i = 0;
+        for (const auto &node : m_ScenePtr->m_RenderQueue)
+        {
+            if(node->HasComponent(ComponentType::RENDERER))
+            {
+                Renderer& nodeRenderer = *node->GetComponent<Renderer>();
+                if(&nodeRenderer != nullptr)
+                {
+                    Mesh& mesh = *nodeRenderer.GetMesh();
+                    // Call the object's method for setting the selection
+                    // based on the ID.  (This allows the object to set
+                    // the selection to an element within that particular
+                    // object type, e.g., for a mesh it can specify that a
+                    // particular vertex is selected, or for a camera it might
+                    // specify that a control handle was selected, etc.)
+                    mesh.setSelection(ID, hovered);
+                    i++;
+                }
+            }
+
+        }
+
+        if (!getElement) {
+            // Discard element information
+            hovered.element = nullptr;
+        }
+
+        // Restore any draw state that we disabled above.
+        glPopAttrib();
+
     }
 
 

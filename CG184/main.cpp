@@ -44,10 +44,6 @@ float lastFrame = 0.0f;
 Vector3D lightPos(1.2f, 1.0f, 1.0f);
 
 
-GLFWwindow* initWindow(const int resX, const int resY);
-void display(GLFWwindow* window);
-
-
 int main()
 {
 
@@ -88,12 +84,12 @@ int main()
 */
 
     Mesh rockMesh;
-    rockMesh.LoadModel("../../../CG184/Resources/objects/rock/cubeEdit.obj");
+    rockMesh.LoadModel("../../CG184/Resources/objects/rock/cubeEdit.obj");
     
 
     //Box boxMesh;
     //Shader boxShaderTemp("TestShaders/multipleLights.vs", "TestShaders/multipleLights.fs");
-    Shader boxShaderTemp("../../../CG184/TestShaders/solidWireframe.vs", "../../../CG184/TestShaders/solidWireframe.fs", "../../../CG184/TestShaders/solidWireframe.gs");
+    Shader boxShaderTemp("../../CG184/TestShaders/solidWireframe.vs", "../../CG184/TestShaders/solidWireframe.fs", "../../CG184/TestShaders/solidWireframe.gs");
     Material boxMat(&boxShaderTemp);
     boxMat.SetAmbient(Vector4D(0.5f, 0.1f, 0.1f, 1.0f));
     Renderer boxRenderer(&rockMesh, &boxMat);
@@ -134,7 +130,7 @@ int main()
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
         angle += deltaTime * 1.0f;
-//		std::cout << "FPS : " << static_cast<int>(1.0f / deltaTime) << std::endl;
+		//std::cout << "FPS : " << static_cast<int>(1.0f / deltaTime) << std::endl;
 
         KeyBoardEvents(window, input);
         MouseEvents(window, input, deltaTime);
@@ -145,62 +141,9 @@ int main()
 //        box1->SetPosition(cameraTarget);
         //boxRenderer.GetMesh()->SetPosition(1, Vector3D(0.0f, (float)sin(angle), 0.0f));
 
-
-        
-
-
         rootScene.Render();
         window->Update();
     }
-
-
-    //GLFWwindow* window1 = initWindow(1024, 620);
-    //if (NULL != window1)
-    //{
-        //while (!glfwWindowShouldClose(window1))
-        //{
-            // Scale to window size
-            //GLint windowWidth, windowHeight;
-            //glfwGetWindowSize(window, &windowWidth, &windowHeight);
-            //glViewport(0, 0, windowWidth, windowHeight);
-
-            //// Draw stuff
-            //glClearColor(0.0, 0.0, 0.0, 1.0);
-            //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-            //glMatrixMode(GL_PROJECTION_MATRIX);
-            //glLoadIdentity();
-            //int ratio = (double)windowWidth / (double)windowHeight;
-            //gluPerspective(60, (double)windowWidth / (double)windowHeight, 0.1, 100);
-            ////glOrtho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
-
-            //glMatrixMode(GL_MODELVIEW_MATRIX);
-            //glTranslatef(0, 0, -5);
-
-            ////drawCube();
-
-            //glRotatef((float)glfwGetTime() * 50.f, 0.f, 0.f, 1.f);
-            //glBegin(GL_TRIANGLES);
-            //glColor3f(1.f, 0.f, 0.f);
-            //glVertex3f(-0.6f, -0.4f, 0.f);
-            //glColor3f(0.f, 1.f, 0.f);
-            //glVertex3f(0.6f, -0.4f, 0.f);
-            //glColor3f(0.f, 0.f, 1.f);
-            //glVertex3f(0.f, 0.6f, 0.f);
-            //glEnd();
-
-
-            //// Update Screen
-            //glfwSwapBuffers(window1);
-
-            //// Check for any input, or window movement
-            //glfwPollEvents();
-        //}
-    //}
-    //glfwDestroyWindow(window1);
-    //glfwTerminate();
-
-
 
     return 0;
 }
@@ -259,11 +202,12 @@ void KeyBoardEvents(const WindowPtr window, Input& input)
 
 void MouseEvents(const WindowPtr window, Input& input, float deltaTime)
 {
-    if (input.IsKeyPressed(GLFW_KEY_LEFT_ALT)) {
+    if (input.IsKeyPressed(GLFW_KEY_LEFT_ALT) || input.IsKeyPressed(GLFW_KEY_LEFT_SHIFT)) {
         ProcessMouseButtons(input);
         ProcessMouseMotion(input.mousePosition);
     }else if (input.IsMouseButtonDown(GLFW_MOUSE_BUTTON_LEFT)) {
-        input.ProcessSelection();
+        //input.ProcessSelection();
+        input.GetHoveredObject(input.mousePosition);
     }
 }
 
@@ -332,84 +276,4 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
         r = 0.1f;
 
     cameraPos = cameraTarget + (forwardDir * r);
-}
-
-
-
-
-void display(GLFWwindow* window)
-{
-    while (!glfwWindowShouldClose(window))
-    {
-        // Scale to window size
-        GLint windowWidth, windowHeight;
-        glfwGetWindowSize(window, &windowWidth, &windowHeight);
-        glViewport(0, 0, windowWidth, windowHeight);
-
-        // Draw stuff
-        glClearColor(0.0, 0.0, 0.0, 1.0);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        glMatrixMode(GL_PROJECTION_MATRIX);
-        glLoadIdentity();
-        int ratio = (double)windowWidth / (double)windowHeight;
-        gluPerspective(60, (double)windowWidth / (double)windowHeight, 0.1, 100);
-        //glOrtho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
-
-        glMatrixMode(GL_MODELVIEW_MATRIX);
-        glTranslatef(0, 0, -5);
-
-        //drawCube();
-
-        glRotatef((float)glfwGetTime() * 50.f, 0.f, 0.f, 1.f);
-        glBegin(GL_TRIANGLES);
-        glColor3f(1.f, 0.f, 0.f);
-        glVertex3f(-0.6f, -0.4f, 0.f);
-        glColor3f(0.f, 1.f, 0.f);
-        glVertex3f(0.6f, -0.4f, 0.f);
-        glColor3f(0.f, 0.f, 1.f);
-        glVertex3f(0.f, 0.6f, 0.f);
-        glEnd();
-
-
-        // Update Screen
-        glfwSwapBuffers(window);
-
-        // Check for any input, or window movement
-        glfwPollEvents();
-    }
-}
-
-
-GLFWwindow* initWindow(const int resX, const int resY)
-{
-    if (!glfwInit())
-    {
-        fprintf(stderr, "Failed to initialize GLFW\n");
-        return NULL;
-    }
-    glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
-
-                                     // Open a window and create its OpenGL context
-    GLFWwindow* window = glfwCreateWindow(resX, resY, "TEST", NULL, NULL);
-
-    if (window == NULL)
-    {
-        fprintf(stderr, "Failed to open GLFW window.\n");
-        glfwTerminate();
-        return NULL;
-    }
-
-    glfwMakeContextCurrent(window);
-    //glfwSetKeyCallback(window, controls);
-
-    // Get info of GPU and supported OpenGL version
-    printf("Renderer: %s\n", glGetString(GL_RENDERER));
-    printf("OpenGL version supported %s\n", glGetString(GL_VERSION));
-
-    //glEnable(GL_DEPTH_TEST); // Depth Testing
-    //glDepthFunc(GL_LEQUAL);
-    //glDisable(GL_CULL_FACE);
-    //glCullFace(GL_BACK);
-    return window;
 }

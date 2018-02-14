@@ -42,7 +42,11 @@ namespace CG184
         inline Transform&		GetTransformComponent() { return m_Transform; }
         inline int				GetInstanceID(){ return m_InstanceID;}
         inline std::string		GetName(){ return m_NodeName;}
-        
+
+        /**
+        * Is this object pickable right now?
+        */
+        bool                    isPickable;
 
         template <typename T>
         T* GetComponent()

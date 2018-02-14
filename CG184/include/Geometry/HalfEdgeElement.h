@@ -215,6 +215,8 @@ namespace CG184
             _face = face;
         }
 
+        void getPickPoints(Vector3D& a, Vector3D& b, Vector3D& p, Vector3D& q, Vector3D& r) const;
+
     protected:
         HalfEdgeIter _twin;  ///< halfedge on the "other side" of the edge
         HalfEdgeIter _next;  ///< next halfedge around the current face
@@ -269,6 +271,11 @@ namespace CG184
         * otherwise
         */
         bool isBoundary() const { return _isBoundary; }
+
+        /**
+        * returns the mean vertex position
+        */
+        Vector3D centroid() const;
 
         /**
         * Get a unit face normal (computed via the area vector).

@@ -9,6 +9,22 @@ namespace CG184
         return face()->isBoundary();
     }
 
+    Vector3D Face::centroid() const {
+        Vector3D c(0., 0., 0.);
+        double d = 0.;
+
+        // walk around the face
+        HalfEdgeIter h = _halfedge;
+        do {
+            c += h->vertex()->position;
+            d += 1.;
+
+            h = h->next();
+        } while (h != _halfedge);  // done walking around the face
+
+        return c / d;
+    }
+
     Vector3D Face::normal() const
     {
         Vector3D N(0., 0., 0.);
@@ -31,6 +47,23 @@ namespace CG184
     {
         return halfedge()->face()->isBoundary();
     }
+
+
+    void HalfEdge::getPickPoints(Vector3D& a, Vector3D& b, Vector3D& p, Vector3D& q, Vector3D& r) const
+    {
+        const double w = 1.0f / 6;
+
+        Vector3D x0 = vertex()->position;
+        Vector3D x1 = next()->vertex()->position;
+        Vector3D x2 = next()->next()->vertex()->position;
+
+        a = x1;
+        p = x1 * (1.0f - w) + x2 * w;
+        r = x1 * (1.0f - w) + x0 * w;
+        q = (p + r) / 2.0f;
+        b = a + (q - a) * 2.0f;
+    }
+
 
     // This method initializes the halfedge data structure from a raw list of polygons,
     // where each input polygon is specified as a list of vertex indices.  The input

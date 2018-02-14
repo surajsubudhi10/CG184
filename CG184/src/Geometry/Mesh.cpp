@@ -5,6 +5,7 @@
 #include <cassert>
 #include <Geometry/Mesh.h>
 #include <Scene/Node.h>
+#include <EventSystem/Input.h>
 
 namespace CG184
 {
@@ -336,5 +337,109 @@ namespace CG184
                 m_Indices.push_back(face.mIndices[j]);
         }
         
+    }
+
+    void Mesh::newPickElement(int &pickID, HalfEdgeElement *e)
+    {
+        unsigned char R, G, B;
+        IndexToRGB(pickID, R, G, B);
+        glColor3ub(R, G, B);
+        m_IdToElement[pickID] = e;
+        pickID++;
+    }
+
+    void Mesh::draw_pick(int &pickID, bool transformed)
+    {
+        m_IdToElement.clear();
+        //if (isGhosted) return;
+        vector<Vector3D> originalPositions;
+
+        if (transformed) {
+//            glPushMatrix();
+//            glTranslatef(position.x, position.y, position.z);
+//            glRotatef(rotation.x, 1.0f, 0.0f, 0.0f);
+//            glRotatef(rotation.y, 0.0f, 1.0f, 0.0f);
+//            glRotatef(rotation.z, 0.0f, 0.0f, 1.0f);
+//            glScalef(scale.x, scale.y, scale.z);
+//            for (VertexIter v = mesh.verticesBegin(); v != mesh.verticesEnd(); v++) {
+//                originalPositions.push_back(v->position);
+//                v->position += v->offset * v->normal();
+//            }
+        }
+
+        for (auto f = mesh.facesBegin(); f != mesh.facesEnd(); f++) {
+            Vector3D c = f->centroid();
+
+            auto h = f->halfedge();
+            do {
+                auto h1 = h;
+                auto h2 = h->next();
+
+                Vector3D a1, b1, p1, q1, r1;
+                Vector3D a2, b2, p2, q2, r2;
+
+                h1->getPickPoints(a1, b1, p1, q1, r1);
+                h2->getPickPoints(a2, b2, p2, q2, r2);
+
+                glBegin(GL_TRIANGLES);
+
+                // vertex
+                newPickElement(pickID, elementAddress(h2->vertex()));
+                glVertex3fv(&a1.x);
+                glVertex3fv(&p1.x);
+                glVertex3fv(&r1.x);
+
+                // face
+                newPickElement(pickID, elementAddress(f));
+                glVertex3fv(&b1.x);
+                glVertex3fv(&b2.x);
+                glVertex3fv(&c.x);
+
+                glEnd();
+
+                glBegin(GL_QUADS);
+
+                // edge
+                newPickElement(pickID, elementAddress(h2->edge()));
+                glVertex3fv(&p1.x);
+                glVertex3fv(&r2.x);
+                glVertex3fv(&q2.x);
+                glVertex3fv(&q1.x);
+
+                // halfedge
+                newPickElement(pickID, elementAddress(h2));
+                glVertex3fv(&q1.x);
+                glVertex3fv(&q2.x);
+                glVertex3fv(&b2.x);
+                glVertex3fv(&b1.x);
+
+                glEnd();
+
+                h = h->next();
+            } while (h != f->halfedge());
+        }
+
+        if (transformed)
+        {
+//            glPopMatrix();
+//            int i = 0;
+//            for (VertexIter v = mesh.verticesBegin(); v != mesh.verticesEnd(); v++) {
+//                v->position = originalPositions[i++];
+//            }
+        }
+
+    }
+
+    void Mesh::setSelection(int pickID, Selection &selection)
+    {
+        // Set the selection to the element specified by the given picking ID;
+        // these values were generated in Mesh::draw_pick.
+        if (m_IdToElement.find(pickID) != m_IdToElement.end())
+        {
+            selection.clear();
+            selection.object = this;
+            selection.element = m_IdToElement[pickID];
+        }
+
     }
 }   // End of CG184
