@@ -230,7 +230,8 @@ namespace CG184
             indexVec.push_back(tempVec);
         }
 
-        mesh.build(indexVec, m_VertPosition);
+        Update();
+        mesh.build(indexVec, m_VertPosition, m_VertColor, m_VertNormal, m_VertTexCoord);
     }
 
     void Mesh::LoadModel(const std::string &modelPath)

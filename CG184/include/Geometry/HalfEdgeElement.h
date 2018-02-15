@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "../Maths/Matrix4D.h"
+#include <Maths/Vector2D.h>
 
 
 using namespace std;
@@ -202,6 +203,9 @@ namespace CG184
         */
         bool isBoundary() const;
 
+        void getPickPoints(Vector3D& a, Vector3D& b, Vector3D& p, Vector3D& q, Vector3D& r) const;
+
+
         /**
         * For convenience, this method sets all of the
         * neighbors of this halfedge to the given values.
@@ -276,6 +280,8 @@ namespace CG184
         */
         Vector3D normal() const;
 
+        Vector3D centroid() const;
+
         Index id;
         Matrix4D quadric;
 
@@ -301,7 +307,12 @@ namespace CG184
         HalfEdgeCIter halfedge(void) const { return _halfedge; }
 
         Index id;
-        Vector3D position; ///< location in 3-space
+        Vector3D position;  ///< location in 3-space
+        Vector3D color;     ///< color in 3-space
+        Vector3D normal;    ///< normal in 3-space
+        Vector2D textCoord;  ///< texture coordinate
+
+        float offset;
 
         Vector3D newPosition; ///< For Loop subdivision, this will be the updated position of the vertex
         bool isNew; ///< For Loop subdivision, this flag should be true if and only if this vertex is a new vertex created by subdivision (i.e., if it corresponds to a vertex of the original mesh)
@@ -313,7 +324,7 @@ namespace CG184
 
         Vector3D centroid; ///< average of neighbor positions, storing the value computed by Vertex::computeCentroid()
 
-        Vector3D normal(void) const;
+        Vector3D ComputeNormal(void) const;
 
         /**
         * Check if if this vertex is on the boundary of the surface
@@ -435,7 +446,11 @@ namespace CG184
         * The input must describe a manifold, oriented surface, where the orientation of
         * a polygon is determined by the order of vertices in the list.
         */
-        void build(const vector< vector<Index> >& polygons, const vector<Vector3D>& vertexPositions);
+        void build(const vector< vector<Index> >& polygons, 
+            const vector<Vector3D>& vertexPositions,
+            const vector<Vector3D>& vertexColors,
+            const vector<Vector3D>& vertexNormals,
+            const vector<Vector2D>& vertexTextCoord);
 
         void GetIndexArray(vector<uint32_t>& indices);
 

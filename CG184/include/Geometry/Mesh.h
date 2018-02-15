@@ -53,6 +53,12 @@ namespace CG184
         void                        LoadModel(const std::string &modelPath);
         void                        BuildHalfEdgeMesh();
 
+        inline HalfEdgeMesh         GetHalfEdgeMesh() { return mesh; }
+
+        // map from picking IDs to mesh elements, generated during draw_pick
+        // and used by setSelection
+        std::map<int, HalfEdgeElement *> idToElement;
+
         friend class MeshFilter;
     protected:
         virtual void				InitMesh();

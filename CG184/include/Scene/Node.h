@@ -9,7 +9,8 @@
 #include <memory>
 #include "Transform.h"
 #include "Componet.h"
-#include "../Graphics/Renderer.h"
+#include <Graphics/Renderer.h>
+#include <EventSystem/Input.h>
 
 
 namespace CG184
@@ -39,10 +40,16 @@ namespace CG184
         uint32_t				GetNumOfChildNode();
         std::shared_ptr<Node>	GetChildNodeAt(uint32_t index);
         const Transform&		GetWorldTransform();
+        class Mesh*             GetMesh();
+
         inline Transform&		GetTransformComponent() { return m_Transform; }
         inline int				GetInstanceID(){ return m_InstanceID;}
         inline std::string		GetName(){ return m_NodeName;}
+
         
+        void                    SetSelection(int pickID, Selection &selection);
+        void                    newPickElement(int &pickID, HalfEdgeElement *e);
+        void                    DrawPick(int &pickID, bool transformed);
 
         template <typename T>
         T* GetComponent()
@@ -54,6 +61,8 @@ namespace CG184
             return nullptr;
         }
 
+
+        bool                    isPickable;
     protected:
         Transform								m_Transform;
     private:

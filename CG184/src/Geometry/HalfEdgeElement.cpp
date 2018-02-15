@@ -9,6 +9,21 @@ namespace CG184
         return face()->isBoundary();
     }
 
+    void HalfEdge::getPickPoints(Vector3D& a, Vector3D& b, Vector3D& p, Vector3D& q, Vector3D& r) const 
+    {
+        const double w = 1.0 / 6.0;
+
+        Vector3D x0 = vertex()->position;
+        Vector3D x1 = next()->vertex()->position;
+        Vector3D x2 = next()->next()->vertex()->position;
+
+        a = x1;
+        p = x1 * (1.0 - w) + x2 * w;
+        r = x1 * (1.0 - w) + x0 * w;
+        q = (p + r) / 2.0;
+        b = a + (q - a) * 2.0;
+    }
+
     Vector3D Face::normal() const
     {
         Vector3D N(0., 0., 0.);
@@ -25,6 +40,22 @@ namespace CG184
         } while (h != halfedge());
 
         return N.norm();
+    }
+
+    Vector3D Face::centroid() const {
+        Vector3D c(0., 0., 0.);
+        double d = 0.;
+
+        // walk around the face
+        HalfEdgeIter h = _halfedge;
+        do {
+            c += h->vertex()->position;
+            d += 1.;
+
+            h = h->next();
+        } while (h != _halfedge);  // done walking around the face
+
+        return c / d;
     }
 
     bool Edge::isBoundary(void) const
@@ -48,7 +79,11 @@ namespace CG184
     // the list of vertex positions is given in lexicographic order (i.e., that the
     // lowest index appearing in any polygon corresponds to the first entry of the list
     // of positions and so on).
-    void HalfEdgeMesh::build(const vector< vector<Index> >& polygons, const vector<Vector3D>& vertexPositions)
+    void HalfEdgeMesh::build(const vector< vector<Index> >& polygons, 
+        const vector<Vector3D>& vertexPositions,
+        const vector<Vector3D>& vertexColors,
+        const vector<Vector3D>& vertexNormals,
+        const vector<Vector2D>& vertexTextCoord )
     {
         // define some types, to improve readability
         typedef vector<Index>					IndexList;
@@ -392,7 +427,10 @@ namespace CG184
             VertexIter v = e->second;
 
             // set the position of this vertex to the corresponding position in the input
-            v->position = vertexPositions[i];
+            v->position  = vertexPositions[i];
+            v->color     = vertexColors[i];
+            v->normal    = vertexNormals[i];
+            v->textCoord = vertexTextCoord[i];
             v->id       = e->first;
 
             i++;
@@ -468,6 +506,39 @@ namespace CG184
     HalfEdgeMesh::HalfEdgeMesh(const HalfEdgeMesh& mesh)
     {
         *this = mesh;
+    }
+
+    /**
+    * Compute vertex normal
+    * Compute the approximate unit normal at this vertex and store it in
+    * Vertex::normal. The normal is computed by taking the area-weighted
+    * average of the normals of neighboring triangles, then normalizing.
+    */
+    Vector3D Vertex::ComputeNormal() const {
+        Vector3D N(0., 0., 0.);
+        Vector3D pi = position;
+
+        // Iterate over neighbors.
+        HalfEdgeCIter h = halfedge();
+        if (isBoundary()) {
+            do {
+                Vector3D pj = h->next()->vertex()->position;
+                Vector3D pk = h->next()->next()->vertex()->position;
+                N += Cross(pj - pi, pk - pi);
+                h = h->next()->twin();
+            } while (h != halfedge());
+        }
+        else {
+            do {
+                Vector3D pj = h->next()->vertex()->position;
+                Vector3D pk = h->next()->next()->vertex()->position;
+                N += Cross(pj - pi, pk - pi);
+                h = h->twin()->next();
+            } while (h != halfedge());
+        }
+
+        N.normalize();
+        return N;
     }
 
 } // End of CG184
