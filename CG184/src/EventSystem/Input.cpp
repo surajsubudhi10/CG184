@@ -12,9 +12,6 @@ namespace CG184
     {
         m_Window				= window;
         m_ScenePtr				= scene;
-        
-        m_PickerShaderPtr		= new Shader("../../CG184/TestShaders/picker.vs", "../../CG184/TestShaders/picker.fs");
-        m_PickerMaterialPtr		= new Material(m_PickerShaderPtr);
 
         glfwSetCursorPosCallback(m_Window->m_WindowPtr, mouse_cursor_callback);
         glfwSetInputMode(window->m_WindowPtr, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
@@ -50,76 +47,22 @@ namespace CG184
         if (glfwGetKey(m_Window->m_WindowPtr, GLFW_KEY_ESCAPE) == GLFW_PRESS)
             glfwSetWindowShouldClose(m_Window->m_WindowPtr, true);
     }
-        
-    void Input::ProcessSelection()
-    {
-        unsigned char res[4];
-        GLint viewport[4];
 
-        RenderSelection();
-
-        glGetIntegerv(GL_VIEWPORT, viewport);
-        glReadPixels((int)mousePosition.x, viewport[3] - (int)mousePosition.y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, &res);
-        switch (res[0]) {
-            case 0: 
-                //printf("Nothing Picked \n");
-                break;
-            default:
-                printf("Picked Object ID: %d\n", res[0]);
-        }
-    }
-
-    void Input::RenderSelection() 
-    {
-        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        for (auto &m_Node : m_ScenePtr->m_RenderQueue) {
-            m_Node->UpdateWorldModelMatrix();
-        }
-
-//		Renderer pickRenderer(new Mesh(), m_PickerMaterialPtr);
-        for (auto &m_Node : m_ScenePtr->m_RenderQueue)
-        {
-            if (m_Node->HasComponent(ComponentType::RENDERER))
-            {
-                Renderer* renderer = (m_Node->GetComponent<Renderer>());
-                if (&renderer != nullptr)
-                {
-                    Renderer pickRenderer(renderer->GetMesh(), m_PickerMaterialPtr);
-                    m_PickerMaterialPtr->GetShader()->SetUniform1i("code", m_Node->GetInstanceID() + 1);
-                    pickRenderer.SendViewMatrixData(m_ScenePtr->m_CameraPtr->GetViewMatrix());
-                    pickRenderer.SendProjectionMatrixData(m_ScenePtr->m_CameraPtr->GetProjectionMatrix());
-
-                    Matrix4D modelMatrix = m_Node->GetTransformComponent().GetWorldTransformMat();
-                    pickRenderer.GetMaterial().GetShader()->SetUniformMat4f("model", modelMatrix.elements);
-                    pickRenderer.Render();
-                }
-                else {
-                    throw "(Null Exception) Renderer Null";
-                }
-            }
-        }
-
-        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-    }
-
-
+    /**
+     * \brief Get the hovered element as the mouse hover on the object
+     * \param p : the mouse position
+     * \param getElement : do we need the element 
+     * \param transformed : is object transformed
+     */
     void Input::GetHoveredObject(const Vector2D &p, bool getElement, bool transformed) 
     {
-        cout << "Mouse Pos : " << p << endl;
         // Set the background color to the maximum possible value---this value should
-        // be far
-        // beyond the maximum pick index, since we have at most 2^(8+8+8) = 16,777,216
-        // distinct IDs
+        // be far beyond the maximum pick index, since we have at most 2^(8+8+8) = 16,777,216 distinct IDs
         glClearColor(1., 1., 1., 1.);
 
-        // Clear any color values currently in the color buffer---we do not want to
-        // use these for
+        // Clear any color values currently in the color buffer---we do not want to use these for
         // picking, since they represent, e.g., shading colors rather than pick IDs.
-        // Also clear
-        // the depth buffer so that we can use it to determine the closest object
-        // under the cursor.
+        // Also clear the depth buffer so that we can use it to determine the closest object under the cursor.
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // We want to draw the pick IDs as raw color values; shading functionality
@@ -131,12 +74,11 @@ namespace CG184
         // Keep track of the number of picking IDs used so far
         int pickID = 0;
 
-        for (NodePtr node : m_ScenePtr->m_RenderQueue) 
+        for(const auto& node : m_ScenePtr->m_RenderQueue)
         {
             if (node->isPickable)
             {
-                // The implementation of draw_pick MUST increment the
-                // pickID for each new pickable element it draws.
+                // The implementation of draw_pick MUST increment the pickID for each new pickable element it draws.
                 node->DrawPick(pickID, transformed, m_ScenePtr->m_CameraPtr);
             }
         }
@@ -145,21 +87,19 @@ namespace CG184
         glReadPixels(p.x, m_Window->m_height - p.y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, color);
 
         int ID = RGBToIndex(color[0], color[1], color[2]);
-        cout << "Selected ID : " << ID << endl;
 
         // By default, set hovered object to "none"
         hovered.clear();
 
         // Determine which element generated this pick ID
         int i = 0;
-        for (NodePtr node : m_ScenePtr->m_RenderQueue) 
+        for (const auto& node : m_ScenePtr->m_RenderQueue) 
         {
             // Call the object's method for setting the selection
             // based on the ID.  (This allows the object to set
             // the selection to an element within that particular
             // object type, e.g., for a mesh it can specify that a
-            // particular vertex is selected, or for a camera it might
-            // specify that a control handle was selected, etc.)
+            // particular vertex is selected etc.)
             node->SetSelection(ID, hovered);
             i++;
         }
@@ -210,7 +150,7 @@ namespace CG184
                     Vector3D v2 = h->next()->next()->vertex()->position + h->next()->next()->vertex()->ComputeNormal() * h->next()->next()->vertex()->offset;
 
                     glBegin(GL_TRIANGLES);
-                        glColor3f(0.0f, 0.1f, 0.8f);
+                        glColor3f(0.2f, 0.2f, 0.2f);
                         glVertex3f(v0.x, v0.y, v0.z);
                         glVertex3f(v1.x, v1.y, v1.z);
                         glVertex3f(v2.x, v2.y, v2.z);
@@ -228,12 +168,14 @@ namespace CG184
                     Vector3D v0 = h->vertex()->position + h->vertex()->ComputeNormal() * h->vertex()->offset;
                     Vector3D v1 = h->next()->vertex()->position + h->next()->vertex()->ComputeNormal() * h->next()->vertex()->offset;
 
-                    glBegin(GL_LINE);
-                        glColor3f(0.0f, 0.1f, 0.8f);
-                        glLineWidth(2.0f);
+                    glLineWidth(2.0f);
+                    glEnable(GL_LINE_SMOOTH);
+                    glBegin(GL_LINES);
+                        glColor3f(0.8f, 0.8f, 0.8f);
                         glVertex3f(v0.x, v0.y, v0.z);
                         glVertex3f(v1.x, v1.y, v1.z);
                     glEnd();
+                    glLineWidth(1.0f);
 
                     glPopMatrix();
                     glPopMatrix();
@@ -246,11 +188,13 @@ namespace CG184
                     HalfEdgeIter h = v->halfedge();
                     Vector3D v0 = h->vertex()->position + h->vertex()->ComputeNormal() * h->vertex()->offset;
 
-                    glBegin(GL_POINT);
-                        glColor3f(0.0f, 0.1f, 0.8f);
-                        glPointSize(2.0f);
+                    glEnable(GL_POINT_SMOOTH);
+                    glPointSize(10.0f);
+                    glBegin(GL_POINTS);
+                        glColor3f(0.8f, 0.8f, 0.8f);
                         glVertex3f(v0.x, v0.y, v0.z);
                     glEnd();
+                    glPointSize(1.0f);
 
                     glPopMatrix();
                     glPopMatrix();
@@ -259,16 +203,14 @@ namespace CG184
 
                 glPopMatrix();
                 glPopMatrix();
-            }
-        }
-    }
+            
+            } // End of loop if hover element is valid half edge element
+        }   // End of loop of hover object is valid node
+    } // End of DrawSelection
 
 
     Input::~Input()
-    {
-        delete m_PickerMaterialPtr;
-        delete m_PickerShaderPtr;
-    }
+    = default;
 
 
     void mouse_cursor_callback(GLFWwindow* window, double xpos, double ypos)
@@ -276,8 +218,7 @@ namespace CG184
         double xPos;
         double yPos;
         glfwGetCursorPos(window, &xPos, &yPos);
-
-        Input::mousePosition = Vector2D((float)xPos, (float)yPos);
+        Input::mousePosition = Vector2D(static_cast<float>(xPos), static_cast<float>(yPos));
     }
 
     void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)

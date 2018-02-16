@@ -56,10 +56,6 @@ namespace CG184
         bool			IsMouseButtonDown(int button);
         bool			IsMouseButtonUp(int button);
 
-        void			RenderSelection();
-        void			ProcessSelection();
-
-
         void            GetHoveredObject(const Vector2D &p, bool getElement = true, bool transformed = false);
         void            DrawSelection() const;
 
@@ -75,8 +71,6 @@ namespace CG184
         
         WindowPtr		m_Window;
         Scene*			m_ScenePtr;
-        Shader*			m_PickerShaderPtr;
-        Material*		m_PickerMaterialPtr;
     };
 
     // Mapping between integer and 8-bit RGB values (used for picking)

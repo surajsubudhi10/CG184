@@ -198,27 +198,26 @@ namespace CG184
 
 
         Mesh* mesh = GetMesh();
+        HalfEdgeMesh* half_edge_mesh = mesh->GetHalfEdgeMesh();
         if (mesh != nullptr) 
         {
             mesh->idToElement.clear();
             vector<Vector3D> original_vertex_positions;
 
-            HalfEdgeMesh half_edge_mesh = mesh->GetHalfEdgeMesh();
             if (transformed) 
             {
                 glPushMatrix();
                 const auto world_mat = this->GetTransformComponent().GetWorldTransformMat();
                 glMultMatrixf(&world_mat.elements[0]);
-                
 
-                for (VertexIter v = half_edge_mesh.verticesBegin(); v != half_edge_mesh.verticesEnd(); v++) 
+                for (VertexIter v = half_edge_mesh->verticesBegin(); v != half_edge_mesh->verticesEnd(); v++) 
                 {
                     original_vertex_positions.push_back(v->position);
                     v->position +=  v->ComputeNormal() * v->offset;
                 }
             }
 
-            for (FaceIter f = half_edge_mesh.facesBegin(); f != half_edge_mesh.facesEnd(); f++) 
+            for (FaceIter f = half_edge_mesh->facesBegin(); f != half_edge_mesh->facesEnd(); f++) 
             {
                 Vector3D c = f->centroid();
                 HalfEdgeIter h = f->halfedge();
@@ -275,7 +274,7 @@ namespace CG184
             {
                 glPopMatrix();
                 int i = 0;
-                for (VertexIter v = half_edge_mesh.verticesBegin(); v != half_edge_mesh.verticesEnd(); v++) 
+                for (VertexIter v = half_edge_mesh->verticesBegin(); v != half_edge_mesh->verticesEnd(); v++) 
                 {
                     v->position = original_vertex_positions[i++];
                 }

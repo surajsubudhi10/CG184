@@ -98,7 +98,7 @@ int main()
 
     NodePtr box(new Node("box1"));
     box->AttachComponent(&boxRenderer);
-    box->SetPosition(2.0, 0.0, 0.0);
+    //box->SetPosition(2.0, 0.0, 0.0);
     box->SetLocalScale(0.25f, 0.25f, 0.25f);
 
     Renderer boxRenderer1(&rockMesh, &boxMat);
@@ -143,15 +143,13 @@ int main()
 //        box1->SetPosition(cameraTarget);
         //boxRenderer.GetMesh()->SetPosition(1, Vector3D(0.0f, (float)sin(angle), 0.0f));
 
-        input.GetHoveredObject(input.mousePosition, true, true);
-        
-        if(input.hovered.object != nullptr)
-            input.DrawSelection();
 
+        input.DrawSelection();
         rootScene.Render();
         window->Update();
-    }
 
+    }   // End of animation loop
+    
     return 0;
 }
 
@@ -214,7 +212,7 @@ void MouseEvents(const WindowPtr window, Input& input, float deltaTime)
         ProcessMouseMotion(input.mousePosition);
     }else if (input.IsMouseButtonDown(GLFW_MOUSE_BUTTON_LEFT)) {
         //input.ProcessSelection();
-        //input.GetHoveredObject(input.mousePosition, true, true);
+        input.GetHoveredObject(input.mousePosition, true, true);
     }
 }
 
