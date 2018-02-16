@@ -49,7 +49,7 @@ namespace CG184
         
         void                    SetSelection(int pickID, Selection &selection);
         void                    newPickElement(int &pickID, HalfEdgeElement *e);
-        void                    DrawPick(int &pickID, bool transformed);
+        void                    DrawPick(int &pickID, bool transformed, CameraPtr cam);
 
         template <typename T>
         T* GetComponent()
@@ -62,7 +62,7 @@ namespace CG184
         }
 
 
-        bool                    isPickable;
+        bool                                    isPickable;
     protected:
         Transform								m_Transform;
     private:

@@ -122,7 +122,7 @@ namespace CG184
 
     bool Vector4D::isEqual(const Vector4D& vec) const
     {
-        return x == vec.x && y == vec.y && z == vec.z && w == vec.w;
+        return (x == vec.x && y == vec.y && z == vec.z && w == vec.w);
     }
 
 
@@ -177,37 +177,38 @@ namespace CG184
 
     Vector4D&   Vector4D::operator+=(const Vector4D& vec)
     {
-        Vector4D _vec = *this + vec;
-        return _vec;
+        *this = add(vec);
+        return *this;
     }
 
     Vector4D&   Vector4D::operator-=(const Vector4D& vec)
     {
-        Vector4D _vec = *this - vec;
-        return _vec;
+        *this = sub(vec);
+        return *this;
     }
 
     Vector4D&   Vector4D::operator*=(const Vector4D& vec)
     {
-        Vector4D _vec = *this * vec;
-        return _vec;
+        *this = mult(vec);
+        return *this;
     }
 
     Vector4D&   Vector4D::operator/=(const Vector4D& vec)
     {
-        Vector4D _vec = *this / vec;
-        return _vec;
+        *this = divide(vec);
+        return *this;
     }
+
     Vector4D&   Vector4D::operator*=(float val)
     {
-        Vector4D _vec = *this * val;
-        return _vec;
+        *this = mult(val);
+        return *this;
     }
 
     Vector4D&   Vector4D::operator/=(float val)
     {
-        Vector4D _vec = *this / val;
-        return _vec;
+        *this = divide(val);
+        return *this;;
     }
 
     bool		Vector4D::operator==(const Vector4D& vec)

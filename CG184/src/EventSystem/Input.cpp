@@ -107,6 +107,7 @@ namespace CG184
 
     void Input::GetHoveredObject(const Vector2D &p, bool getElement, bool transformed) 
     {
+        cout << "Mouse Pos : " << p << endl;
         // Set the background color to the maximum possible value---this value should
         // be far
         // beyond the maximum pick index, since we have at most 2^(8+8+8) = 16,777,216
@@ -130,18 +131,18 @@ namespace CG184
         // Keep track of the number of picking IDs used so far
         int pickID = 0;
 
-        for (auto node : m_ScenePtr->m_RenderQueue) 
+        for (NodePtr node : m_ScenePtr->m_RenderQueue) 
         {
             if (node->isPickable)
             {
                 // The implementation of draw_pick MUST increment the
                 // pickID for each new pickable element it draws.
-                node->DrawPick(pickID, transformed);
+                node->DrawPick(pickID, transformed, m_ScenePtr->m_CameraPtr);
             }
         }
 
         unsigned char color[4];
-        glReadPixels(p.x, p.y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, color);
+        glReadPixels(p.x, m_Window->m_height - p.y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, color);
 
         int ID = RGBToIndex(color[0], color[1], color[2]);
         cout << "Selected ID : " << ID << endl;
@@ -151,7 +152,8 @@ namespace CG184
 
         // Determine which element generated this pick ID
         int i = 0;
-        for (auto node : m_ScenePtr->m_RenderQueue) {
+        for (NodePtr node : m_ScenePtr->m_RenderQueue) 
+        {
             // Call the object's method for setting the selection
             // based on the ID.  (This allows the object to set
             // the selection to an element within that particular
@@ -169,6 +171,96 @@ namespace CG184
 
         // Restore any draw state that we disabled above.
         glPopAttrib();
+    }
+
+    /**
+     * \Draw the selected element(vertex, edge, face) on Mesh.
+     */
+    void Input::DrawSelection() const
+    {
+        if(hovered.object != nullptr)
+        {
+            if (hovered.element != nullptr)
+            {
+                Matrix4D mat;
+                glPushMatrix();
+                glMatrixMode(GL_PROJECTION_MATRIX);
+                glLoadIdentity();
+
+                // Multipling the projection Matrix
+                mat = m_ScenePtr->m_CameraPtr->GetProjectionMatrix();
+                glMultMatrixf(&mat.elements[0]);
+
+                // Multipling the model * view(here identity) Matrix
+                glMatrixMode(GL_MODELVIEW_MATRIX);
+                mat = m_ScenePtr->m_CameraPtr->GetViewMatrix();
+                glMultMatrixf(&mat.elements[0]);
+
+                glPushMatrix();
+                const auto world_mat = hovered.object->GetTransformComponent().GetWorldTransformMat();
+                glMultMatrixf(&world_mat.elements[0]);
+
+                HalfEdgeElement* he = hovered.element;
+                Face* f = he->getFace();
+                if(f != nullptr)
+                {
+                    HalfEdgeIter h = f->halfedge();
+                    Vector3D v0 = h->vertex()->position + h->vertex()->ComputeNormal() * h->vertex()->offset;
+                    Vector3D v1 = h->next()->vertex()->position + h->next()->vertex()->ComputeNormal() * h->next()->vertex()->offset;
+                    Vector3D v2 = h->next()->next()->vertex()->position + h->next()->next()->vertex()->ComputeNormal() * h->next()->next()->vertex()->offset;
+
+                    glBegin(GL_TRIANGLES);
+                        glColor3f(0.0f, 0.1f, 0.8f);
+                        glVertex3f(v0.x, v0.y, v0.z);
+                        glVertex3f(v1.x, v1.y, v1.z);
+                        glVertex3f(v2.x, v2.y, v2.z);
+                    glEnd();
+
+                    glPopMatrix();
+                    glPopMatrix();
+                    return;
+                }   // End of Face drawing
+
+                Edge* e = hovered.element->getEdge();
+                if (e != nullptr)
+                {
+                    HalfEdgeIter h = e->halfedge();
+                    Vector3D v0 = h->vertex()->position + h->vertex()->ComputeNormal() * h->vertex()->offset;
+                    Vector3D v1 = h->next()->vertex()->position + h->next()->vertex()->ComputeNormal() * h->next()->vertex()->offset;
+
+                    glBegin(GL_LINE);
+                        glColor3f(0.0f, 0.1f, 0.8f);
+                        glLineWidth(2.0f);
+                        glVertex3f(v0.x, v0.y, v0.z);
+                        glVertex3f(v1.x, v1.y, v1.z);
+                    glEnd();
+
+                    glPopMatrix();
+                    glPopMatrix();
+                    return;
+                } // End of Edge Drawing
+
+                Vertex* v = hovered.element->getVertex();
+                if (v != nullptr)
+                {
+                    HalfEdgeIter h = v->halfedge();
+                    Vector3D v0 = h->vertex()->position + h->vertex()->ComputeNormal() * h->vertex()->offset;
+
+                    glBegin(GL_POINT);
+                        glColor3f(0.0f, 0.1f, 0.8f);
+                        glPointSize(2.0f);
+                        glVertex3f(v0.x, v0.y, v0.z);
+                    glEnd();
+
+                    glPopMatrix();
+                    glPopMatrix();
+                    return;
+                }   // End of Vertex drawing
+
+                glPopMatrix();
+                glPopMatrix();
+            }
+        }
     }
 
 

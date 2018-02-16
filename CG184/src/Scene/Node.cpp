@@ -180,30 +180,49 @@ namespace CG184
         }
     }
 
-    void Node::DrawPick(int &pickID, bool transformed) 
+    void Node::DrawPick(int &pickID, bool transformed, CameraPtr cam) 
     {
+        Matrix4D mat;
+        glPushMatrix();
+        glMatrixMode(GL_PROJECTION_MATRIX);
+        glLoadIdentity();
+
+        // Multipling the projection Matrix
+        mat = cam->GetProjectionMatrix();
+        glMultMatrixf(&mat.elements[0]);
+
+        // Multipling the model * view(here identity) Matrix
+        glMatrixMode(GL_MODELVIEW_MATRIX);
+        mat = cam->GetViewMatrix();
+        glMultMatrixf(&mat.elements[0]);
+
+
         Mesh* mesh = GetMesh();
-        if (mesh != nullptr) {
+        if (mesh != nullptr) 
+        {
             mesh->idToElement.clear();
             vector<Vector3D> original_vertex_positions;
 
             HalfEdgeMesh half_edge_mesh = mesh->GetHalfEdgeMesh();
-            if (transformed) {
+            if (transformed) 
+            {
                 glPushMatrix();
                 const auto world_mat = this->GetTransformComponent().GetWorldTransformMat();
                 glMultMatrixf(&world_mat.elements[0]);
                 
 
-                for (VertexIter v = half_edge_mesh.verticesBegin(); v != half_edge_mesh.verticesEnd(); v++) {
+                for (VertexIter v = half_edge_mesh.verticesBegin(); v != half_edge_mesh.verticesEnd(); v++) 
+                {
                     original_vertex_positions.push_back(v->position);
-                    v->position += v->normal * v->offset;
+                    v->position +=  v->ComputeNormal() * v->offset;
                 }
             }
 
-            for (FaceIter f = half_edge_mesh.facesBegin(); f != half_edge_mesh.facesEnd(); f++) {
+            for (FaceIter f = half_edge_mesh.facesBegin(); f != half_edge_mesh.facesEnd(); f++) 
+            {
                 Vector3D c = f->centroid();
-
                 HalfEdgeIter h = f->halfedge();
+
                 do {
                     HalfEdgeIter h1 = h;
                     HalfEdgeIter h2 = h->next();
@@ -241,10 +260,10 @@ namespace CG184
 
                     // halfedge
                     newPickElement(pickID, elementAddress(h2));
-                    glVertex3fv(&q1.x);
+                    /*glVertex3fv(&q1.x);
                     glVertex3fv(&q2.x);
                     glVertex3fv(&b2.x);
-                    glVertex3fv(&b1.x);
+                    glVertex3fv(&b1.x);*/
 
                     glEnd();
 
@@ -252,47 +271,15 @@ namespace CG184
                 } while (h != f->halfedge());
             }
 
-            if (transformed) {
+            if (transformed) 
+            {
                 glPopMatrix();
                 int i = 0;
-                for (VertexIter v = half_edge_mesh.verticesBegin(); v != half_edge_mesh.verticesEnd(); v++) {
+                for (VertexIter v = half_edge_mesh.verticesBegin(); v != half_edge_mesh.verticesEnd(); v++) 
+                {
                     v->position = original_vertex_positions[i++];
                 }
             }
-            
-            
-            ////////////////////////////////////////////////////////////////////
-            //Matrix4D mat;
-            //glMatrixMode(GL_PROJECTION_MATRIX);
-            //glLoadIdentity();
-
-            //// Multipling the projection Matrix
-            //mat =  m_CameraPtr->GetProjectionMatrix();
-            //glMultMatrixf(&mat.elements[0]);
-
-            //// Multipling the model * view(here identity) Matrix
-            //glMatrixMode(GL_MODELVIEW_MATRIX);
-            //mat = m_CameraPtr->GetViewMatrix();
-            //glMultMatrixf(&mat.elements[0]);
-
-            //glBegin(GL_LINES);
-            //// X-Axis
-            //glColor3f(1.f, 0.f, 0.f);
-            //glVertex3f(0.0f, 0.0f, 0.0f);
-            //glVertex3f(1.0f, 0.0f, 0.0f);
-
-            //// Y-Axis
-            //glColor3f(0.f, 1.f, 0.f);
-            //glVertex3f(0.0f, 0.0f, 0.0f);
-            //glVertex3f(0.0f, 1.0f, 0.0f);
-
-            //// Z-Axis
-            //glColor3f(0.f, 0.f, 1.f);
-            //glVertex3f(0.0f, 0.0f, 0.0f);
-            //glVertex3f(0.0f, 0.0f, 1.0f);
-            //glEnd();
-
-            ////////////////////////////////////////////////////////////////////
         }
     }
 

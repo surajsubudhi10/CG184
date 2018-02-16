@@ -161,14 +161,7 @@ namespace CG184
 
     bool Vector3D::isEqual(const Vector3D& vec) const
     {
-        if (x == vec.x && y == vec.y && z == vec.z) 
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return (x == vec.x && y == vec.y && z == vec.z);
     }
 
 
@@ -226,37 +219,37 @@ namespace CG184
 
     Vector3D&   Vector3D::operator+=(const Vector3D& vec) 
     {
-        Vector3D _vec = *this + vec;
-        return _vec;
+        *this = add(vec);
+        return *this;
     }
 
     Vector3D&   Vector3D::operator-=(const Vector3D& vec) 
     {
-        Vector3D _vec = *this - vec;
-        return _vec;
+        *this = sub(vec);
+        return *this;
     }
 
     Vector3D&   Vector3D::operator*=(const Vector3D& vec) 
     {
-        Vector3D _vec = *this * vec;
-        return _vec;
+        *this = mult(vec);
+        return *this;
     }
 
     Vector3D&   Vector3D::operator/=(const Vector3D& vec) 
     {
-        Vector3D _vec = *this / vec;
-        return _vec;
+        *this = divide(vec);
+        return *this;
     }
     Vector3D&   Vector3D::operator*=(float val) 
     {
-        Vector3D _vec = *this * val;
-        return _vec;
+        *this = mult(val);
+        return *this;
     }
 
     Vector3D&   Vector3D::operator/=(float val) 
     {
-        Vector3D _vec = *this / val;
-        return _vec;
+        *this = divide(val);
+        return *this;
     }
 
     bool		Vector3D::operator==(const Vector3D& vec) 

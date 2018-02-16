@@ -312,7 +312,7 @@ namespace CG184
         Vector3D normal;    ///< normal in 3-space
         Vector2D textCoord;  ///< texture coordinate
 
-        float offset;
+        const float offset = 0.01f;
 
         Vector3D newPosition; ///< For Loop subdivision, this will be the updated position of the vertex
         bool isNew; ///< For Loop subdivision, this flag should be true if and only if this vertex is a new vertex created by subdivision (i.e., if it corresponds to a vertex of the original mesh)

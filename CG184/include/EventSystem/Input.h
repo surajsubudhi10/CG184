@@ -61,6 +61,8 @@ namespace CG184
 
 
         void            GetHoveredObject(const Vector2D &p, bool getElement = true, bool transformed = false);
+        void            DrawSelection() const;
+
 
         /* Keep track of which elements of the scene (if any) are currently
         * under the cursor, selected, or being edited. */

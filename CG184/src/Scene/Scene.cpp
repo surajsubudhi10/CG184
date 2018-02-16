@@ -59,35 +59,39 @@ namespace CG184
 
     void Scene::CreateAnchor()
     {
-        Matrix4D mat;
-        glMatrixMode(GL_PROJECTION_MATRIX);
-        glLoadIdentity();
+        glPushMatrix();
+            Matrix4D mat;
+            glMatrixMode(GL_PROJECTION_MATRIX);
+            glLoadIdentity();
         
-        // Multipling the projection Matrix
-        mat = m_CameraPtr->GetProjectionMatrix();
-        glMultMatrixf(&mat.elements[0]);
+            // Multipling the projection Matrix
+            mat = m_CameraPtr->GetProjectionMatrix();
+            glMultMatrixf(&mat.elements[0]);
 
-        // Multipling the model * view(here identity) Matrix
-        glMatrixMode(GL_MODELVIEW_MATRIX);
-        mat = m_CameraPtr->GetViewMatrix();
-        glMultMatrixf(&mat.elements[0]);
+            // Multipling the model * view(here identity) Matrix
+            glMatrixMode(GL_MODELVIEW_MATRIX);
+            mat = m_CameraPtr->GetViewMatrix();
+            glMultMatrixf(&mat.elements[0]);
         
-        glBegin(GL_LINES);
-            // X-Axis
-            glColor3f(1.f, 0.f, 0.f);
-            glVertex3f(0.0f, 0.0f, 0.0f);
-            glVertex3f(1.0f, 0.0f, 0.0f);
+            glPushMatrix();
+                glBegin(GL_LINES);
+                    // X-Axis
+                    glColor3f(1.f, 0.f, 0.f);
+                    glVertex3f(0.0f, 0.0f, 0.0f);
+                    glVertex3f(1.0f, 0.0f, 0.0f);
 
-            // Y-Axis
-            glColor3f(0.f, 1.f, 0.f);
-            glVertex3f(0.0f, 0.0f, 0.0f);
-            glVertex3f(0.0f, 1.0f, 0.0f);
+                    // Y-Axis
+                    glColor3f(0.f, 1.f, 0.f);
+                    glVertex3f(0.0f, 0.0f, 0.0f);
+                    glVertex3f(0.0f, 1.0f, 0.0f);
 
-            // Z-Axis
-            glColor3f(0.f, 0.f, 1.f);
-            glVertex3f(0.0f, 0.0f, 0.0f);
-            glVertex3f(0.0f, 0.0f, 1.0f);
-        glEnd();
+                    // Z-Axis
+                    glColor3f(0.f, 0.f, 1.f);
+                    glVertex3f(0.0f, 0.0f, 0.0f);
+                    glVertex3f(0.0f, 0.0f, 1.0f);
+                glEnd();
+            glPopMatrix();
+        glPopMatrix();
     }
 
     void Scene::TraverseAllChildNodes(Node& a_Node){

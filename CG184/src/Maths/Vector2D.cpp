@@ -141,14 +141,7 @@ namespace CG184
 
     bool Vector2D::isEqual(const Vector2D& vec) const
     {
-        if (x == vec.x && y == vec.y)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return (x == vec.x && y == vec.y);
     }
 
 
@@ -201,37 +194,37 @@ namespace CG184
 
     Vector2D&   Vector2D::operator+=(const Vector2D& vec)
     {
-        Vector2D _vec = *this + vec;
-        return _vec;
+        *this = add(vec);
+        return *this;
     }
 
     Vector2D&   Vector2D::operator-=(const Vector2D& vec)
     {
-        Vector2D _vec = *this - vec;
-        return _vec;
+        *this = sub(vec);
+        return *this;
     }
 
     Vector2D&   Vector2D::operator*=(const Vector2D& vec)
     {
-        Vector2D _vec = *this * vec;
-        return _vec;
+        *this = mult(vec);
+        return *this;
     }
 
     Vector2D&   Vector2D::operator/=(const Vector2D& vec)
     {
-        Vector2D _vec = *this / vec;
-        return _vec;
+        *this = divide(vec);
+        return *this;
     }
     Vector2D&   Vector2D::operator*=(float val)
     {
-        Vector2D _vec = *this * val;
-        return _vec;
+        *this = mult(val);
+        return *this;
     }
 
     Vector2D&   Vector2D::operator/=(float val)
     {
-        Vector2D _vec = *this / val;
-        return _vec;
+        *this = divide(val);
+        return *this;
     }
 
     bool		Vector2D::operator==(const Vector2D& vec)

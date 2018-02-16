@@ -49,7 +49,7 @@ namespace CG184
         // walk around the face
         HalfEdgeIter h = _halfedge;
         do {
-            c += h->vertex()->position;
+            c = c + h->vertex()->position;
             d += 1.;
 
             h = h->next();

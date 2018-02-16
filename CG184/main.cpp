@@ -101,13 +101,13 @@ int main()
     box->SetPosition(2.0, 0.0, 0.0);
     box->SetLocalScale(0.25f, 0.25f, 0.25f);
 
-    //Renderer boxRenderer1(&boxMesh, &boxMat);
-    //boxRenderer1.GetMaterial().SetAmbient(Vector4D(0.3f, 0.5f, 0.1f, 1.0f));
+    Renderer boxRenderer1(&rockMesh, &boxMat);
+    boxRenderer1.GetMaterial().SetAmbient(Vector4D(0.3f, 0.5f, 0.1f, 1.0f));
 
-    /*NodePtr box1(new Node("box2"));
+    NodePtr box1(new Node("box2"));
     box1->AttachComponent(&boxRenderer1);
-    box1->SetLocalScale(1.1, 1.1, 1.1);
-    box1->SetPosition(0.0, 0.0, 0.0);*/
+    box1->SetLocalScale(0.25f, 0.25f, 0.25f);
+    box1->SetPosition(0.0, 0.0, 0.0);
 
 
     Scene rootScene(cam);
@@ -142,6 +142,11 @@ int main()
         cam->Set(cameraPos, cameraTarget, cameraUp);
 //        box1->SetPosition(cameraTarget);
         //boxRenderer.GetMesh()->SetPosition(1, Vector3D(0.0f, (float)sin(angle), 0.0f));
+
+        input.GetHoveredObject(input.mousePosition, true, true);
+        
+        if(input.hovered.object != nullptr)
+            input.DrawSelection();
 
         rootScene.Render();
         window->Update();
@@ -209,7 +214,7 @@ void MouseEvents(const WindowPtr window, Input& input, float deltaTime)
         ProcessMouseMotion(input.mousePosition);
     }else if (input.IsMouseButtonDown(GLFW_MOUSE_BUTTON_LEFT)) {
         //input.ProcessSelection();
-        input.GetHoveredObject(input.mousePosition, true, true);
+        //input.GetHoveredObject(input.mousePosition, true, true);
     }
 }
 
