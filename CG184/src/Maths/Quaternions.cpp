@@ -16,7 +16,7 @@ namespace CG184
         x(quat.x), y(quat.y), z(quat.z), w(quat.w)
     {}
 
-    Quaternion::Quaternion(const float angleInRadians, const Vector3D& axis)
+    Quaternion::Quaternion(const float angleInRadians, const Vector3F& axis)
     {
         const float halfAngle = 0.5f * angleInRadians;
         w = cosf(halfAngle);
@@ -98,16 +98,16 @@ namespace CG184
     }
 
 
-    void Quaternion::ToAxisAngle(Vector3D& axis, float& angle)
+    void Quaternion::ToAxisAngle(Vector3F& axis, float& angle)
     {
         angle = 2.0f * acosf(w);
-        const float length = sqrtf(1.0f - w*w);
-        axis = Vector3D();
+        float length = sqrtf(1.0f - w*w);
+        axis = Vector3F();
         if(length != 0)
-            axis = Vector3D(x, y, z) / length;
+            axis = Vector3F(x, y, z) / (length);
     }
 
-    Vector3D Quaternion::ToEulerAngles() 
+    Vector3F Quaternion::ToEulerAngles() 
     {
 
         //Reference :- https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
@@ -130,7 +130,7 @@ namespace CG184
         auto cosy = +1.0 - 2.0 * (y * y + z * z);
         yaw = static_cast<float>(atan2(siny, cosy));
 
-        return Vector3D(roll, pitch, yaw);
+        return Vector3F(roll, pitch, yaw);
     }
 
 

@@ -10,11 +10,11 @@ namespace CG184
 {
 
     Transform::Transform() :
-        m_Position(Vector3D(0)),
-        m_LocalPosition(Vector3D(0)),
+        m_Position(Vector3F(0)),
+        m_LocalPosition(Vector3F(0)),
         m_Rotation(Quaternion()),
-        m_EulerAngles(Vector3D(0)),
-        m_LocalScale(Vector3D(1)),
+        m_EulerAngles(Vector3F(0)),
+        m_LocalScale(Vector3F(1)),
         isDirty(false)
     {
         UpdateLocalTransformMatrix();
@@ -36,7 +36,7 @@ namespace CG184
         m_LocalTransformMat = Matrix4D(1.0f);
         
         float angleInDeg;
-        Vector3D axis;
+        Vector3F axis;
         m_Rotation.ToAxisAngle(axis, angleInDeg);
         angleInDeg = ToDegrees(angleInDeg);
         if(axis.length() > 0.0f)
@@ -61,7 +61,7 @@ namespace CG184
         return mat;
     }
 
-    Matrix4D Transform::Rotate(Matrix4D& mat, float angleInDeg, const Vector3D& axis)
+    Matrix4D Transform::Rotate(Matrix4D& mat, float angleInDeg, const Vector3F& axis)
     {
         auto angInRad = static_cast<float>(PI * angleInDeg / 180.0f);
 
@@ -70,7 +70,7 @@ namespace CG184
         auto s = static_cast<float>(sin(angInRad));
         auto v = 1 - c;
 
-        Vector3D normAxis =  axis.norm();
+        Vector3F normAxis =  axis.norm();
         auto kx = normAxis.x;
         auto ky = normAxis.y;
         auto kz = normAxis.z;

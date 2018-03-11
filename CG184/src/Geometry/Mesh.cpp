@@ -20,7 +20,7 @@ namespace CG184
         m_VertTexCoord.clear();
     }
 
-    Mesh::Mesh(std::vector<Vector3D> a_Pos, std::vector<uint32_t>a_Ind) : m_IsDirty(true), m_IsStatic(false)
+    Mesh::Mesh(std::vector<Vector3F> a_Pos, std::vector<uint32_t>a_Ind) : m_IsDirty(true), m_IsStatic(false)
     {
         m_NumOfVert = (uint32_t)a_Pos.size();
         m_Indices = std::move(a_Ind);
@@ -51,21 +51,21 @@ namespace CG184
     }
 
 
-    void Mesh::SetPositions(std::vector<Vector3D> a_Positions)
+    void Mesh::SetPositions(std::vector<Vector3F> a_Positions)
     {
         m_NumOfVert		= (uint32_t)a_Positions.size();
         m_VertPosition	= a_Positions;
         m_IsDirty		= true;
     }
 
-    void Mesh::SetColors(std::vector<Vector3D> a_Colors)
+    void Mesh::SetColors(std::vector<Vector3F> a_Colors)
     {
         assert(a_Colors.size() == m_NumOfVert);
         m_VertColor = a_Colors;
         m_IsDirty	= true;
     }
 
-    void Mesh::SetColor(Vector3D a_Color)
+    void Mesh::SetColor(Vector3F a_Color)
     {
         m_VertColor.resize(m_NumOfVert);
         for(uint32_t i = 0; i < m_NumOfVert; i++){
@@ -76,10 +76,10 @@ namespace CG184
 
     void Mesh::SetColor(float a_ColorR, float a_ColorG, float a_ColorB)
     {
-        SetColor(Vector3D(a_ColorR, a_ColorG, a_ColorB));
+        SetColor(Vector3F(a_ColorR, a_ColorG, a_ColorB));
     }
 
-    void Mesh::SetNormals(std::vector<Vector3D> a_Normals)
+    void Mesh::SetNormals(std::vector<Vector3F> a_Normals)
     {
         assert(a_Normals.size() == m_NumOfVert);
         m_VertNormal = a_Normals;
@@ -117,7 +117,7 @@ namespace CG184
             // Setting up Colors
             if (m_VertColor.size() != m_NumOfVert)
             {
-                Vector3D lastVertColor = Vector3D(1.0f);
+                Vector3F lastVertColor = Vector3F(1.0f);
                 if (!m_VertColor.empty()) {
                     lastVertColor = m_VertColor.back();
                 }
@@ -130,7 +130,7 @@ namespace CG184
             // Setting Up Normals
             if (m_VertNormal.size() != m_NumOfVert)
             {
-                Vector3D lastVertNormal = Vector3D(0.0f, 1.0f, 0.0f);
+                Vector3F lastVertNormal = Vector3F(0.0f, 1.0f, 0.0f);
                 if (!m_VertNormal.empty()) {
                     lastVertNormal = m_VertNormal.back();
                 }
@@ -171,13 +171,13 @@ namespace CG184
         m_IsStatic = staticMode;
     }
 
-    void Mesh::SetPosition(uint32_t at, const Vector3D &a_Position) 
+    void Mesh::SetPosition(uint32_t at, const Vector3F &a_Position) 
     {
         m_VertPosition[at] = a_Position;
         m_IsDirty = true;
     }
 
-    void Mesh::SetColor(uint32_t at, const Vector3D& a_Color) 
+    void Mesh::SetColor(uint32_t at, const Vector3F& a_Color) 
     {
         if (m_VertColor.size() < m_NumOfVert)
             m_VertColor.resize(m_NumOfVert);
@@ -186,7 +186,7 @@ namespace CG184
         m_IsDirty = true;
     }
     
-    void Mesh::SetNormal(uint32_t at, const Vector3D& a_Normal) 
+    void Mesh::SetNormal(uint32_t at, const Vector3F& a_Normal) 
     {
         if (m_VertNormal.size() < m_NumOfVert)
             m_VertNormal.resize(m_NumOfVert);
@@ -290,7 +290,7 @@ namespace CG184
         for(unsigned int i = 0; i < mesh->mNumVertices; i++)
         {
             //Vertex vertex;
-            Vector3D tempVec; // we declare a placeholder vector since assimp uses its own vector class that doesn't directly convert to glm's vec3 class so we transfer the data to this placeholder glm::vec3 first.
+            Vector3F tempVec; // we declare a placeholder vector since assimp uses its own vector class that doesn't directly convert to glm's vec3 class so we transfer the data to this placeholder glm::vec3 first.
             // positions
             tempVec.x = mesh->mVertices[i].x;
             tempVec.y = mesh->mVertices[i].y;

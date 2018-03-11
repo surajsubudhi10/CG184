@@ -16,7 +16,7 @@ namespace CG184 {
         ~Quaternion();
         Quaternion(float _x, float _y, float _z, float _w);
         Quaternion(const Quaternion& quat);
-        Quaternion(const float angleInRadians, const Vector3D& axis);
+        Quaternion(const float angleInRadians, const Vector3F& axis);
 
         Quaternion add(const    Quaternion& quat) const;
         Quaternion sub(const    Quaternion& quat) const;
@@ -32,8 +32,8 @@ namespace CG184 {
         bool isEqual(const Quaternion& quat) const;
         Quaternion conjugate() const;
 
-        void ToAxisAngle( Vector3D& axis, float& angle);
-        Vector3D ToEulerAngles();
+        void ToAxisAngle( Vector3F& axis, float& angle);
+        Vector3F ToEulerAngles();
         Matrix4D ToMatrix();
 
 
@@ -75,20 +75,20 @@ namespace CG184 {
 
     inline Quaternion operator*(const Quaternion& lhs, const Quaternion& rhs)
     {
-        Vector3D v1(rhs.x, rhs.y, rhs.z);
-        Vector3D v2(lhs.x, lhs.y, lhs.z);
+        Vector3F v1(rhs.x, rhs.y, rhs.z);
+        Vector3F v2(lhs.x, lhs.y, lhs.z);
 
         const float w = rhs.w*lhs.w - dot(rhs, lhs);
-        Vector3D  v = (v2 * rhs.w) + (v1 * lhs.w) + v2.cross(v1);
+        Vector3F  v = (v2 * rhs.w) + (v1 * lhs.w) + v2.cross(v1);
 
         return Quaternion(w, v.x, v.y, v.z);
     }
 
-    inline Vector3D operator*(const Quaternion& quat, Vector3D& vec)
+    inline Vector3F operator*(const Quaternion& quat, Vector3F& vec)
     {
         assert(vec.length() == 1.0f);
         const float w2 = quat.w * quat.w;
-        Vector3D quatVec(quat.x, quat.y, quat.z);
+        Vector3F quatVec(quat.x, quat.y, quat.z);
         return vec * (2.0f * w2 - 1.0f) + quatVec * (2.0f * quatVec.dot(vec)) +  quatVec.cross(vec) * w2;
     }
 
@@ -117,7 +117,7 @@ namespace CG184 {
         return q;
     }
 
-    inline Quaternion ToQuaternion(Vector3D eulerAngle) 
+    inline Quaternion ToQuaternion(Vector3F eulerAngle) 
     {
         return ToQuaternion(eulerAngle.x, eulerAngle.y, eulerAngle.z);
     }

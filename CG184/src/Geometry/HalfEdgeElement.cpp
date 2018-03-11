@@ -9,30 +9,30 @@ namespace CG184
         return face()->isBoundary();
     }
 
-    void HalfEdge::getPickPoints(Vector3D& a, Vector3D& b, Vector3D& p, Vector3D& q, Vector3D& r) const 
+    void HalfEdge::getPickPoints(Vector3F& a, Vector3F& b, Vector3F& p, Vector3F& q, Vector3F& r) const 
     {
         const double w = 1.0 / 6.0;
 
-        Vector3D x0 = vertex()->position;
-        Vector3D x1 = next()->vertex()->position;
-        Vector3D x2 = next()->next()->vertex()->position;
+        Vector3F x0 = vertex()->position;
+        Vector3F x1 = next()->vertex()->position;
+        Vector3F x2 = next()->next()->vertex()->position;
 
         a = x1;
-        p = x1 * (1.0 - w) + x2 * w;
-        r = x1 * (1.0 - w) + x0 * w;
-        q = (p + r) / 2.0;
-        b = a + (q - a) * 2.0;
+        p = x1 * (float)(1.0 - w) + x2 * (float)w;
+        r = x1 * (float)(1.0 - w) + x0 * (float)w;
+        q = (p + r) / 2.0f;
+        b = a + (q - a) * 2.0f;
     }
 
-    Vector3D Face::normal() const
+    Vector3F Face::normal() const
     {
-        Vector3D N(0., 0., 0.);
+        Vector3F N(0., 0., 0.);
 
         HalfEdgeCIter h = halfedge();
         do
         {
-            Vector3D pi = h->vertex()->position;
-            Vector3D pj = h->next()->vertex()->position;
+            Vector3F pi = h->vertex()->position;
+            Vector3F pj = h->next()->vertex()->position;
 
             N += Cross(pi, pj);
 
@@ -42,8 +42,8 @@ namespace CG184
         return N.norm();
     }
 
-    Vector3D Face::centroid() const {
-        Vector3D c(0., 0., 0.);
+    Vector3F Face::centroid() const {
+        Vector3F c(0., 0., 0.);
         double d = 0.;
 
         // walk around the face
@@ -55,7 +55,7 @@ namespace CG184
             h = h->next();
         } while (h != _halfedge);  // done walking around the face
 
-        return c / d;
+        return c / (float)d;
     }
 
     bool Edge::isBoundary(void) const
@@ -80,9 +80,9 @@ namespace CG184
     // lowest index appearing in any polygon corresponds to the first entry of the list
     // of positions and so on).
     void HalfEdgeMesh::build(const vector< vector<Index> >& polygons, 
-        const vector<Vector3D>& vertexPositions,
-        const vector<Vector3D>& vertexColors,
-        const vector<Vector3D>& vertexNormals,
+        const vector<Vector3F>& vertexPositions,
+        const vector<Vector3F>& vertexColors,
+        const vector<Vector3F>& vertexNormals,
         const vector<Vector2D>& vertexTextCoord )
     {
         // define some types, to improve readability
@@ -514,24 +514,24 @@ namespace CG184
     * Vertex::normal. The normal is computed by taking the area-weighted
     * average of the normals of neighboring triangles, then normalizing.
     */
-    Vector3D Vertex::ComputeNormal() const {
-        Vector3D N(0., 0., 0.);
-        Vector3D pi = position;
+    Vector3F Vertex::ComputeNormal() const {
+        Vector3F N(0., 0., 0.);
+        Vector3F pi = position;
 
         // Iterate over neighbors.
         HalfEdgeCIter h = halfedge();
         if (isBoundary()) {
             do {
-                Vector3D pj = h->next()->vertex()->position;
-                Vector3D pk = h->next()->next()->vertex()->position;
+                Vector3F pj = h->next()->vertex()->position;
+                Vector3F pk = h->next()->next()->vertex()->position;
                 N += Cross(pj - pi, pk - pi);
                 h = h->next()->twin();
             } while (h != halfedge());
         }
         else {
             do {
-                Vector3D pj = h->next()->vertex()->position;
-                Vector3D pk = h->next()->next()->vertex()->position;
+                Vector3F pj = h->next()->vertex()->position;
+                Vector3F pk = h->next()->next()->vertex()->position;
                 N += Cross(pj - pi, pk - pi);
                 h = h->twin()->next();
             } while (h != halfedge());

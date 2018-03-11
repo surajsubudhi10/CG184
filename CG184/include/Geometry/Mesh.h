@@ -26,20 +26,20 @@ namespace CG184
     {
     public:
         Mesh();
-        Mesh(std::vector<Vector3D> a_Pos, std::vector<uint32_t>a_Ind);
+        Mesh(std::vector<Vector3F> a_Pos, std::vector<uint32_t>a_Ind);
         explicit Mesh(Mesh *pMesh);
         ~Mesh();
 
-        void						SetPosition (uint32_t at, const Vector3D& a_Position);
-        void						SetColor	(uint32_t at, const Vector3D& a_Color);
-        void						SetNormal   (uint32_t at, const Vector3D& a_Normal);
+        void						SetPosition (uint32_t at, const Vector3F& a_Position);
+        void						SetColor	(uint32_t at, const Vector3F& a_Color);
+        void						SetNormal   (uint32_t at, const Vector3F& a_Normal);
         void						SetUV		(uint32_t at, const Vector2D& a_TexCoord);
 
-        void						SetPositions(std::vector<Vector3D> a_Positions);
-        void						SetColors(std::vector<Vector3D> a_Colors);
-        void						SetColor(Vector3D a_Color);
+        void						SetPositions(std::vector<Vector3F> a_Positions);
+        void						SetColors(std::vector<Vector3F> a_Colors);
+        void						SetColor(Vector3F a_Color);
         void						SetColor(float a_ColorR, float a_ColorG, float a_ColorB);
-        void						SetNormals(std::vector<Vector3D> a_Normals);
+        void						SetNormals(std::vector<Vector3F> a_Normals);
         void						SetUVs(std::vector<Vector2D> a_UV);
 
         void						CopyMesh(const Mesh& pMesh);
@@ -69,9 +69,9 @@ namespace CG184
         bool						m_IsStatic;
         uint32_t					m_NumOfVert;
 
-        std::vector<Vector3D>		m_VertPosition;
-        std::vector<Vector3D>		m_VertColor;
-        std::vector<Vector3D>		m_VertNormal;
+        std::vector<Vector3F>		m_VertPosition;
+        std::vector<Vector3F>		m_VertColor;
+        std::vector<Vector3F>		m_VertNormal;
         std::vector<Vector2D>		m_VertTexCoord;
         std::vector<uint32_t>		m_Indices;
         HalfEdgeMesh                mesh;

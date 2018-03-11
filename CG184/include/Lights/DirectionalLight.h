@@ -14,14 +14,14 @@ namespace CG184
     public:
         DirectionalLight();
         DirectionalLight(const DirectionalLight& directionalLight);
-        DirectionalLight(Vector3D pos, Vector3D dir);
+        DirectionalLight(Vector3F pos, Vector3F dir);
         ~DirectionalLight() override ;
 
-        inline Vector3D			GetDirection(){ return m_Direction;}
-        inline void				SetDirection(const Vector3D& dir){m_Direction = dir;}
+        inline Vector3F			GetDirection(){ return m_Direction;}
+        inline void				SetDirection(const Vector3F& dir){m_Direction = dir;}
 
     private:
-        Vector3D				m_Direction;
+        Vector3F				m_Direction;
     };
 }   // End of CG184
 

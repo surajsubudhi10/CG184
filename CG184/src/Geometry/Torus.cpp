@@ -37,12 +37,12 @@ namespace CG184
     void Torus::InitMesh()
     {
         // Taken Form Cell Graphics engine
-        std::vector<Vector3D> positions((m_TorusSegments + 1) * (m_TubeSegments + 1));
+        std::vector<Vector3F> positions((m_TorusSegments + 1) * (m_TubeSegments + 1));
         std::vector<Vector2D> texCoord((m_TorusSegments + 1) * (m_TubeSegments + 1));
-        std::vector<Vector3D> normals((m_TorusSegments + 1) * (m_TubeSegments + 1));
+        std::vector<Vector3F> normals((m_TorusSegments + 1) * (m_TubeSegments + 1));
         std::vector<uint32_t> indicies(m_TorusSegments * m_TubeSegments * 6);
 
-        std::vector<Vector3D> p(m_TorusSegments + 1);
+        std::vector<Vector3F> p(m_TorusSegments + 1);
         float a = 0.0f;
         auto step = (float)(2.0f * PI / m_TorusSegments);
         for (uint32_t i = 0; i <= m_TorusSegments; ++i)
@@ -61,8 +61,8 @@ namespace CG184
             // the basis vectors of the ring equal the difference  vector between the minorRing
             // center and the donut's center position (which equals the origin (0, 0, 0)) and the
             // positive z-axis.
-            Vector3D u			= (Vector3D(0.0f) - p[i]).norm() * m_TubeRadius; // Could be p[i] also
-            Vector3D v			=  Vector3D(0.0f, 0.0f, 1.0f) * m_TubeRadius;
+            Vector3F u			= (Vector3F(0.0f) - p[i]).norm() * m_TubeRadius; // Could be p[i] also
+            Vector3F v			=  Vector3F(0.0f, 0.0f, 1.0f) * m_TubeRadius;
 
             // create the vertices of each minor ring segment:
             auto a = 0.0f;
@@ -72,10 +72,10 @@ namespace CG184
                 auto c = (float)cos(a);
                 auto s = (float)sin(a);
 
-                positions[i * (m_TubeSegments + 1) + j]		= p[i] + (u * c) + (v * s);
+                positions[i * (m_TubeSegments + 1) + j]		= p[i] + (u * (c)) + (v * (s));
                 texCoord [i * (m_TubeSegments + 1) + j].x	= ((float)i) / ((float)m_TorusSegments) * (float)TWO_PI;
                 texCoord [i * (m_TubeSegments + 1) + j].y	= ((float)j) / ((float)m_TubeSegments);
-                normals  [i * (m_TubeSegments + 1) + j]		= ((u * c) + (v * s)).norm();
+                normals  [i * (m_TubeSegments + 1) + j]		= ((u * (c)) + (v * (s))).norm();
                 a += step;
             }
         }

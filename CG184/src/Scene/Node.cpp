@@ -97,28 +97,28 @@ namespace CG184
     }
 
     void Node::SetPosition(float _x, float _y, float _z) {
-        m_Transform.m_LocalPosition = Vector3D(_x, _y, _z);
+        m_Transform.m_LocalPosition = Vector3F(_x, _y, _z);
         m_Transform.isDirty = true;
     }
 
-    void Node::SetPosition(const Vector3D& pos)
+    void Node::SetPosition(const Vector3F& pos)
     {
         m_Transform.m_LocalPosition = pos;
         m_Transform.isDirty = true;
     }
 
     void Node::SetLocalScale(float _x, float _y, float _z) {
-        m_Transform.m_LocalScale = Vector3D(_x, _y, _z);
+        m_Transform.m_LocalScale = Vector3F(_x, _y, _z);
         m_Transform.isDirty = true;
     }
 
     void Node::SetLocalEulerAngle(float _x, float _y, float _z) {
-        m_Transform.m_EulerAngles = Vector3D(_x, _y, _z);
+        m_Transform.m_EulerAngles = Vector3F(_x, _y, _z);
         m_Transform.m_Rotation = ToQuaternion(m_Transform.m_EulerAngles);
         m_Transform.isDirty = true;
     }
 
-    void Node::SetRotation(float angle, Vector3D axis) 
+    void Node::SetRotation(float angle, Vector3F axis) 
     {
         axis.normalize();
         Quaternion quat(angle, axis);
@@ -202,7 +202,7 @@ namespace CG184
         if (mesh != nullptr) 
         {
             mesh->idToElement.clear();
-            vector<Vector3D> original_vertex_positions;
+            vector<Vector3F> original_vertex_positions;
 
             if (transformed) 
             {
@@ -213,21 +213,21 @@ namespace CG184
                 for (VertexIter v = half_edge_mesh->verticesBegin(); v != half_edge_mesh->verticesEnd(); v++) 
                 {
                     original_vertex_positions.push_back(v->position);
-                    v->position +=  v->ComputeNormal() * v->offset;
+                    v->position +=  v->ComputeNormal() * (float)v->offset;
                 }
             }
 
             for (FaceIter f = half_edge_mesh->facesBegin(); f != half_edge_mesh->facesEnd(); f++) 
             {
-                Vector3D c = f->centroid();
+                Vector3F c = f->centroid();
                 HalfEdgeIter h = f->halfedge();
 
                 do {
                     HalfEdgeIter h1 = h;
                     HalfEdgeIter h2 = h->next();
 
-                    Vector3D a1, b1, p1, q1, r1;
-                    Vector3D a2, b2, p2, q2, r2;
+                    Vector3F a1, b1, p1, q1, r1;
+                    Vector3F a2, b2, p2, q2, r2;
 
                     h1->getPickPoints(a1, b1, p1, q1, r1);
                     h2->getPickPoints(a2, b2, p2, q2, r2);

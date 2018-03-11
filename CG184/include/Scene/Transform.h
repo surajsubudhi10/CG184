@@ -18,17 +18,17 @@ namespace CG184 {
         Matrix4D& GetWorldTransformMat();
 
         Matrix4D Translate(Matrix4D& mat, float _x, float _y, float _z);
-        Matrix4D Rotate(Matrix4D& mat, float angleInDeg, const Vector3D& axis);
+        Matrix4D Rotate(Matrix4D& mat, float angleInDeg, const Vector3F& axis);
         Matrix4D Scale(Matrix4D& mat, float sx, float sy, float sz);
 
         bool isDirty;
 
     private:
-        Vector3D			m_Position;
+        Vector3F			m_Position;
         Quaternion			m_Rotation;
-        Vector3D			m_LocalPosition;
-        Vector3D			m_EulerAngles;
-        Vector3D			m_LocalScale;
+        Vector3F			m_LocalPosition;
+        Vector3F			m_EulerAngles;
+        Vector3F			m_LocalScale;
         
         Matrix4D			m_LocalTransformMat;
         Matrix4D			m_WorldTransformMat;

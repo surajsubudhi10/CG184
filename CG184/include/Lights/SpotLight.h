@@ -14,10 +14,10 @@ namespace CG184
     public:
         SpotLight();
         SpotLight(const SpotLight& spotLight);
-        SpotLight(Vector3D pos, Vector3D dir);
+        SpotLight(Vector3F pos, Vector3F dir);
         ~SpotLight();
     private:
-        Vector3D m_Direction;
+        Vector3F m_Direction;
     };
 }   // End of CG184
 

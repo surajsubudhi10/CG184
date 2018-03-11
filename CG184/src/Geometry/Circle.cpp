@@ -28,9 +28,9 @@ namespace CG184
 
     void Circle::InitMesh()
     {
-        std::vector<Vector3D> positions;
+        std::vector<Vector3F> positions;
         std::vector<Vector2D> texCoord;
-        std::vector<Vector3D> normals;
+        std::vector<Vector3F> normals;
         std::vector<uint32_t> indicies;
 
         // TODO Complete the circle mesh (we need only edge segments and radius)

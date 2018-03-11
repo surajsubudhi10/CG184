@@ -26,7 +26,7 @@ namespace CG184
         void clear() {
             object = nullptr;
             element = nullptr;
-            coordinates = Vector3D(0., 0., 0.);
+            coordinates = Vector3F(0., 0., 0.);
             axis = Axis::None;
         }
 
@@ -40,7 +40,7 @@ namespace CG184
 
         class Node* object;                 // the selected object
         class HalfEdgeElement* element;     // unused unless object is a mesh
-        Vector3D coordinates;               // for optionally selecting a single point
+        Vector3F coordinates;               // for optionally selecting a single point
         Axis axis;                          // for optionally selecting an axis
     };
 

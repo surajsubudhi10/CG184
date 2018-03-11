@@ -24,7 +24,7 @@ namespace CG184
     {
     }
 
-    Vector4D::Vector4D(const Vector3D& _vec, float wval) : x(_vec.x), y(_vec.y), z(_vec.z), w(wval)
+    Vector4D::Vector4D(const Vector3F& _vec, float wval) : x(_vec.x), y(_vec.y), z(_vec.z), w(wval)
     {
     }
 

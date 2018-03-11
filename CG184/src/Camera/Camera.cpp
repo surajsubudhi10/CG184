@@ -12,15 +12,15 @@ namespace CG184
         m_AspectRatio	= (float)(8 / 6); 
         m_Near			= 0.1f; 
         m_Far			= 100.0f;
-        m_Position		= Vector3D(0.0f, 0.0f, 3.0f);
-        m_Target		= Vector3D(0.0f, 0.0f, -1.0f);
-        m_Up			= Vector3D(0.0f, 1.0f, 0.0f);
+        m_Position		= Vector3F(0.0f, 0.0f, 3.0f);
+        m_Target		= Vector3F(0.0f, 0.0f, -1.0f);
+        m_Up			= Vector3F(0.0f, 1.0f, 0.0f);
 
         UpdateViewMatrix();
         UpdateProjectionMatrix();
     }
 
-    Camera::Camera(const Vector3D& pos, const Vector3D& _m_Target, const Vector3D& _m_Up) 
+    Camera::Camera(const Vector3F& pos, const Vector3F& _m_Target, const Vector3F& _m_Up) 
     {
         m_Fov			= 45.0; 
         m_AspectRatio	= (float)(8 / 6); 
@@ -41,9 +41,9 @@ namespace CG184
         m_AspectRatio	= aspect; 
         m_Near			= camm_Near; 
         m_Far			= camm_Far;
-        m_Position		= Vector3D(0.0f, 0.0f,  3.0f);
-        m_Target		= Vector3D(0.0f, 0.0f, -1.0f);
-        m_Up			= Vector3D(0.0f, 1.0f,  0.0f);
+        m_Position		= Vector3F(0.0f, 0.0f,  3.0f);
+        m_Target		= Vector3F(0.0f, 0.0f, -1.0f);
+        m_Up			= Vector3F(0.0f, 1.0f,  0.0f);
 
         UpdateViewMatrix();
         UpdateProjectionMatrix();
@@ -58,7 +58,7 @@ namespace CG184
         UpdateProjectionMatrix();
     }
 
-    void Camera::Set(const Vector3D& pos, const Vector3D& _m_Target, const Vector3D& _m_Up) 
+    void Camera::Set(const Vector3F& pos, const Vector3F& _m_Target, const Vector3F& _m_Up) 
     {
         m_Position		= pos;
         m_Target		= _m_Target;
@@ -97,15 +97,15 @@ namespace CG184
         return result;
     }
 
-    Matrix4D Camera::LookAt(Vector3D eyePos, Vector3D target, Vector3D m_Up)
+    Matrix4D Camera::LookAt(Vector3F eyePos, Vector3F target, Vector3F m_Up)
     {
-        Vector3D zAxis(target - eyePos);
+        Vector3F zAxis(target - eyePos);
         zAxis.normalize();
 
-        Vector3D xAxis = (zAxis.cross(m_Up));
+        Vector3F xAxis = (zAxis.cross(m_Up));
         xAxis.normalize();
 
-        Vector3D yAxis = xAxis.cross(zAxis);
+        Vector3F yAxis = xAxis.cross(zAxis);
 
         float ex = -xAxis.dot(eyePos);
         float ey = -yAxis.dot(eyePos);

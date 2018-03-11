@@ -30,10 +30,10 @@ namespace CG184
 
         void					SetParent(Node* parentNode);
         void					SetPosition(float _x, float _y, float _z);
-        void					SetPosition(const Vector3D& pos);
+        void					SetPosition(const Vector3F& pos);
         void					SetLocalScale(float _x, float _y, float _z);
         void					SetLocalEulerAngle(float _x, float _y, float _z);
-        void					SetRotation(float angle, Vector3D axis);
+        void					SetRotation(float angle, Vector3F axis);
         inline void				SetName(const char* name){m_NodeName = name;}
 
         Node*					GetParent();

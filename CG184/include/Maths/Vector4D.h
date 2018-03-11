@@ -11,7 +11,7 @@ namespace CG184
         Vector4D(float _x, float _y, float _Z, float _w);
         explicit Vector4D(float val);
         Vector4D(const Vector4D& _vec);
-        Vector4D(const Vector3D& _vec, float wval);
+        Vector4D(const Vector3F& _vec, float wval);
 
         Vector4D add(const Vector4D& vec) const;
         Vector4D sub(const Vector4D& vec) const;

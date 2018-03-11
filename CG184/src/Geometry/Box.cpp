@@ -32,24 +32,24 @@ namespace CG184
         float Y = m_Height / 2.0f;
         float Z = m_Depth  / 2.0f;
 
-        std::vector<Vector3D> vertPos {
-                Vector3D(-X,  Y, -Z), Vector3D( X, -Y, -Z), Vector3D( X,  Y, -Z),
-                Vector3D( X, -Y, -Z), Vector3D(-X,  Y, -Z), Vector3D(-X, -Y, -Z),
+        std::vector<Vector3F> vertPos {
+                Vector3F(-X,  Y, -Z), Vector3F( X, -Y, -Z), Vector3F( X,  Y, -Z),
+                Vector3F( X, -Y, -Z), Vector3F(-X,  Y, -Z), Vector3F(-X, -Y, -Z),
 
-                Vector3D(-X, -Y,  Z), Vector3D( X, -Y,  Z), Vector3D( X,  Y,  Z),
-                Vector3D( X,  Y,  Z), Vector3D(-X,  Y,  Z), Vector3D(-X, -Y,  Z),
+                Vector3F(-X, -Y,  Z), Vector3F( X, -Y,  Z), Vector3F( X,  Y,  Z),
+                Vector3F( X,  Y,  Z), Vector3F(-X,  Y,  Z), Vector3F(-X, -Y,  Z),
 
-                Vector3D(-X,  Y,  Z), Vector3D(-X,  Y, -Z), Vector3D(-X, -Y, -Z),
-                Vector3D(-X, -Y, -Z), Vector3D(-X, -Y,  Z), Vector3D(-X,  Y,  Z),
+                Vector3F(-X,  Y,  Z), Vector3F(-X,  Y, -Z), Vector3F(-X, -Y, -Z),
+                Vector3F(-X, -Y, -Z), Vector3F(-X, -Y,  Z), Vector3F(-X,  Y,  Z),
 
-                Vector3D(X,  Y,  Z),  Vector3D(X,  Y, -Z),  Vector3D(X, -Y,   Z),
-                Vector3D(X, -Y, -Z),  Vector3D(X, -Y,  Z),  Vector3D(X,  Y,  -Z),
+                Vector3F(X,  Y,  Z),  Vector3F(X,  Y, -Z),  Vector3F(X, -Y,   Z),
+                Vector3F(X, -Y, -Z),  Vector3F(X, -Y,  Z),  Vector3F(X,  Y,  -Z),
 
-                Vector3D(-X, -Y, -Z), Vector3D( X, -Y, -Z), Vector3D( X, -Y,  Z),
-                Vector3D( X, -Y,  Z), Vector3D(-X, -Y,  Z), Vector3D(-X, -Y, -Z),
+                Vector3F(-X, -Y, -Z), Vector3F( X, -Y, -Z), Vector3F( X, -Y,  Z),
+                Vector3F( X, -Y,  Z), Vector3F(-X, -Y,  Z), Vector3F(-X, -Y, -Z),
 
-                Vector3D(-X,  Y, -Z), Vector3D( X,  Y, -Z), Vector3D( X,  Y,  Z),
-                Vector3D( X,  Y,  Z), Vector3D(-X,  Y,  Z), Vector3D(-X,  Y, -Z),
+                Vector3F(-X,  Y, -Z), Vector3F( X,  Y, -Z), Vector3F( X,  Y,  Z),
+                Vector3F( X,  Y,  Z), Vector3F(-X,  Y,  Z), Vector3F(-X,  Y, -Z),
         };
 
         // Indices
@@ -63,23 +63,23 @@ namespace CG184
         };
 
         // Normal Data
-        std::vector<Vector3D> vertNorm {
-                Vector3D(  0.0f,  0.0f, -1.0f), Vector3D(  0.0f,  0.0f, -1.0f), Vector3D(  0.0f,  0.0f, -1.0f),
-                Vector3D(  0.0f,  0.0f, -1.0f), Vector3D(  0.0f,  0.0f, -1.0f), Vector3D(  0.0f,  0.0f, -1.0f),
-                Vector3D(  0.0f,  0.0f,  1.0f), Vector3D(  0.0f,  0.0f,  1.0f), Vector3D(  0.0f,  0.0f,  1.0f),
-                Vector3D(  0.0f,  0.0f,  1.0f), Vector3D(  0.0f,  0.0f,  1.0f), Vector3D(  0.0f,  0.0f,  1.0f),
-                Vector3D( -1.0f,  0.0f,  0.0f), Vector3D( -1.0f,  0.0f,  0.0f), Vector3D( -1.0f,  0.0f,  0.0f),
-                Vector3D( -1.0f,  0.0f,  0.0f), Vector3D( -1.0f,  0.0f,  0.0f), Vector3D( -1.0f,  0.0f,  0.0f),
-                Vector3D(  1.0f,  0.0f,  0.0f), Vector3D(  1.0f,  0.0f,  0.0f), Vector3D(  1.0f,  0.0f,  0.0f),
-                Vector3D(  1.0f,  0.0f,  0.0f), Vector3D(  1.0f,  0.0f,  0.0f), Vector3D(  1.0f,  0.0f,  0.0f),
-                Vector3D(  0.0f, -1.0f,  0.0f), Vector3D(  0.0f, -1.0f,  0.0f), Vector3D(  0.0f, -1.0f,  0.0f),
-                Vector3D(  0.0f, -1.0f,  0.0f), Vector3D(  0.0f, -1.0f,  0.0f), Vector3D(  0.0f, -1.0f,  0.0f),
-                Vector3D(  0.0f,  1.0f,  0.0f), Vector3D(  0.0f,  1.0f,  0.0f), Vector3D(  0.0f,  1.0f,  0.0f),
-                Vector3D(  0.0f,  1.0f,  0.0f), Vector3D(  0.0f,  1.0f,  0.0f), Vector3D(  0.0f,  1.0f,  0.0f)
+        std::vector<Vector3F> vertNorm {
+                Vector3F(  0.0f,  0.0f, -1.0f), Vector3F(  0.0f,  0.0f, -1.0f), Vector3F(  0.0f,  0.0f, -1.0f),
+                Vector3F(  0.0f,  0.0f, -1.0f), Vector3F(  0.0f,  0.0f, -1.0f), Vector3F(  0.0f,  0.0f, -1.0f),
+                Vector3F(  0.0f,  0.0f,  1.0f), Vector3F(  0.0f,  0.0f,  1.0f), Vector3F(  0.0f,  0.0f,  1.0f),
+                Vector3F(  0.0f,  0.0f,  1.0f), Vector3F(  0.0f,  0.0f,  1.0f), Vector3F(  0.0f,  0.0f,  1.0f),
+                Vector3F( -1.0f,  0.0f,  0.0f), Vector3F( -1.0f,  0.0f,  0.0f), Vector3F( -1.0f,  0.0f,  0.0f),
+                Vector3F( -1.0f,  0.0f,  0.0f), Vector3F( -1.0f,  0.0f,  0.0f), Vector3F( -1.0f,  0.0f,  0.0f),
+                Vector3F(  1.0f,  0.0f,  0.0f), Vector3F(  1.0f,  0.0f,  0.0f), Vector3F(  1.0f,  0.0f,  0.0f),
+                Vector3F(  1.0f,  0.0f,  0.0f), Vector3F(  1.0f,  0.0f,  0.0f), Vector3F(  1.0f,  0.0f,  0.0f),
+                Vector3F(  0.0f, -1.0f,  0.0f), Vector3F(  0.0f, -1.0f,  0.0f), Vector3F(  0.0f, -1.0f,  0.0f),
+                Vector3F(  0.0f, -1.0f,  0.0f), Vector3F(  0.0f, -1.0f,  0.0f), Vector3F(  0.0f, -1.0f,  0.0f),
+                Vector3F(  0.0f,  1.0f,  0.0f), Vector3F(  0.0f,  1.0f,  0.0f), Vector3F(  0.0f,  1.0f,  0.0f),
+                Vector3F(  0.0f,  1.0f,  0.0f), Vector3F(  0.0f,  1.0f,  0.0f), Vector3F(  0.0f,  1.0f,  0.0f)
         };
 
         SetPositions(vertPos);
-        SetColor(Vector3D(0.5f, 0.5f, 0.5f));
+        SetColor(Vector3F(0.5f, 0.5f, 0.5f));
         SetNormals(vertNorm);
         SetIndicies(vertIndices);
     }

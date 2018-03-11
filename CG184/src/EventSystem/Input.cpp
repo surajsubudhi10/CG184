@@ -145,9 +145,9 @@ namespace CG184
                 if(f != nullptr)
                 {
                     HalfEdgeIter h = f->halfedge();
-                    Vector3D v0 = h->vertex()->position + h->vertex()->ComputeNormal() * h->vertex()->offset;
-                    Vector3D v1 = h->next()->vertex()->position + h->next()->vertex()->ComputeNormal() * h->next()->vertex()->offset;
-                    Vector3D v2 = h->next()->next()->vertex()->position + h->next()->next()->vertex()->ComputeNormal() * h->next()->next()->vertex()->offset;
+                    Vector3F v0 = h->vertex()->position + h->vertex()->ComputeNormal() * (float)h->vertex()->offset;
+                    Vector3F v1 = h->next()->vertex()->position + h->next()->vertex()->ComputeNormal() * (float)h->next()->vertex()->offset;
+                    Vector3F v2 = h->next()->next()->vertex()->position + h->next()->next()->vertex()->ComputeNormal() * (float)h->next()->next()->vertex()->offset;
 
                     glBegin(GL_TRIANGLES);
                         glColor3f(0.2f, 0.2f, 0.2f);
@@ -165,8 +165,8 @@ namespace CG184
                 if (e != nullptr)
                 {
                     HalfEdgeIter h = e->halfedge();
-                    Vector3D v0 = h->vertex()->position + h->vertex()->ComputeNormal() * h->vertex()->offset;
-                    Vector3D v1 = h->next()->vertex()->position + h->next()->vertex()->ComputeNormal() * h->next()->vertex()->offset;
+                    Vector3F v0 = h->vertex()->position + h->vertex()->ComputeNormal() * static_cast<float>(h->vertex()->offset);
+                    Vector3F v1 = h->next()->vertex()->position + h->next()->vertex()->ComputeNormal() * static_cast<float>(h->next()->vertex()->offset);
 
                     glLineWidth(2.0f);
                     glEnable(GL_LINE_SMOOTH);
@@ -186,7 +186,7 @@ namespace CG184
                 if (v != nullptr)
                 {
                     HalfEdgeIter h = v->halfedge();
-                    Vector3D v0 = h->vertex()->position + h->vertex()->ComputeNormal() * h->vertex()->offset;
+                    Vector3F v0 = h->vertex()->position + h->vertex()->ComputeNormal() * (float)h->vertex()->offset;
 
                     glEnable(GL_POINT_SMOOTH);
                     glPointSize(10.0f);

@@ -28,9 +28,9 @@ namespace CG184{
 
     void Plane::InitMesh()
     {
-        std::vector<Vector3D> positions;
+        std::vector<Vector3F> positions;
         std::vector<Vector2D> texCoord;
-        std::vector<Vector3D> normals;
+        std::vector<Vector3F> normals;
         std::vector<uint32_t> indicies;
 
         uint32_t numOfVert = (m_XSegments + 1) * (m_YSegments + 1);

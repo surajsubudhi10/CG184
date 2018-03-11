@@ -137,9 +137,9 @@ namespace CG184
         elements[0 + 3 * 4] = col4.x; elements[1 + 3 * 4] = col4.y; elements[2 + 3 * 4] = col4.z; elements[3 + 3 * 4] = col4.w;
     }
 
-    Vector3D Matrix4D::multiply(const Vector3D& other)
+    Vector3F Matrix4D::multiply(const Vector3F& other)
     {
-        return Vector3D( elements[0] * other.x + elements[4] * other.y + elements[8] * other.z + elements[12] * 1,
+        return Vector3F( elements[0] * other.x + elements[4] * other.y + elements[8] * other.z + elements[12] * 1,
                          elements[1] * other.x + elements[5] * other.y + elements[9] * other.z + elements[13] * 1,
                          elements[2] * other.x + elements[6] * other.y + elements[10] * other.z + elements[14] * 1
             );

@@ -24,7 +24,7 @@ namespace CG184
     protected:
         Light();
         Light(const Light& light);
-        Light(Vector3D& lightPos, LightType& type, Color& diffCol, Color& specCol = WHITE, Color& ambCol = WHITE);
+        Light(Vector3F& lightPos, LightType& type, Color& diffCol, Color& specCol = WHITE, Color& ambCol = WHITE);
 
         virtual ~Light();
 
@@ -33,7 +33,7 @@ namespace CG184
         inline Color				GetDiffuseColor()	{ return m_DiffuseColor;  }
         inline Color				GetSpecularColor()	{ return m_SpecularColor; }
         inline Color				GetAmbientColor()	{ return m_AmbientColor; }
-        inline Vector3D				GetAttenuation ()	{ return m_Attenuation;  }
+        inline Vector3F				GetAttenuation ()	{ return m_Attenuation;  }
 
         inline void					SetPosition(const Vector4D& pos)	{ m_Position = pos; }
         inline void					SetDiffuseColor (const Color& col)	{ m_DiffuseColor  = col; }
@@ -46,7 +46,7 @@ namespace CG184
         Color						m_SpecularColor;
 
         Vector4D					m_Position;
-        Vector3D					m_Attenuation;
+        Vector3F					m_Attenuation;
 
         LightType					m_Type;
     };

@@ -16,7 +16,7 @@ namespace CG184
         PointLight(const PointLight& pointLight);
         ~PointLight() override;
 
-        void SetAttenuation(float constant, float linear, float quad) { m_Attenuation = Vector3D(constant, linear, quad); }
+        void SetAttenuation(float constant, float linear, float quad) { m_Attenuation = Vector3F(constant, linear, quad); }
 
     private:
     };

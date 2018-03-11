@@ -116,7 +116,7 @@ namespace CG184
         EdgeRecord(EdgeIter& _edge);
 
         EdgeIter edge;
-        Vector3D optimalPoint;
+        Vector3F optimalPoint;
         double score;
     
     }; // End of class EdgeRecord
@@ -203,7 +203,7 @@ namespace CG184
         */
         bool isBoundary() const;
 
-        void getPickPoints(Vector3D& a, Vector3D& b, Vector3D& p, Vector3D& q, Vector3D& r) const;
+        void getPickPoints(Vector3F& a, Vector3F& b, Vector3F& p, Vector3F& q, Vector3F& r) const;
 
 
         /**
@@ -278,9 +278,9 @@ namespace CG184
         * Get a unit face normal (computed via the area vector).
         * \returns a unit face normal (computed via the area vector).
         */
-        Vector3D normal() const;
+        Vector3F normal() const;
 
-        Vector3D centroid() const;
+        Vector3F centroid() const;
 
         Index id;
         Matrix4D quadric;
@@ -307,14 +307,14 @@ namespace CG184
         HalfEdgeCIter halfedge(void) const { return _halfedge; }
 
         Index id;
-        Vector3D position;  ///< location in 3-space
-        Vector3D color;     ///< color in 3-space
-        Vector3D normal;    ///< normal in 3-space
+        Vector3F position;  ///< location in 3-space
+        Vector3F color;     ///< color in 3-space
+        Vector3F normal;    ///< normal in 3-space
         Vector2D textCoord;  ///< texture coordinate
 
-        const float offset = 0.001f;
+        const double offset = 0.001;
 
-        Vector3D newPosition; ///< For Loop subdivision, this will be the updated position of the vertex
+        Vector3F newPosition; ///< For Loop subdivision, this will be the updated position of the vertex
         bool isNew; ///< For Loop subdivision, this flag should be true if and only if this vertex is a new vertex created by subdivision (i.e., if it corresponds to a vertex of the original mesh)
 
         /**
@@ -322,9 +322,9 @@ namespace CG184
         */
         void computeCentroid(void);
 
-        Vector3D centroid; ///< average of neighbor positions, storing the value computed by Vertex::computeCentroid()
+        Vector3F centroid; ///< average of neighbor positions, storing the value computed by Vertex::computeCentroid()
 
-        Vector3D ComputeNormal(void) const;
+        Vector3F ComputeNormal(void) const;
 
         /**
         * Check if if this vertex is on the boundary of the surface
@@ -401,13 +401,13 @@ namespace CG184
 
         double length(void) const
         {
-            Vector3D p0 = halfedge()->vertex()->position;
-            Vector3D p1 = halfedge()->twin()->vertex()->position;
+            Vector3F p0 = halfedge()->vertex()->position;
+            Vector3F p1 = halfedge()->twin()->vertex()->position;
 
             return (p1 - p0).length();
         }
 
-        Vector3D newPosition; ///< For Loop subdivision, this will be the position for the edge midpoint
+        Vector3F newPosition; ///< For Loop subdivision, this will be the position for the edge midpoint
         bool isNew; ///< For Loop subdivision, this flag should be true if and only if this edge is a new edge created by subdivision (i.e., if it cuts across a triangle in the original mesh)
 
         EdgeRecord record;
@@ -447,9 +447,9 @@ namespace CG184
         * a polygon is determined by the order of vertices in the list.
         */
         void build(const vector< vector<Index> >& polygons, 
-            const vector<Vector3D>& vertexPositions,
-            const vector<Vector3D>& vertexColors,
-            const vector<Vector3D>& vertexNormals,
+            const vector<Vector3F>& vertexPositions,
+            const vector<Vector3F>& vertexColors,
+            const vector<Vector3F>& vertexNormals,
             const vector<Vector2D>& vertexTextCoord);
 
         void GetIndexArray(vector<uint32_t>& indices);

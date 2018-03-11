@@ -24,10 +24,12 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void ProcessMouseButtons(Input& input);
 void ProcessMouseMotion( Vector2D mousePosition);
 
+void Vector3Test();
+
 // Camera Data
-Vector3D cameraPos(3.0f, 3.0f, 3.0f);
-Vector3D cameraTarget(0.0f, 0.0f, 0.0f);
-Vector3D cameraUp(0.0f, 1.0f, 0.0f);
+Vector3F cameraPos(3.0f, 3.0f, 3.0f);
+Vector3F cameraTarget(0.0f, 0.0f, 0.0f);
+Vector3F cameraUp(0.0f, 1.0f, 0.0f);
 
 float yaw   = -90.0f;	// yaw is initialized to -90.0 degrees since a yaw of 0.0 results in a direction vector pointing to the right so we initially rotate a bit to the left.
 float pitch =   0.0f;
@@ -41,7 +43,7 @@ int IsMouseMouseTracking = 0;
 float deltaTime = 0.0f;	// time between current frame and last frame
 float lastFrame = 0.0f;
 
-Vector3D lightPos(1.2f, 1.0f, 1.0f);
+Vector3F lightPos(1.2f, 1.0f, 1.0f);
 
 
 
@@ -66,16 +68,16 @@ int main()
 
     // ##############################################################################################
 
-    std::vector<Vector3D> pos1{
-            Vector3D(0, 0, 1), Vector3D(0, 1, 0), Vector3D(1, 0, 0)
+    std::vector<Vector3F> pos1{
+            Vector3F(0, 0, 1), Vector3F(0, 1, 0), Vector3F(1, 0, 0)
     };
 
-    std::vector<Vector3D> col1{
-            Vector3D(0, 0, 1), Vector3D(0, 1, 0), Vector3D(1, 0, 0)
+    std::vector<Vector3F> col1{
+            Vector3F(0, 0, 1), Vector3F(0, 1, 0), Vector3F(1, 0, 0)
     };
 
-    std::vector<Vector3D> norm1{
-            Vector3D(1, 1, 1).norm(), Vector3D(1, 1, 1).norm(), Vector3D(1, 1, 1).norm()
+    std::vector<Vector3F> norm1{
+            Vector3F(1, 1, 1).norm(), Vector3F(1, 1, 1).norm(), Vector3F(1, 1, 1).norm()
     };
 
     std::vector<uint32_t> ind1{0, 1, 2};
@@ -117,12 +119,14 @@ int main()
 
     Input input(window, &rootScene);
 
-    Vector3D radialVec = (cameraPos - cameraTarget).norm();
+    Vector3F radialVec = (cameraPos - cameraTarget).norm();
     yaw   = ToDegrees(atan2f(radialVec.x, radialVec.z));
     pitch = ToDegrees(atan2f(radialVec.y, sqrtf(powf(radialVec.x, 2) + powf(radialVec.z, 2))));
 
 
-    
+    Vector3Test();
+
+
 
     float angle = 0;
     while (!window->IfWindowClosed())
@@ -141,7 +145,7 @@ int main()
         cam->SetFOV(fov);
         cam->Set(cameraPos, cameraTarget, cameraUp);
 //        box1->SetPosition(cameraTarget);
-        //boxRenderer.GetMesh()->SetPosition(1, Vector3D(0.0f, (float)sin(angle), 0.0f));
+        //boxRenderer.GetMesh()->SetPosition(1, Vector3F(0.0f, (float)sin(angle), 0.0f));
 
 
         input.DrawSelection();
@@ -160,45 +164,45 @@ void KeyBoardEvents(const WindowPtr window, Input& input)
         window->Close();
 
     if(input.IsKeyPressed(GLFW_KEY_SPACE)){
-        cameraPos    = Vector3D(0.0f, 0.0f, 3.0f);
-        cameraTarget = Vector3D(0.0f, 0.0f, 0.0f);
-        cameraUp     = Vector3D::Up;
+        cameraPos    = Vector3F(0.0f, 0.0f, 3.0f);
+        cameraTarget = Vector3F(0.0f, 0.0f, 0.0f);
+        cameraUp     = Vector3F::Up;
 
         yaw = pitch = 0.0;
     }
 
     if (input.IsMouseButtonDown(GLFW_MOUSE_BUTTON_RIGHT)) {
         auto cameraSpeed = (float)(2.5 * deltaTime);
-        Vector3D tempVec = cameraTarget - cameraPos;
+        Vector3F tempVec = cameraTarget - cameraPos;
         if (input.IsKeyPressed(GLFW_KEY_W)) {
-            tempVec = (tempVec * cameraSpeed);
+            tempVec = (tempVec * (cameraSpeed));
             cameraPos = cameraPos + tempVec;
             cameraTarget = cameraTarget + tempVec;
         }
         if (input.IsKeyPressed(GLFW_KEY_S)) {
-            tempVec = (tempVec * cameraSpeed);
+            tempVec = (tempVec * (cameraSpeed));
             cameraPos = cameraPos - tempVec;
             cameraTarget = cameraTarget - tempVec;
         }
         if (input.IsKeyPressed(GLFW_KEY_A)) {
-            tempVec = ((tempVec.cross(cameraUp)).norm() * cameraSpeed);
+            tempVec = ((tempVec.cross(cameraUp)).norm() * (cameraSpeed));
             cameraPos = cameraPos + tempVec;
             cameraTarget = cameraTarget + tempVec;
         }
 
         if (input.IsKeyPressed(GLFW_KEY_E)) {
-            tempVec = (Vector3D::Up * cameraSpeed);
+            tempVec = (Vector3F::Up * (cameraSpeed));
             cameraPos = cameraPos - tempVec;
             cameraTarget = cameraTarget - tempVec;
         }
         if (input.IsKeyPressed(GLFW_KEY_Q)) {
-            tempVec = (Vector3D::Up * cameraSpeed);
+            tempVec = (Vector3F::Up * (cameraSpeed));
             cameraPos = cameraPos + tempVec;
             cameraTarget = cameraTarget + tempVec;
         }
 
         if (input.IsKeyPressed(GLFW_KEY_D)) {
-            tempVec = ((tempVec.cross(cameraUp)).norm() * cameraSpeed);
+            tempVec = ((tempVec.cross(cameraUp)).norm() * (cameraSpeed));
             cameraPos = cameraPos - tempVec;
             cameraTarget = cameraTarget - tempVec;
         }
@@ -273,13 +277,33 @@ void ProcessMouseMotion( Vector2D mousePosition)
 
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
-    Vector3D forwardDir = (cameraPos - cameraTarget);
+    Vector3F forwardDir = (cameraPos - cameraTarget);
     float r = forwardDir.length();
     forwardDir.normalize();
     r -= yoffset * 0.1f;
     if (r < 0.1f)
         r = 0.1f;
 
-    cameraPos = cameraTarget + (forwardDir * r);
+    cameraPos = cameraTarget + (forwardDir * (r));
 }
 
+
+
+void Vector3Test()
+{
+    Vector3F a(2.0f, 3.0f, 4.0f);
+    Vector3F b(6.0f, 5.0f, 1.0f);
+
+    cout << "Original Vectors : "<< endl;
+    cout << "A : " << a ;
+    cout << "B : " << b ;
+
+    cout << "Add : " << a.add(b);
+    cout << "Sub : " << a.sub(b);
+    cout << "Mul : " << a.mult(b);
+    cout << "Div : " << a.divide(b);
+
+    cout << "Mul float: " << a.mult(2);
+    cout << "Div float: " << a.divide(3);
+
+}

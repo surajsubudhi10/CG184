@@ -44,7 +44,7 @@ namespace CG184
         Matrix4D multiply(float scalar);
         Matrix4D divide(float scalar);
         Matrix4D multiply(const Matrix4D& other);
-        Vector3D multiply(const Vector3D& other);
+        Vector3F multiply(const Vector3F& other);
         Vector4D multiply(const Vector4D& other);
 
         // TODO add more Set functions

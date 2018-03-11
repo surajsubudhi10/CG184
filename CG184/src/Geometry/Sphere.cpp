@@ -46,9 +46,9 @@ namespace CG184
 
     void Sphere::InitMesh()
     {
-        std::vector<Vector3D> positions;
+        std::vector<Vector3F> positions;
         std::vector<Vector2D> texCoord;
-        std::vector<Vector3D> normals;
+        std::vector<Vector3F> normals;
         std::vector<uint32_t> indicies;
 
         for (uint32_t y = 0; y <= m_YSegments; ++y)

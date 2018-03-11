@@ -9,10 +9,10 @@ namespace CG184
 
     DirectionalLight::DirectionalLight() :
         Light(),
-        m_Direction(Vector3D(0, 1, 0))
+        m_Direction(Vector3F(0, 1, 0))
     {
         m_Type = LightType::DirectionalLight;
-        m_Attenuation = Vector3D(1, 0, 0);
+        m_Attenuation = Vector3F(1, 0, 0);
     }
 
     DirectionalLight::DirectionalLight(const DirectionalLight &directionalLight):
@@ -24,16 +24,16 @@ namespace CG184
         m_DiffuseColor  = directionalLight.m_DiffuseColor;
         m_SpecularColor = directionalLight.m_SpecularColor;
         m_Direction     = directionalLight.m_Direction;
-        m_Attenuation   = Vector3D(1, 0, 0);
+        m_Attenuation   = Vector3F(1, 0, 0);
     }
 
-    DirectionalLight::DirectionalLight(Vector3D pos, Vector3D dir):
+    DirectionalLight::DirectionalLight(Vector3F pos, Vector3F dir):
         Light(),
         m_Direction(dir.norm())
     {
         m_Type = LightType::DirectionalLight;
         m_Position = Vector4D(pos, 0.0f);
-        m_Attenuation = Vector3D(1, 0, 0);
+        m_Attenuation = Vector3F(1, 0, 0);
     }
 
     DirectionalLight::~DirectionalLight() = default;

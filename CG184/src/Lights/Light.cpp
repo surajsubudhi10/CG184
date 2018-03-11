@@ -13,16 +13,16 @@ namespace CG184
             m_DiffuseColor(WHITE),
             m_AmbientColor(WHITE),
             m_SpecularColor(WHITE),
-            m_Attenuation(Vector3D(1.0)),
+            m_Attenuation(Vector3F(1.0)),
             m_Type(LightType::Point)
     {}
 
-    Light::Light(Vector3D &lightPos, LightType& type, Color& diffCol, Color& specCol, Color& ambCol):
+    Light::Light(Vector3F &lightPos, LightType& type, Color& diffCol, Color& specCol, Color& ambCol):
             m_Position(Vector4D(0, 0, 0, 1)),
             m_DiffuseColor(diffCol),
             m_AmbientColor(specCol),
             m_SpecularColor(ambCol),
-            m_Attenuation(Vector3D(1.0)),
+            m_Attenuation(Vector3F(1.0)),
             m_Type(type)
 {
         m_Position.x = lightPos.x;
