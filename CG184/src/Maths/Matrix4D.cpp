@@ -23,7 +23,7 @@ namespace CG184
 
     }
 
-    Matrix4D::Matrix4D(Vector4D col1, Vector4D col2, Vector4D col3, Vector4D col4)
+    Matrix4D::Matrix4D(Vector4F col1, Vector4F col2, Vector4F col3, Vector4F col4)
     {
         Set(col1, col2, col3, col4);
     }
@@ -41,7 +41,7 @@ namespace CG184
         float m10, float m11, float m12,
         float m20, float m21, float m22)
     {
-        Set(Vector4D(m00, m10, m20, 0.0), Vector4D(m01, m11, m21, 0.0), Vector4D(m02, m12, m22, 0.0), Vector4D(0.0, 0.0, 0.0, 0.0));
+        Set(Vector4F(m00, m10, m20, 0.0), Vector4F(m01, m11, m21, 0.0), Vector4F(m02, m12, m22, 0.0), Vector4F(0.0, 0.0, 0.0, 0.0));
     }
 
     Matrix4D::Matrix4D(
@@ -50,16 +50,16 @@ namespace CG184
         float m20, float m21, float m22, float m23,
         float m30, float m31, float m32, float m33)
     {
-        Set(Vector4D(m00, m10, m20, m30), Vector4D(m01, m11, m21, m31), Vector4D(m02, m12, m22, m32), Vector4D(m03, m13, m23, m33));
+        Set(Vector4F(m00, m10, m20, m30), Vector4F(m01, m11, m21, m31), Vector4F(m02, m12, m22, m32), Vector4F(m03, m13, m23, m33));
     }
 
-    Vector4D Matrix4D::getColumn(int index)
+    Vector4F Matrix4D::getColumn(int index)
     {
-        return Vector4D(elements[0 + index * 4], elements[1 + index * 4], elements[2 + index * 4], elements[3 + index * 4]);
+        return Vector4F(elements[0 + index * 4], elements[1 + index * 4], elements[2 + index * 4], elements[3 + index * 4]);
     }
 
 
-    void Matrix4D::SetRow(int i, const Vector4D& vec)
+    void Matrix4D::SetRow(int i, const Vector4F& vec)
     {
         elements[0 * 4 + i] = vec.x;
         elements[1 * 4 + i] = vec.y;
@@ -67,7 +67,7 @@ namespace CG184
         elements[3 * 4 + i] = vec.w;
     }
 
-    void Matrix4D::SetColumn(int i, const Vector4D& vec)
+    void Matrix4D::SetColumn(int i, const Vector4F& vec)
     {
         elements[0 + i * 4] = vec.x;
         elements[1 + i * 4] = vec.y;
@@ -129,7 +129,7 @@ namespace CG184
         elements[3 + 3 * 4] = diagonal;
     }
 
-    void Matrix4D::Set(Vector4D col1, Vector4D col2, Vector4D col3, Vector4D col4) 
+    void Matrix4D::Set(Vector4F col1, Vector4F col2, Vector4F col3, Vector4F col4) 
     {
         elements[0 + 0 * 4] = col1.x; elements[1 + 0 * 4] = col1.y; elements[2 + 0 * 4] = col1.z; elements[3 + 0 * 4] = col1.w;
         elements[0 + 1 * 4] = col2.x; elements[1 + 1 * 4] = col2.y; elements[2 + 1 * 4] = col2.z; elements[3 + 1 * 4] = col2.w;
@@ -145,9 +145,9 @@ namespace CG184
             );
     }
 
-    Vector4D Matrix4D::multiply(const Vector4D& other)
+    Vector4F Matrix4D::multiply(const Vector4F& other)
     {
-        return Vector4D(elements[0] * other.x + elements[4] * other.y + elements[ 8] * other.z + elements[12] * 1,
+        return Vector4F(elements[0] * other.x + elements[4] * other.y + elements[ 8] * other.z + elements[12] * 1,
                         elements[1] * other.x + elements[5] * other.y + elements[ 9] * other.z + elements[13] * 1,
                         elements[2] * other.x + elements[6] * other.y + elements[10] * other.z + elements[14] * 1,
                         elements[3] * other.x + elements[7] * other.y + elements[11] * other.z + elements[15] * 1

@@ -273,7 +273,7 @@ namespace CG184
         glUseProgram(0);
     }
 
-    void Shader::SetUniform4f(std::string name, Vector4D _vec)
+    void Shader::SetUniform4f(std::string name, Vector4F _vec)
     {
         glUseProgram(shaderID);
         auto location = GetUniformLocation(name, m_Uniforms);

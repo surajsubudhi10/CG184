@@ -9,7 +9,7 @@ namespace CG184
 {
 
     Light::Light():
-            m_Position(Vector4D(0, 0, 0, 1)),
+            m_Position(Vector4F(0, 0, 0, 1)),
             m_DiffuseColor(WHITE),
             m_AmbientColor(WHITE),
             m_SpecularColor(WHITE),
@@ -18,7 +18,7 @@ namespace CG184
     {}
 
     Light::Light(Vector3F &lightPos, LightType& type, Color& diffCol, Color& specCol, Color& ambCol):
-            m_Position(Vector4D(0, 0, 0, 1)),
+            m_Position(Vector4F(0, 0, 0, 1)),
             m_DiffuseColor(diffCol),
             m_AmbientColor(specCol),
             m_SpecularColor(ambCol),

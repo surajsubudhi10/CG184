@@ -63,8 +63,8 @@ int main()
     // ####################################### Lights ###############################################
 
     LightPtr pointLight(new PointLight());
-    pointLight->SetPosition(Vector4D(lightPos.x, lightPos.y, lightPos.z, 1.0f));
-    pointLight->SetAmbientColor(Vector4D(0.7f, 0.7f, 0.7f, 1.0f));
+    pointLight->SetPosition(Vector4F(lightPos.x, lightPos.y, lightPos.z, 1.0f));
+    pointLight->SetAmbientColor(Vector4F(0.7f, 0.7f, 0.7f, 1.0f));
 
     // ##############################################################################################
 
@@ -95,7 +95,7 @@ int main()
     //Shader boxShaderTemp("TestShaders/multipleLights.vs", "TestShaders/multipleLights.fs");
     Shader boxShaderTemp("../../CG184/TestShaders/solidWireframe.vs", "../../CG184/TestShaders/solidWireframe.fs", "../../CG184/TestShaders/solidWireframe.gs");
     Material boxMat(&boxShaderTemp);
-    boxMat.SetAmbient(Vector4D(0.5f, 0.1f, 0.1f, 1.0f));
+    boxMat.SetAmbient(Vector4F(0.5f, 0.1f, 0.1f, 1.0f));
     Renderer boxRenderer(&rockMesh, &boxMat);
 
     NodePtr box(new Node("box1"));
@@ -104,7 +104,7 @@ int main()
     box->SetLocalScale(0.25f, 0.25f, 0.25f);
 
     Renderer boxRenderer1(&rockMesh, &boxMat);
-    boxRenderer1.GetMaterial().SetAmbient(Vector4D(0.3f, 0.5f, 0.1f, 1.0f));
+    boxRenderer1.GetMaterial().SetAmbient(Vector4F(0.3f, 0.5f, 0.1f, 1.0f));
 
     NodePtr box1(new Node("box2"));
     box1->AttachComponent(&boxRenderer1);

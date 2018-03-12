@@ -35,7 +35,7 @@ namespace CG184
         inline Color				GetAmbientColor()	{ return m_AmbientColor; }
         inline Vector3F				GetAttenuation ()	{ return m_Attenuation;  }
 
-        inline void					SetPosition(const Vector4D& pos)	{ m_Position = pos; }
+        inline void					SetPosition(const Vector4F& pos)	{ m_Position = pos; }
         inline void					SetDiffuseColor (const Color& col)	{ m_DiffuseColor  = col; }
         inline void					SetSpecularColor(const Color& col)	{ m_SpecularColor = col; }
         inline void					SetAmbientColor (const Color& col)	{ m_AmbientColor  = col; }
@@ -45,7 +45,7 @@ namespace CG184
         Color						m_DiffuseColor;
         Color						m_SpecularColor;
 
-        Vector4D					m_Position;
+        Vector4F					m_Position;
         Vector3F					m_Attenuation;
 
         LightType					m_Type;

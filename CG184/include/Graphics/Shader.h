@@ -46,7 +46,7 @@ namespace CG184
         void								SetUniform2f(std::string name, float _v1, float _v2);
         void								SetUniform3f(std::string name, float _v1, float _v2, float _v3);
         void								SetUniform4f(std::string name, float _v1, float _v2, float _v3, float _v4);
-        void								SetUniform4f(std::string name, Vector4D _v4);
+        void								SetUniform4f(std::string name, Vector4F _v4);
         void								SetUniformMat2f(std::string name, float* val);
         void								SetUniformMat3f(std::string name, float* val);
         void								SetUniformMat4f(std::string name, float* val);

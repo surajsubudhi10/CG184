@@ -17,14 +17,14 @@ namespace CG184
         return angleInRad * static_cast<float>(180.0 / PI);
     }
 
-    typedef Vector4D Color;
+    typedef Vector4F Color;
 
-    static Color WHITE = Vector4D(1, 1, 1, 1);
-    static Color BLACK = Vector4D(0, 0, 0, 1);
-    static Color GREY = Vector4D(0.5, 0.5, 0.5, 1.0);
-    static Color RED = Vector4D(1, 0, 0, 1);
-    static Color GREEN = Vector4D(0, 1, 0, 1);
-    static Color BLUE = Vector4D(0, 0, 1, 1);
+    static Color WHITE = Vector4F(1, 1, 1, 1);
+    static Color BLACK = Vector4F(0, 0, 0, 1);
+    static Color GREY = Vector4F(0.5, 0.5, 0.5, 1.0);
+    static Color RED = Vector4F(1, 0, 0, 1);
+    static Color GREEN = Vector4F(0, 1, 0, 1);
+    static Color BLUE = Vector4F(0, 0, 1, 1);
 
 
 }   // End of CG184

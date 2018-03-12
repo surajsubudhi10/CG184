@@ -32,7 +32,7 @@ namespace CG184
         m_Direction(dir.norm())
     {
         m_Type = LightType::DirectionalLight;
-        m_Position = Vector4D(pos, 0.0f);
+        m_Position = Vector4F(pos.x, pos.y, pos.z, 0.0f);
         m_Attenuation = Vector3F(1, 0, 0);
     }
 

@@ -356,14 +356,26 @@ namespace CG184
 
     template <typename T>
     const T& Vector3<T>::at(size_t i) const {
-        static_assert(i < 3);
-        return (&x)[i];
+        assert(i < 3);
+        
+        if (i == 0)
+            return x;
+        else if (i == 1)
+            return y;
+        else if (i == 2)
+            return z;
     }
 
     template <typename T>
     T& Vector3<T>::at(size_t i) {
         assert(i < 3);
-        return (&x)[i];
+        
+        if (i == 0)
+            return x;
+        else if (i == 1)
+            return y;
+        else if (i == 2)
+            return z;
     }
 
     template <typename T>

@@ -20,7 +20,7 @@ namespace CG184
 
         Matrix4D();
         Matrix4D(float diagonal);
-        Matrix4D(Vector4D col1, Vector4D col2, Vector4D col3, Vector4D col4);
+        Matrix4D(Vector4F col1, Vector4F col2, Vector4F col3, Vector4F col4);
         Matrix4D(const Matrix4D& mat);
 
         Matrix4D(
@@ -35,21 +35,21 @@ namespace CG184
             float m20, float m21, float m22, float m23,
             float m30, float m31, float m32, float m33);
 
-        Vector4D getColumn(int index);
+        Vector4F getColumn(int index);
         
 
-        void SetRow(int i, const Vector4D& vec);
-        void SetColumn(int i, const Vector4D& vec);
+        void SetRow(int i, const Vector4F& vec);
+        void SetColumn(int i, const Vector4F& vec);
 
         Matrix4D multiply(float scalar);
         Matrix4D divide(float scalar);
         Matrix4D multiply(const Matrix4D& other);
         Vector3F multiply(const Vector3F& other);
-        Vector4D multiply(const Vector4D& other);
+        Vector4F multiply(const Vector4F& other);
 
         // TODO add more Set functions
         void Set(float diagonal);
-        void Set(Vector4D col1, Vector4D col2, Vector4D col3, Vector4D col4);
+        void Set(Vector4F col1, Vector4F col2, Vector4F col3, Vector4F col4);
 
         Matrix4D& operator=(const Matrix4D& rhs);
 
