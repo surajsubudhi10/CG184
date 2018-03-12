@@ -3,7 +3,7 @@
 
 namespace CG184 
 {
-    Vector2D Input::mousePosition = Vector2D();
+    Vector2F Input::mousePosition = Vector2F();
 
     void mouse_cursor_callback(GLFWwindow* window, double xpos, double ypos);
     void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
@@ -54,7 +54,7 @@ namespace CG184
      * \param getElement : do we need the element 
      * \param transformed : is object transformed
      */
-    void Input::GetHoveredObject(const Vector2D &p, bool getElement, bool transformed) 
+    void Input::GetHoveredObject(const Vector2F &p, bool getElement, bool transformed) 
     {
         // Set the background color to the maximum possible value---this value should
         // be far beyond the maximum pick index, since we have at most 2^(8+8+8) = 16,777,216 distinct IDs
@@ -218,7 +218,7 @@ namespace CG184
         double xPos;
         double yPos;
         glfwGetCursorPos(window, &xPos, &yPos);
-        Input::mousePosition = Vector2D(static_cast<float>(xPos), static_cast<float>(yPos));
+        Input::mousePosition = Vector2F(static_cast<float>(xPos), static_cast<float>(yPos));
     }
 
     void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)

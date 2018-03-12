@@ -6,6 +6,8 @@
 #include <cmath>
 
 
+#if OLD_IMP == 0
+
 namespace CG184
 {
     Matrix4D::Matrix4D()
@@ -220,3 +222,6 @@ namespace CG184
 
 
 }   // End of CG184
+
+
+#endif

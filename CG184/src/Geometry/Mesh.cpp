@@ -86,7 +86,7 @@ namespace CG184
         m_IsDirty = true;
     }
 
-    void Mesh::SetUVs(std::vector<Vector2D> a_UV)
+    void Mesh::SetUVs(std::vector<Vector2F> a_UV)
     {
         assert(a_UV.size() == m_NumOfVert);
         m_VertTexCoord = a_UV;
@@ -143,7 +143,7 @@ namespace CG184
             // Setting Up Texture Coordinate
             if (m_VertTexCoord.size() != m_NumOfVert)
             {
-                Vector2D lastVertUV = Vector2D(0.0f, 0.0f);
+                Vector2F lastVertUV = Vector2F(0.0f, 0.0f);
                 if (!m_VertTexCoord.empty()) {
                     lastVertUV = m_VertTexCoord.back();
                 }
@@ -195,7 +195,7 @@ namespace CG184
         m_IsDirty = true;
     }
     
-    void Mesh::SetUV(uint32_t at, const Vector2D& a_TexCoord) 
+    void Mesh::SetUV(uint32_t at, const Vector2F& a_TexCoord) 
     {
         if (m_VertTexCoord.size() < m_NumOfVert)
             m_VertTexCoord.resize(m_NumOfVert);
@@ -316,7 +316,7 @@ namespace CG184
             // texture coordinates
             if(mesh->mTextureCoords[0]) // does the mesh contain texture coordinates?
             {
-                Vector2D vec;
+                Vector2F vec;
                 // a vertex can contain up to 8 different texture coordinates. We thus make the assumption that we won't
                 // use models where a vertex can have multiple texture coordinates so we always take the first set (0).
                 vec.x = mesh->mTextureCoords[0][i].x;

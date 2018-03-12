@@ -310,7 +310,7 @@ namespace CG184
         Vector3F position;  ///< location in 3-space
         Vector3F color;     ///< color in 3-space
         Vector3F normal;    ///< normal in 3-space
-        Vector2D textCoord;  ///< texture coordinate
+        Vector2F textCoord;  ///< texture coordinate
 
         const double offset = 0.001;
 
@@ -450,7 +450,7 @@ namespace CG184
             const vector<Vector3F>& vertexPositions,
             const vector<Vector3F>& vertexColors,
             const vector<Vector3F>& vertexNormals,
-            const vector<Vector2D>& vertexTextCoord);
+            const vector<Vector2F>& vertexTextCoord);
 
         void GetIndexArray(vector<uint32_t>& indices);
 

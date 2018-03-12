@@ -38,7 +38,7 @@ namespace CG184
     {
         // Taken Form Cell Graphics engine
         std::vector<Vector3F> positions((m_TorusSegments + 1) * (m_TubeSegments + 1));
-        std::vector<Vector2D> texCoord((m_TorusSegments + 1) * (m_TubeSegments + 1));
+        std::vector<Vector2F> texCoord((m_TorusSegments + 1) * (m_TubeSegments + 1));
         std::vector<Vector3F> normals((m_TorusSegments + 1) * (m_TubeSegments + 1));
         std::vector<uint32_t> indicies(m_TorusSegments * m_TubeSegments * 6);
 

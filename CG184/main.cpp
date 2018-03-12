@@ -22,7 +22,7 @@ void KeyBoardEvents(const WindowPtr window, Input& input);
 void MouseEvents(const WindowPtr window, Input& input, float deltaTime);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void ProcessMouseButtons(Input& input);
-void ProcessMouseMotion( Vector2D mousePosition);
+void ProcessMouseMotion( Vector2F mousePosition);
 
 void Vector3Test();
 
@@ -251,7 +251,7 @@ void spherical2cartesian(float r, float alpha, float beta)
 //    cout << "CameraPos : " << cameraPos << "CameraTarget" << cameraTarget << endl;
 }
 
-void ProcessMouseMotion( Vector2D mousePosition)
+void ProcessMouseMotion( Vector2F mousePosition)
 {
     if (!IsMouseMouseTracking)
         return;

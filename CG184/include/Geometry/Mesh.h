@@ -33,14 +33,14 @@ namespace CG184
         void						SetPosition (uint32_t at, const Vector3F& a_Position);
         void						SetColor	(uint32_t at, const Vector3F& a_Color);
         void						SetNormal   (uint32_t at, const Vector3F& a_Normal);
-        void						SetUV		(uint32_t at, const Vector2D& a_TexCoord);
+        void						SetUV		(uint32_t at, const Vector2F& a_TexCoord);
 
         void						SetPositions(std::vector<Vector3F> a_Positions);
         void						SetColors(std::vector<Vector3F> a_Colors);
         void						SetColor(Vector3F a_Color);
         void						SetColor(float a_ColorR, float a_ColorG, float a_ColorB);
         void						SetNormals(std::vector<Vector3F> a_Normals);
-        void						SetUVs(std::vector<Vector2D> a_UV);
+        void						SetUVs(std::vector<Vector2F> a_UV);
 
         void						CopyMesh(const Mesh& pMesh);
         bool						IsDirty() const;
@@ -72,7 +72,7 @@ namespace CG184
         std::vector<Vector3F>		m_VertPosition;
         std::vector<Vector3F>		m_VertColor;
         std::vector<Vector3F>		m_VertNormal;
-        std::vector<Vector2D>		m_VertTexCoord;
+        std::vector<Vector2F>		m_VertTexCoord;
         std::vector<uint32_t>		m_Indices;
         HalfEdgeMesh                mesh;
 

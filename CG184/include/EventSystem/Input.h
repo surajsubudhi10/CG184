@@ -56,7 +56,7 @@ namespace CG184
         bool			IsMouseButtonDown(int button);
         bool			IsMouseButtonUp(int button);
 
-        void            GetHoveredObject(const Vector2D &p, bool getElement = true, bool transformed = false);
+        void            GetHoveredObject(const Vector2F &p, bool getElement = true, bool transformed = false);
         void            DrawSelection() const;
 
 
@@ -65,7 +65,7 @@ namespace CG184
         Selection hovered;
         Selection selected;
 
-        static Vector2D mousePosition;
+        static Vector2F mousePosition;
     private:
         void			ProcessInput();
         

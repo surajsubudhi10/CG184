@@ -83,7 +83,7 @@ namespace CG184
         const vector<Vector3F>& vertexPositions,
         const vector<Vector3F>& vertexColors,
         const vector<Vector3F>& vertexNormals,
-        const vector<Vector2D>& vertexTextCoord )
+        const vector<Vector2F>& vertexTextCoord )
     {
         // define some types, to improve readability
         typedef vector<Index>					IndexList;
