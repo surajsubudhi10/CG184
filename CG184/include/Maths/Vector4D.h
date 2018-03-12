@@ -460,7 +460,7 @@ namespace CG184
     template <typename T>
     std::ostream&   operator<< (std::ostream& stream, const Vector4<T>& vec)
     {
-        stream << "(" << vec.x << ", " << vec.y << ", " << vec.z << ", " << vec.w ")" << '\n';
+        stream << "(" << vec.x << ", " << vec.y << ", " << vec.z << ", " << vec.w << ")" << '\n';
         return stream;
     }
 }

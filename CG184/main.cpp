@@ -291,19 +291,27 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 
 void Vector3Test()
 {
-    Vector3F a(2.0f, 3.0f, 4.0f);
-    Vector3F b(6.0f, 5.0f, 1.0f);
+    Matrix4F a (  1,    2,    3,   4,    5,     6,      7,   8,    9,    10, 11,    12,    13,     14,     15, 16);
+    Matrix4F b (1.01, 2.01, 2.99, 4.0, 4.99, 6.001, 7.0003, 8.0, 8.99, 10.01, 11, 11.99, 13.01, 14.001, 14.999, 16);
+    Matrix4F c (-16, 15, -14, 13, -12, 11, -10, 9, -8, 7, -6, 6, -6, 3, -2, 2);
 
-    cout << "Original Vectors : "<< endl;
+    Vector3F bv(6.0f, 5.0f, 1.0f);
+    Vector4F cv(3.0f, 2.0f, 4.0f, 2.5f);
+
+    cout << "Original Matrix : "<< endl;
     cout << "A : " << a ;
     cout << "B : " << b ;
 
-    cout << "Add : " << a.add(b);
-    cout << "Sub : " << a.sub(b);
-    cout << "Mul : " << a.mult(b);
-    cout << "Div : " << a.divide(b);
+    //cout << "Mult mat : \n" << a.multiply(b);
+    cout << "Mult mat : \n" << a.mult(b);
+    cout << "Mult scalar : \n" << a.multiply(3);
+    cout << "Mult Vec3 : \n" << a.multiply(bv);
+    cout << "Mult Vec4 : \n" << a.multiply(cv);
+    cout << "Div : \n" << a.divide(2);
 
-    cout << "Mul float: " << a.mult(2);
-    cout << "Div float: " << a.divide(3);
+    
+    cout << "Inverse : \n" << c.inverse();
+    /*cout << "Mul float: " << a.mult(2);
+    cout << "Div float: " << a.divide(3);*/
 
 }

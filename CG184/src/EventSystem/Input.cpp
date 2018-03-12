@@ -122,7 +122,7 @@ namespace CG184
         {
             if (hovered.element != nullptr)
             {
-                Matrix4D mat;
+                Matrix4F mat;
                 glPushMatrix();
                 glMatrixMode(GL_PROJECTION_MATRIX);
                 glLoadIdentity();

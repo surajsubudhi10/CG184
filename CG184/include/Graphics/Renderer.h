@@ -33,9 +33,9 @@ namespace CG184
         ~Renderer() override ;
 
         void					Render();
-        void					SendProjectionMatrixData (Matrix4D& projMat);
-        void					SendViewMatrixData		 (Matrix4D& viewMat);
-        void					SendModelMatrixData		 (Matrix4D& modelMat);
+        void					SendProjectionMatrixData (Matrix4F& projMat);
+        void					SendViewMatrixData		 (Matrix4F& viewMat);
+        void					SendModelMatrixData		 (Matrix4F& modelMat);
         void					SendCameraPosData		 (CameraPtr cam);
         void					SendLightData			 (LightPtr light, int index = 0);
         void					SendMaterialData();
@@ -52,7 +52,7 @@ namespace CG184
         
 
     private:
-        Matrix4D				GetModelMatrix() const;
+        Matrix4F				GetModelMatrix() const;
 
         MeshFilter*             m_MeshFilterPtr;
         Material*               m_SharedMaterialPtr;

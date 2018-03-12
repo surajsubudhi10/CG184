@@ -78,15 +78,15 @@ namespace CG184
         m_Material.GetShader()->DeactivateShader();
     }
 
-    Matrix4D Renderer::GetModelMatrix() const {
+    Matrix4F Renderer::GetModelMatrix() const {
         return m_AttachedNodePtr->GetTransformComponent().GetWorldTransformMat();
     }
 
-    void Renderer::SendViewMatrixData(Matrix4D &viewMat) {
+    void Renderer::SendViewMatrixData(Matrix4F &viewMat) {
         m_Material.GetShader()->SetUniformMat4f("view", viewMat.elements);
     }
 
-    void Renderer::SendModelMatrixData(Matrix4D& modelMat) {
+    void Renderer::SendModelMatrixData(Matrix4F& modelMat) {
         m_Material.GetShader()->SetUniformMat4f("model", modelMat.elements);
     }
 
@@ -112,7 +112,7 @@ namespace CG184
         m_Material.GetShader()->SetUniform3f("viewPos", cam->GetCamPos().x, cam->GetCamPos().y, cam->GetCamPos().z);
     }
 
-    void Renderer::SendProjectionMatrixData(Matrix4D &projMat) {
+    void Renderer::SendProjectionMatrixData(Matrix4F &projMat) {
         m_Material.GetShader()->SetUniformMat4f("projection", projMat.elements);
     }
 

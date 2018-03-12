@@ -60,7 +60,7 @@ namespace CG184
     void Scene::CreateAnchor()
     {
         glPushMatrix();
-            Matrix4D mat;
+            Matrix4F mat;
             glMatrixMode(GL_PROJECTION_MATRIX);
             glLoadIdentity();
         

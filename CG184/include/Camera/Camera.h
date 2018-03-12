@@ -26,13 +26,13 @@ namespace CG184
         inline void			SetTarget(const Vector3F& _target)	{ m_Target = _target; UpdateViewMatrix(); }
         inline void			SetUp(const Vector3F& _up)			{ m_Up = _up; UpdateViewMatrix(); }
 
-        inline Matrix4D&	GetViewMatrix()			{ return m_ViewMatrix; }
-        inline Matrix4D&	GetProjectionMatrix()	{ return m_ProjectionMatrix; }
+        inline Matrix4F&	GetViewMatrix()			{ return m_ViewMatrix; }
+        inline Matrix4F&	GetProjectionMatrix()	{ return m_ProjectionMatrix; }
         inline Vector3F&	GetCamPos()				{ return m_Position; }
 
     private:
-        Matrix4D			Prespective(float fov, float aspect_ratio, float near, float far);
-        Matrix4D			LookAt(Vector3F eyePos, Vector3F target, Vector3F up);
+        Matrix4F			Prespective(float fov, float aspect_ratio, float near, float far);
+        Matrix4F			LookAt(Vector3F eyePos, Vector3F target, Vector3F up);
 
         void				UpdateProjectionMatrix();
         void				UpdateViewMatrix();
@@ -46,8 +46,8 @@ namespace CG184
         float				m_Near;
         float				m_Far;
 
-        Matrix4D			m_ViewMatrix;
-        Matrix4D			m_ProjectionMatrix;
+        Matrix4F			m_ViewMatrix;
+        Matrix4F			m_ProjectionMatrix;
     };
 
     typedef std::shared_ptr<Camera> CameraPtr;

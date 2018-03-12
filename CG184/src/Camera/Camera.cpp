@@ -80,12 +80,12 @@ namespace CG184
         m_ViewMatrix = LookAt(m_Position, m_Target, m_Up);
     }
 
-    Matrix4D Camera::Prespective(float m_FovInDeg, float m_AspectRatio, float m_Near, float m_Far)
+    Matrix4F Camera::Prespective(float m_FovInDeg, float m_AspectRatio, float m_Near, float m_Far)
     {
         auto m_FovInRad = (float)(PI * m_FovInDeg / 180.0f);
         const float tanHalfm_Fov = tan(m_FovInRad / 2.0f);
 
-        Matrix4D result(1.0f);
+        Matrix4F result(1.0f);
 
         result.elements[0]  =  1 / (m_AspectRatio * tanHalfm_Fov);
         result.elements[5]  =  1 / tanHalfm_Fov;
@@ -97,7 +97,7 @@ namespace CG184
         return result;
     }
 
-    Matrix4D Camera::LookAt(Vector3F eyePos, Vector3F target, Vector3F m_Up)
+    Matrix4F Camera::LookAt(Vector3F eyePos, Vector3F target, Vector3F m_Up)
     {
         Vector3F zAxis(target - eyePos);
         zAxis.normalize();
@@ -111,7 +111,7 @@ namespace CG184
         float ey = -yAxis.dot(eyePos);
         float ez =  zAxis.dot(eyePos);
 
-        Matrix4D lookMat(
+        Matrix4F lookMat(
                  xAxis.x,  xAxis.y,  xAxis.z, ex,
                  yAxis.x,  yAxis.y,  yAxis.z, ey,
                 -zAxis.x, -zAxis.y, -zAxis.z, ez,

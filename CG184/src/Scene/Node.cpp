@@ -121,7 +121,7 @@ namespace CG184
     void Node::SetRotation(float angle, Vector3F axis) 
     {
         axis.normalize();
-        Quaternion quat(angle, axis);
+        QuaternionF quat(angle, axis);
         m_Transform.m_EulerAngles = quat.ToEulerAngles();
         m_Transform.m_Rotation = quat;
         m_Transform.isDirty = true;
@@ -182,7 +182,7 @@ namespace CG184
 
     void Node::DrawPick(int &pickID, bool transformed, CameraPtr cam) 
     {
-        Matrix4D mat;
+        Matrix4F mat;
         glPushMatrix();
         glMatrixMode(GL_PROJECTION_MATRIX);
         glLoadIdentity();

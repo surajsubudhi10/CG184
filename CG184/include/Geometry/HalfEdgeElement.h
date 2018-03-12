@@ -283,7 +283,7 @@ namespace CG184
         Vector3F centroid() const;
 
         Index id;
-        Matrix4D quadric;
+        Matrix4F quadric;
 
     protected:
         HalfEdgeIter _halfedge;  ///< one of the halfedges of this face
@@ -374,7 +374,7 @@ namespace CG184
             return d;
         }
 
-        Matrix4D quadric;
+        Matrix4F quadric;
 
     protected:
         HalfEdgeIter _halfedge; ///< one of the halfedges "rooted" or "based" at this vertex

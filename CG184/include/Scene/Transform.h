@@ -14,24 +14,24 @@ namespace CG184 {
         Transform();
         ~Transform();
 
-        Matrix4D& GetLocalTransformMat();
-        Matrix4D& GetWorldTransformMat();
+        Matrix4F& GetLocalTransformMat();
+        Matrix4F& GetWorldTransformMat();
 
-        Matrix4D Translate(Matrix4D& mat, float _x, float _y, float _z);
-        Matrix4D Rotate(Matrix4D& mat, float angleInDeg, const Vector3F& axis);
-        Matrix4D Scale(Matrix4D& mat, float sx, float sy, float sz);
+        Matrix4F Translate(Matrix4F& mat, float _x, float _y, float _z);
+        Matrix4F Rotate(Matrix4F& mat, float angleInDeg, const Vector3F& axis);
+        Matrix4F Scale(Matrix4F& mat, float sx, float sy, float sz);
 
         bool isDirty;
 
     private:
         Vector3F			m_Position;
-        Quaternion			m_Rotation;
+        QuaternionF			m_Rotation;
         Vector3F			m_LocalPosition;
         Vector3F			m_EulerAngles;
         Vector3F			m_LocalScale;
         
-        Matrix4D			m_LocalTransformMat;
-        Matrix4D			m_WorldTransformMat;
+        Matrix4F			m_LocalTransformMat;
+        Matrix4F			m_WorldTransformMat;
 
         void UpdateLocalTransformMatrix();
         friend class Node;

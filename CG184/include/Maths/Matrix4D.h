@@ -1,86 +1,6 @@
 #pragma once
 #include "Vector4D.h"
 
-#define OLD_IMP 1
-
-#if OLD_IMP == 0
-
-namespace CG184 
-{
-    // TODO Create Template classes for Matrices
-    class Matrix4D
-    {
-    public:
-
-        //! Basic Matrix Structure.
-        //! Matrix4D arr = {
-        //!     {0, 4,  8, 12},
-        //!     {1, 5,  9, 13},
-        //!     {2, 6, 10, 14},
-        //!     {3, 7, 11, 15}
-        //! };
-        float elements[4 * 4];
-        
-
-        Matrix4D();
-        Matrix4D(float diagonal);
-        Matrix4D(Vector4F col1, Vector4F col2, Vector4F col3, Vector4F col4);
-        Matrix4D(const Matrix4D& mat);
-
-        Matrix4D(
-            float m00, float m01, float m02,
-            float m10, float m11, float m12,
-            float m20, float m21, float m22);
-
-
-        Matrix4D(
-            float m00, float m01, float m02, float m03,
-            float m10, float m11, float m12, float m13,
-            float m20, float m21, float m22, float m23,
-            float m30, float m31, float m32, float m33);
-
-        Vector4F getColumn(int index);
-        
-
-        void SetRow(int i, const Vector4F& vec);
-        void SetColumn(int i, const Vector4F& vec);
-
-        Matrix4D multiply(float scalar);
-        Matrix4D divide(float scalar);
-        Matrix4D multiply(const Matrix4D& other);
-        Vector3F multiply(const Vector3F& other);
-        Vector4F multiply(const Vector4F& other);
-
-        // TODO add more Set functions
-        void Set(float diagonal);
-        void Set(Vector4F col1, Vector4F col2, Vector4F col3, Vector4F col4);
-
-        Matrix4D& operator=(const Matrix4D& rhs);
-
-        // TODO Implement the inverse and matrix multiplication
-        friend Matrix4D operator*(Matrix4D left, const Matrix4D& right);
-        Matrix4D& operator*=(const Matrix4D& other);
-
-        float at(int i);
-        float operator[](int i);
-
-        Matrix4D transpose() const;
-        void inverse();
-
-        ~Matrix4D();
-
-    private:
-        
-    };
-
-    std::ostream& operator<< (std::ostream& stream, const Matrix4D& mat);
-    
-}   // End of CG184
-
-
-#else
-
-
 namespace CG184
 {
     template <typename T>
@@ -114,13 +34,13 @@ namespace CG184
         template <typename U>
         Matrix4(const Matrix4<U>& mat);
 
-        //! Constructs Matrix with given parameters
+        //! Sets this matrix with input elements.
         Matrix4(
             T m00, T m01, T m02,
             T m10, T m11, T m12,
             T m20, T m21, T m22);
 
-
+        //! Sets this matrix with input elements.
         Matrix4(
             T m00, T m01, T m02, T m03,
             T m10, T m11, T m12, T m13,
@@ -130,11 +50,11 @@ namespace CG184
         //! Get the column vector at index val
         Vector4<T> get_column(int index);
 
-        //! Set the row vector at index val
+        //! Sets i-th row with input vector.
         template <typename U>
         void set_row(int i, const Vector4<U>& vec);
 
-        //! Set the column vector at index val
+        //! Sets i-th column with input vector.
         template <typename U>
         void set_column(int i, const Vector4<U>& vec);
 
@@ -148,36 +68,71 @@ namespace CG184
 
         //! Computes MatA * MatOther
         template <typename U>
-        Matrix4<T> multiply(const Matrix4<U>& other);
+        Matrix4<T> mult(const Matrix4<U>& other);
 
-        Vector3<T> multiply(const Vector3<T>& other);
-        Vector4<T> multiply(const Vector4<T>& other);
+        template <typename U>
+        Vector3<T> multiply(const Vector3<U>& other);
 
+        template <typename U>
+        Vector4<T> multiply(const Vector4<U>& other);
+
+        //! Sets the diagonal elements with val.
         template <typename U>
         void set_diagonal(U diagonal);
 
+        //! Sets all columns with input vectors.
         void set_columns(Vector4<T> col1, Vector4<T> col2, Vector4<T> col3, Vector4<T> col4);
-
-        //Matrix4D& operator=(const Matrix4<T>& rhs);
-
-        // TODO Implement the inverse and matrix multiplication
-        //friend Matrix4<T> operator*(Matrix4<T> left, const Matrix4<T>& right);
-        //Matrix4<T>& operator*=(const Matrix4<T>& other);
 
         T at(int i);
         T operator[](int i);
 
+        //! Compute the transpose of the matrix
         Matrix4<T> transpose() const;
         
         //! Compute the inverse of the matrix
-        void inverse();
+        Matrix4<T> inverse();
 
         //! Compute the determinant of the matrix
         T determinant() const;
 
+        template <typename U>
+        Matrix4<U> castTo() const;
+
+        //! Assigns input matrix.
+        template <typename U>
+        Matrix4<T>& operator=(const Matrix4<U>& m);
+
+        //! Addition assignment with input scalar.
+        template <typename U>
+        Matrix4<T>& operator+=(U s);
+
+        //! Addition assignment with input matrix (element-wise).
+        template <typename U>
+        Matrix4<T>& operator+=(const Matrix4<U>& m);
+
+        //! Subtraction assignment with input scalar.
+        template <typename U>
+        Matrix4<T>& operator-=(U s);
+
+        //! Subtraction assignment with input matrix (element-wise).
+        template <typename U>
+        Matrix4<T>& operator-=(const Matrix4<U>& m);
+
+        //! Multiplication assignment with input scalar.
+        template <typename U>
+        Matrix4<T>& operator*=(U s);
+
+        //! Multiplication assignment with input matrix.
+        template <typename U>
+        Matrix4<T>& operator*=(const Matrix4<U>& m);
+
+        //! Division assignment with input scalar.
+        template <typename U>
+        Matrix4<T>& operator/=(U s);
+
     };
 
-    typedef Matrix4<float> Matrix4D;
+    typedef Matrix4<float> Matrix4F;
 
 
     //! Positive sign operator.
@@ -201,7 +156,23 @@ namespace CG184
     template <typename T>
     Matrix4<T> operator*(const Matrix4<T>& a, const Matrix4<T>& b) 
     {
-        return a.multiply(b);
+        //return a.mult(b);
+        Matrix4<T> result;
+        T data[16];
+        for (int y = 0; y < 4; y++)
+        {
+            for (int x = 0; x < 4; x++)
+            {
+                T sum = 0.0f;
+                for (int e = 0; e < 4; e++)
+                {
+                    sum += (a.elements[x + e * 4] * (T)b.elements[e + y * 4]);
+                }
+                data[x + y * 4] = sum;
+            }
+        }
+        std::memcpy(result.elements, data, 4 * 4 * sizeof(T));
+        return result;
     }
 
     template <typename T>
@@ -255,7 +226,7 @@ namespace CG184
         T m20, T m21, T m22, T m23,
         T m30, T m31, T m32, T m33)
     {
-        set_columns(Vector4<T>(m00, m10, m20, m03), Vector4<T>(m01, m11, m21, m13), Vector4<T>(m02, m12, m22, m23), Vector4<T>(m03, m13, m23, m33));
+        set_columns(Vector4<T>(m00, m10, m20, m30), Vector4<T>(m01, m11, m21, m31), Vector4<T>(m02, m12, m22, m32), Vector4<T>(m03, m13, m23, m33));
     }
 
     template <typename T>
@@ -301,7 +272,7 @@ namespace CG184
     template <typename U>
     Matrix4<T> Matrix4<T>::divide(U scalar)
     {
-        assert(scalar != 0)
+        assert(scalar != 0);
 
         Matrix4<T> result;
         for (int i = 0; i < 16; i++)
@@ -313,7 +284,7 @@ namespace CG184
 
     template <typename T>
     template <typename U>
-    Matrix4<T> Matrix4<T>::multiply(const Matrix4<U>& other)
+    Matrix4<T> Matrix4<T>::mult(const Matrix4<U>& other)
     {
         Matrix4<T> result;
         T data[16];
@@ -331,6 +302,27 @@ namespace CG184
         }
         std::memcpy(result.elements, data, 4 * 4 * sizeof(T));
         return result;
+    }
+
+    template <typename T>
+    template <typename U>
+    Vector3<T> Matrix4<T>::multiply(const Vector3<U>& other)
+    {
+        return Vector3<T>(  elements[0] * other.x + elements[4] * other.y + elements[ 8] * other.z + elements[12] * 1,
+                            elements[1] * other.x + elements[5] * other.y + elements[ 9] * other.z + elements[13] * 1,
+                            elements[2] * other.x + elements[6] * other.y + elements[10] * other.z + elements[14] * 1
+            );
+    }
+
+    template <typename T>
+    template <typename U>
+    Vector4<T> Matrix4<T>::multiply(const Vector4<U>& other)
+    {
+        return Vector4<T>(elements[0] * other.x + elements[4] * other.y + elements[ 8] * other.z + elements[12] * 1,
+                          elements[1] * other.x + elements[5] * other.y + elements[ 9] * other.z + elements[13] * 1,
+                          elements[2] * other.x + elements[6] * other.y + elements[10] * other.z + elements[14] * 1,
+                          elements[3] * other.x + elements[7] * other.y + elements[11] * other.z + elements[15] * 1
+        );
     }
 
     template <typename T>
@@ -383,7 +375,7 @@ namespace CG184
     }
 
     template <typename T>
-    void Matrix4<T>::inverse()
+    Matrix4<T> Matrix4<T>::inverse()
     {
         T d = determinant();
         Matrix4<T> m;
@@ -403,8 +395,9 @@ namespace CG184
         m.elements[13] = elements[0] * elements[ 9] * elements[14] + elements[1] * elements[10] * elements[12] + elements[2] * elements[ 8] * elements[13] - elements[0] * elements[10] * elements[13] - elements[1] * elements[8] * elements[14] - elements[2] * elements[9] * elements[12];
         m.elements[14] = elements[0] * elements[ 6] * elements[13] + elements[1] * elements[ 4] * elements[14] + elements[2] * elements[ 5] * elements[12] - elements[0] * elements[ 5] * elements[14] - elements[1] * elements[6] * elements[12] - elements[2] * elements[4] * elements[13];
         m.elements[15] = elements[0] * elements[ 5] * elements[10] + elements[1] * elements[ 6] * elements[ 8] + elements[2] * elements[ 4] * elements[ 9] - elements[0] * elements[ 6] * elements[9] - elements[1] * elements[4] * elements[10] - elements[2] * elements[5] * elements[8];
-        
         m = m.divide(d);
+
+        return m;
     }
 
     template<typename T>
@@ -421,16 +414,111 @@ namespace CG184
             - elements[3] * elements[4] * elements[ 9] * elements[14] - elements[3] * elements[5] * elements[10] * elements[12] - elements[3] * elements[6] * elements[ 8] * elements[13];
     }
     
+    template <typename T>
+    template <typename U>
+    Matrix4<U> Matrix4<T>::castTo() const 
+    {
+        return Matrix4<U>(
+            static_cast<U>(_elements[ 0]), static_cast<U>(_elements[ 1]), static_cast<U>(_elements[ 2]), static_cast<U>(_elements[ 3]),
+            static_cast<U>(_elements[ 4]), static_cast<U>(_elements[ 5]), static_cast<U>(_elements[ 6]), static_cast<U>(_elements[ 7]),
+            static_cast<U>(_elements[ 8]), static_cast<U>(_elements[ 9]), static_cast<U>(_elements[10]), static_cast<U>(_elements[11]),
+            static_cast<U>(_elements[12]), static_cast<U>(_elements[13]), static_cast<U>(_elements[14]), static_cast<U>(_elements[15]));
+    }
+
+    template <typename T>
+    template <typename U>
+    Matrix4<T>& Matrix4<T>::operator=(const Matrix4<U>& m) 
+    {
+        for (uint32_t i = 0; i < 16; i++)
+        {
+            elements[i] = (T)m.elements[i];
+        }
+        return *this;
+    }
+
+    template <typename T>
+    template <typename U>
+    Matrix4<T>& Matrix4<T>::operator+=(U s)
+    {
+        for (uint32_t i = 0; i < 16; i++)
+        {
+            elements[i] += (T)s;
+        }
+        return *this;
+    }
+
+    template <typename T>
+    template <typename U>
+    Matrix4<T>& Matrix4<T>::operator+=(const Matrix4<U>& m)
+    {
+        for (uint32_t i = 0; i < 16; i++)
+        {
+            elements[i] += (T)m.elements[i];
+        }
+        return *this;
+    }
+
+    template <typename T>
+    template <typename U>
+    Matrix4<T>& Matrix4<T>::operator-=(U s)
+    {
+        for (uint32_t i = 0; i < 16; i++)
+        {
+            elements[i] -= (T)s;
+        }
+        return *this;
+    }
+
+    template <typename T>
+    template <typename U>
+    Matrix4<T>& Matrix4<T>::operator-=(const Matrix4<U>& m)
+    {
+        for (uint32_t i = 0; i < 16; i++)
+        {
+            elements[i] -= (T)m.elements[i];
+        }
+        return *this;
+    }
+
+    template <typename T>
+    template <typename U>
+    Matrix4<T>& Matrix4<T>::operator*=(U s)
+    {
+        for (uint32_t i = 0; i < 16; i++)
+        {
+            elements[i] *= (T)s;
+        }
+        return *this;
+    }
+
+    template <typename T>
+    template <typename U>
+    Matrix4<T>& Matrix4<T>::operator*=(const Matrix4<U>& m)
+    {
+        Matrix4<T> m;
+        *this = *this * m;
+        return *this;
+    }
+
+    template <typename T>
+    template <typename U>
+    Matrix4<T>& Matrix4<T>::operator/=(U s)
+    {
+        assert(s != 0);
+        for (uint32_t i = 0; i < 16; i++)
+        {
+            elements[i] /= (T)s;
+        }
+        return *this;
+    }
 
     template <typename T>
     std::ostream& operator<< (std::ostream& stream, const Matrix4<T>& mat) {
-        stream  << "(" << mat.elements[0] << ", " << mat.elements[4] << ", " << mat.elements[8] << ", " << mat.elements[12] << "," << '\n'
-                << "(" << mat.elements[1] << ", " << mat.elements[5] << ", " << mat.elements[9] << ", " << mat.elements[13] << "," << '\n'
-                << "(" << mat.elements[2] << ", " << mat.elements[6] << ", " << mat.elements[10] << ", " << mat.elements[14] << "," << '\n'
-                << "(" << mat.elements[3] << ", " << mat.elements[7] << ", " << mat.elements[11] << ", " << mat.elements[15] << ")" << '\n';
+        stream  << "(" 
+                << mat.elements[0] << ", " << mat.elements[4] << ", " << mat.elements[ 8] << ", " << mat.elements[12] << "," << '\n'
+                << mat.elements[1] << ", " << mat.elements[5] << ", " << mat.elements[ 9] << ", " << mat.elements[13] << "," << '\n'
+                << mat.elements[2] << ", " << mat.elements[6] << ", " << mat.elements[10] << ", " << mat.elements[14] << "," << '\n'
+                << mat.elements[3] << ", " << mat.elements[7] << ", " << mat.elements[11] << ", " << mat.elements[15] << ")" << '\n';
         return stream;
     }
 }
-
-
-#endif

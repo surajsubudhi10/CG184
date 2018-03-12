@@ -12,7 +12,7 @@ namespace CG184
     Transform::Transform() :
         m_Position(Vector3F(0)),
         m_LocalPosition(Vector3F(0)),
-        m_Rotation(Quaternion()),
+        m_Rotation(QuaternionF()),
         m_EulerAngles(Vector3F(0)),
         m_LocalScale(Vector3F(1)),
         isDirty(false)
@@ -22,18 +22,18 @@ namespace CG184
 
     Transform::~Transform() = default;
 
-    Matrix4D& Transform::GetLocalTransformMat() {
+    Matrix4F& Transform::GetLocalTransformMat() {
         return m_LocalTransformMat;
     }
 
-    Matrix4D & Transform::GetWorldTransformMat()
+    Matrix4F & Transform::GetWorldTransformMat()
     {
         return m_WorldTransformMat;
     }
 
     void Transform::UpdateLocalTransformMatrix()
     {
-        m_LocalTransformMat = Matrix4D(1.0f);
+        m_LocalTransformMat = Matrix4F(1.0f);
         
         float angleInDeg;
         Vector3F axis;
@@ -47,9 +47,9 @@ namespace CG184
         isDirty = false;
     }
 
-    Matrix4D Transform::Translate(Matrix4D& mat, float _x, float _y, float _z)
+    Matrix4F Transform::Translate(Matrix4F& mat, float _x, float _y, float _z)
     {
-        Matrix4D transMat(
+        Matrix4F transMat(
                 1, 0, 0, _x,
                 0, 1, 0, _y,
                 0, 0, 1, _z,
@@ -57,11 +57,12 @@ namespace CG184
         );
 
         //transMat = transMat.transpose();
-        mat = transMat.multiply(mat);
+        //mat = transMat.multiply(mat);
+        mat = transMat.mult(mat);
         return mat;
     }
 
-    Matrix4D Transform::Rotate(Matrix4D& mat, float angleInDeg, const Vector3F& axis)
+    Matrix4F Transform::Rotate(Matrix4F& mat, float angleInDeg, const Vector3F& axis)
     {
         auto angInRad = static_cast<float>(PI * angleInDeg / 180.0f);
 
@@ -75,26 +76,28 @@ namespace CG184
         auto ky = normAxis.y;
         auto kz = normAxis.z;
 
-        Matrix4D rotMat(
+        Matrix4F rotMat(
                 (kx * kx * v) + c       , (kx * ky * v) - (kz * s), (kx * kz * v) + (ky * s), 0,
                 (ky * kx * v) + (kz * s), (ky * ky * v) +  c      , (ky * kz * v) - (kx * s), 0,
                 (kz * kx * v) - (ky * s), (kz * ky * v) + (kx * s), (kz * kz * v) +  c      , 0,
                 0,                        0,                        0, 1
         );
-        mat = rotMat.multiply(mat);
+        //mat = rotMat.multiply(mat);
+        mat = rotMat.mult(mat);
         return mat;
     }
 
-    Matrix4D Transform::Scale(Matrix4D& mat, float sx, float sy, float sz)
+    Matrix4F Transform::Scale(Matrix4F& mat, float sx, float sy, float sz)
     {
-        Matrix4D scaleMat(
+        Matrix4F scaleMat(
                 sx,  0,  0, 0,
                 0, sy,  0, 0,
                 0,  0, sz, 0,
                 0,  0,  0, 1
         );
 
-        mat = scaleMat.multiply(mat);
+        mat = scaleMat.mult(mat);
+        //mat = scaleMat.multiply(mat);
         return mat;
     }
 }   // End of CG184
